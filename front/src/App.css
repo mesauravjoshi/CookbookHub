@@ -1,0 +1,10 @@
+:root {
+}
+
+.form-outside{
+  width: 22em;
+  font-size: 1.5em;
+  padding: 2em 2em;
+  border-radius: 1.6em;
+  border: 1px solid green;
+}

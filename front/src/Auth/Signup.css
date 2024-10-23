@@ -1,0 +1,16 @@
+
+h3{
+    color: wheat;
+}
+.text-muted {
+    color: #ce254c !important;
+}
+
+.form-outside{
+    background-color: #b2fab0;
+    margin: 0;
+    display: flex;
+    place-items: center;
+    min-width: 320px;
+    /* min-height: 100vh; */
+}
