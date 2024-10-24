@@ -124,6 +124,19 @@ app.get('/data',jwtAuthMiddleware, async (req, res) => {
     }
 });
 
+app.get('/user_data/:username', jwtAuthMiddleware, async (req, res) => {
+    const { username } = req.params; // Extract username from URL
+
+    try {
+        const recipes = await Recipe.find({ 'PostedBy.username': username }); // Fetch recipes for the specific user
+        res.json(recipes); // Return the recipes as JSON
+    } catch (error) {
+        console.error('Error fetching recipes:', error);
+        res.status(500).json({ message: 'Error fetching recipes' });
+    }
+});
+
+
 app.listen(3000, () => {
     console.log('Server is running on http://localhost:3000');
 });

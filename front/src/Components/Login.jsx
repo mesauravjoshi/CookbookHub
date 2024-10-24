@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import viteLogo from '/vite.svg'
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from './UserContext'; // Import the context
@@ -34,11 +33,14 @@ function App() {
         console.log('Login successful', data);
 
         // Store token in local storage
-        localStorage.setItem('token', data.token);
+        localStorage.setItem('token', data.token,'name',data.user.name);
+        localStorage.setItem('name',data.user.name);
         console.log(data.token);
+        console.log(data.user.name);
 
         setUser(data.user); // Set the user data in context
-        navigate('/home');  // Redirect to home page
+        navigate(`/profile/${data.user.username}`);  //Redirect to profile
+
 
     } catch (error) {
         console.error('Login failed', error.message);

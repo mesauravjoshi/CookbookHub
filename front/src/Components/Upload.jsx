@@ -22,15 +22,20 @@ function Upload() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const token = localStorage.getItem('token');
+    const name = localStorage.getItem('name');
+    console.log(name);
+    
     const userData = JSON.parse(atob(token.split('.')[1])); // Decode token to get user data
-
+    console.log(userData.username);
+    console.log(userData.name);
+    
     const form = {
       Recipes: recipesName,
       Ingredients: ingredients,
       Instructions: instructions,
       Image_URL: image_URL,
       PostedBy: {
-        name: userData.name,
+        name: name,
         username: userData.username,
         _id: userData.id // Use userData.id or userData._id depending on your token structure
       }
@@ -99,7 +104,28 @@ function Upload() {
           </div>
         </>
         }
-        {!user && <h1>Please log in to see your profile.</h1>}
+
+        {/* if not login  */}
+        {!user && 
+          <section class="py-3 py-md-5 min-vh-100 d-flex justify-content-center align-items-center">
+            <div class="container">
+              <div class="row">
+                <div class="col-12">
+                  <div class="text-center">
+                    <h2 class="d-flex justify-content-center align-items-center gap-2 mb-4">
+                      <span class="display-1 fw-bold">4</span>
+                      <i class="bi bi-exclamation-circle-fill text-danger display-4"></i>
+                      <span class="display-1 fw-bold bsb-flip-h">4</span>
+                    </h2>
+                    <h3 class="h2 mb-2">Oops! You're lost.</h3>
+                    <h4>Please login first.. </h4>
+                    <a class="btn bsb-btn-5xl btn-dark rounded-pill px-5 fs-6 m-0" href="#!" role="button">Back to Home</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        }
       </div>
     </>
   );
