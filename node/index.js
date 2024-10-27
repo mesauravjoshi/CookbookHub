@@ -3,139 +3,77 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const connectDB = require('./db'); // Import connectDB
 const mongoose = require('mongoose');
+const Recipe = require('./models/Recipe'); 
+
 require('dotenv').config();
 
 const {jwtAuthMiddleware,generateToken} = require('./jwt')
 
 connectDB().catch(err => console.log(err)); // Call connectDB function
 
-// Schema for users
-const usersSchema = new mongoose.Schema({
-    name: String,
-    username: { type: String, unique: true }, // Ensure unique usernames
-    password: String
+// Schema for Bookmark
+const bookmarkSchema = new mongoose.Schema({
+    post_id: String,
+    saved_by: String
 });
-// model for users
-const User = mongoose.model('User', usersSchema);
-
-// Schema for Recipes and PostedBy object
-const userSchema = new mongoose.Schema({
-    name: String,
-    username: String,
-    _id: String,
-});
-
-const recipeSchema = new mongoose.Schema({
-    Image_URL: { type: String, required: true },
-    Recipes: { type: String, required: true },
-    Ingredients: { type: String, required: true },
-    Instructions: { type: String, required: true },
-    PostedBy: { type: userSchema, required: true }
-});
-
-const Recipe = mongoose.model('Recipe', recipeSchema);
+// model for Bookmark
+const Bookmark = mongoose.model('Bookmark', bookmarkSchema);
 
 const app = express();
 
 app.use(cors());
 app.use(bodyParser.json());
 
-app.post('/signup', async (req, res) => {
-    const { name,username, password } = req.body;
+// ***********************************************************************
 
-    // Check if user already exists
-    const existingUser = await User.findOne({ username });
-    if (existingUser) {
-        console.log('User already exists:', username);
-        return res.status(400).json({ message: 'User already exists' });
+const authRoutes = require('./routes/auth');
+const recipeRoutes = require('./routes/recipe');
+
+app.use('/auth', authRoutes);
+app.use('/recipes', recipeRoutes);
+
+// ***********************************************************************
+
+app.post('/bookmark', async (req, res) => {
+    const { post_id, saved_by } = req.body;
+
+    // Check if post_id already exists
+    const existingPostId = await Bookmark.findOne({ post_id, saved_by });
+    if (existingPostId) {
+        // Delete the existing bookmark with the same post_id and saved_by
+        await Bookmark.deleteOne({ post_id, saved_by });
+        console.log('Bookmark deleted for post_id:', post_id);
+        return res.status(400).json({ message: 'Post_id already exists and was deleted' });
     }
 
-    let user = new User();
-    user.name = name;
-    user.username = username;
-    user.password = password;
+    let bookmark = new Bookmark();
+    bookmark.post_id = post_id;
+    bookmark.saved_by = saved_by;
 
-    const doc = await user.save();
-    console.log('New user created:', doc);  
-
-    const payload = {
-        id: doc.id,
-        username: doc.username
-    }
-
-    // const token = generateToken(doc.username);
-    console.log(JSON.stringify((payload)));
-    const token = generateToken(payload);
-    console.log('Token is : ', token);
-    
-    res.json({doc: doc, token : token});
-})
-
-app.post('/login', async (req, res) => {
-    // console.log(req.body);
-    // res.json(req.body)
-
-    const { username, password } = req.body;
-    // Find user by username
-    const user = await User.findOne({ username });
-    // Check if user exists
-    if (!user) {
-        return res.status(400).json({ message: 'Incorrect username' });
-    }
-    // Compare passwords
-    if (password !== user.password) {
-        return res.status(400).json({ message: 'Incorrect password' });
-    }
-
-    const payload = {
-        id: user.id,
-        username: user.username
-    }
-    const token = generateToken(payload)
-    // Successful login
-    res.json({ message: 'Login successful', user ,token });
-})
-
-// Recipe_Data route
-app.post('/recipie_data', jwtAuthMiddleware,async (req, res) => {
-    const { Image_URL, Recipes, Ingredients, Instructions, PostedBy } = req.body; // Ensure you destructure UploadedBy
-    if (!Image_URL || !Recipes || !Ingredients || !Instructions || !PostedBy) {
-        return res.status(400).json({ message: 'All fields are required' });
-    }
-    // Create a new recipe document
-    const recipe = new Recipe({ Image_URL, Recipes, Ingredients, Instructions, PostedBy: PostedBy }); // Save UploadedBy as PostedBy
-    try {
-        const savedRecipe = await recipe.save();
-        console.log('New recipe created:', savedRecipe);
-        res.status(201).json(savedRecipe); // Respond with the created recipe
-    } catch (error) {
-        console.error('Error saving recipe:', error);
-        res.status(500).json({ message: 'Error saving recipe' });
-    }
+    const doc = await bookmark.save();
+    console.log('New post bookmarked:', doc);  
+    res.json({ doc });
 });
 
-app.get('/data',jwtAuthMiddleware, async (req, res) => {
+app.get('/bookmarked', async (req, res) => {
     try {
-        const recipes = await Recipe.find(); // Fetch all recipes
-        res.json(recipes); // Return the recipes as JSON
+        const bookmarked = await Bookmark.find(); // Fetch recipes for the specific user
+        res.json(bookmarked); // Return the recipes as JSON
     } catch (error) {
         console.error('Error fetching recipes:', error);
         res.status(500).json({ message: 'Error fetching recipes' });
     }
 });
 
-app.get('/user_data/:username', jwtAuthMiddleware, async (req, res) => {
-    const { username } = req.params; // Extract username from URL
-
+app.get('/bookmarked_recipies', async (req, res) => {
     try {
-        const recipes = await Recipe.find({ 'PostedBy.username': username }); // Fetch recipes for the specific user
-        res.json(recipes); // Return the recipes as JSON
+        const bookmarked = await Recipe.find(); // Fetch recipes for the specific user
+        res.json(bookmarked); // Return the recipes as JSON
     } catch (error) {
         console.error('Error fetching recipes:', error);
         res.status(500).json({ message: 'Error fetching recipes' });
     }
 });
-
 
 app.listen(3000, () => {
     console.log('Server is running on http://localhost:3000');

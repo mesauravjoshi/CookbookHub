@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useUser } from './UserContext';
+import './Home.css'
 
 function Profile() {
   const { username } = useParams(); // Get username from URL
@@ -12,6 +13,16 @@ function Profile() {
     localStorage.removeItem('name')
   }
 
+  const handleBookMark = (past_id, saved_by) => {
+
+    const savedPost = {
+      past_id: past_id,
+      saved_by: saved_by
+    }
+    console.log(past_id);
+    console.log(saved_by);
+  }
+
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
@@ -21,7 +32,7 @@ function Profile() {
 
     const fetchData = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/user_data/${username}`, {
+        const response = await fetch(`http://localhost:3000/recipes/user_data/${username}`, {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -37,19 +48,22 @@ function Profile() {
         console.error('Error fetching data:', error);
       }
     };
-    
+
     fetchData();
   }, [setUser, username]);
 
   return (
     <>
-      <nav className="navbar navbar-light bg-light">
-        <a className="navbar-brand" href="/">CookbookHub</a>
-        <Link to='/home'>
-          <button className='nav-but'>HOME</button>
-        </Link>
-        <Link to='/upload'>
-          <button className='nav-but'>Upload Recipe</button>
+      <nav className="navbar navbar-dark bg-dark">
+        <a className="navbar-brand" href="#">CookbookHub</a>
+        <Link className="nav-link" to='/home'>Home <span className="sr-only">(current)</span></Link>
+        <Link className="nav-link" to='/upload'>Upload Recipe <span className="sr-only">(current)</span></Link>
+
+        <Link className="nav-link" to='/bookmark'>
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-bookmarks" viewBox="0 0 16 16">
+          <path d="M2 4a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v11.5a.5.5 0 0 1-.777.416L7 13.101l-4.223 2.815A.5.5 0 0 1 2 15.5zm2-1a1 1 0 0 0-1 1v10.566l3.723-2.482a.5.5 0 0 1 .554 0L11 14.566V4a1 1 0 0 0-1-1z" />
+          <path d="M4.268 1H12a1 1 0 0 1 1 1v11.768l.223.148A.5.5 0 0 0 14 13.5V2a2 2 0 0 0-2-2H6a2 2 0 0 0-1.732 1" />
+        </svg>
         </Link>
         <Link to='/home'>
           <button onClick={handleLogOut} className='nav-but'>Log Out</button>
@@ -61,8 +75,10 @@ function Profile() {
         {!user && <h1>Please log in to see your profile.</h1>}
       </div>
       <div id="container">
-        <center> <h3>My recipes </h3> </center>
-      
+        <div className="heading">
+          <center> <h3>My recipes </h3> </center>
+        </div>
+
         {
           recipes.map((recipe, index) => (
             <div className="card" key={index}>
@@ -70,6 +86,10 @@ function Profile() {
               <div className="card__details">
                 <span className="tag">Posted By: {recipe.PostedBy.name}</span>
                 <span className="tag">Username: {recipe.PostedBy.username}</span>
+                <svg onClick={() => handleBookMark(recipe._id, recipe.PostedBy.username)} xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" className="bi bi-bookmark" viewBox="0 0 16 16">
+                  <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1z" />
+                </svg>
+                <div className="name">{recipe._id}</div>
                 <div className="name">Recipe Name:
                   <p>{recipe.Recipes}</p>
                 </div>

@@ -41,7 +41,7 @@ function Upload() {
       }
     };
 
-    const response = await fetch('http://localhost:3000/recipie_data', {
+    const response = await fetch('http://localhost:3000/recipes/recipie_data', {
       method: 'POST',
       body: JSON.stringify(form),
       headers: {
@@ -119,7 +119,7 @@ function Upload() {
                     </h2>
                     <h3 class="h2 mb-2">Oops! You're lost.</h3>
                     <h4>Please login first.. </h4>
-                    <a class="btn bsb-btn-5xl btn-dark rounded-pill px-5 fs-6 m-0" href="#!" role="button">Back to Home</a>
+                    <a class="btn bsb-btn-5xl btn-dark rounded-pill px-5 fs-6 m-0" href="/" role="button">Back to Home</a>
                   </div>
                 </div>
               </div>

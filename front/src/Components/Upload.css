@@ -1,17 +1,13 @@
 @import url("https://fonts.googleapis.com/css2?family=Raleway:wght@500;600&display=swap");
 
-.navbar-home {
-  display: flex;
-}
 
 .nav-but {
-  border: none; 
-  padding: 10px 20px;
+  padding: 9px 14px;
   border-radius: 50px;
-  font-weight: 600;
-  color: #3f8751;
-  background-color: #d1f1e0;
-  display: block;
+  font-weight: 700;
+  color: #212529;
+  background-color: #fff8f2;
+  border: none;
 }
 
 img {
@@ -104,10 +100,11 @@ p {
     color: #e0efff;
   }
 
-  input{
+  input {
     width: 100%;
   }
-  textarea{
+
+  textarea {
     width: 100%;
   }
 }

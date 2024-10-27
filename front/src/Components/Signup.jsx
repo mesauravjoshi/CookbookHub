@@ -5,6 +5,7 @@ import './Signup.css'
 
 function Signup() {
   const [form, setForm] = useState({})
+  const [failLoginMess, setFailLoginMess] = useState(false)
   const [alreadyEmail, setAlreadyEmail] = useState(false)
   const navigate = useNavigate();
 
@@ -17,7 +18,7 @@ function Signup() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const response = await fetch('http://localhost:3000/signup', {
+    const response = await fetch('http://localhost:3000/auth/signup', {
       method: 'POST',
       body: JSON.stringify(form),
       headers: {
@@ -37,27 +38,21 @@ function Signup() {
   return (
     <>
       {/* Form code  sign up*/}
-      <center> <h3>SIGN UP</h3> </center>
-
-      <div className='form-outside'>
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label htmlFor="name">Name</label>
-            <input onChange={handleForm} type="text" name='name' className="form-control" placeholder="Enter Name" required />
-          </div>
-          <div className="form-group">
-            <label htmlFor="exampleInputEmail1">Email</label>
-            <input onChange={handleForm} type="text" name='username' className="form-control" aria-describedby="emailHelp" placeholder="Enter email" required />
-            {!alreadyEmail ?
-              <small id="emailHelp" className="form-text ">We'll never share your email with anyone else.</small> : <small id="emailHelp" className="form-text text-muted">Username already taken</small>
+      <div class="login-page">
+        <center> <h3>SIGN IN</h3> </center>
+        <div class="form">
+          <form class="login-form" onSubmit={handleSubmit}>
+            <input onChange={handleForm} name='name' type="text" placeholder="Name" required />
+            <input onChange={handleForm} name='username' type="text" placeholder="Username" required />
+            <input onChange={handleForm} name='password' type="text" placeholder="Password" required />
+            {/* <span>Incorrect Username or Password</span> */}
+            {!failLoginMess ?
+              <small id="emailHelp" className="form-text ">&nbsp;</small> : <small id="emailHelp" className="form-text text-muted">Incorrect Username or Password</small>
             }
-          </div>
-          <div className="form-group">
-            <label htmlFor="exampleInputPassword1">Password</label>
-            <input onChange={handleForm} type="text" name='password' className="form-control" placeholder="Password" required />
-          </div>
-          <button type="submit" className="btn btn-primary">SIGN UP</button>
-        </form>
+            <button type="submit" >login</button>
+            <p class="message">Already registered? <a href="/login">Log In</a></p>
+          </form>
+        </div>
       </div>
     </>
   )
