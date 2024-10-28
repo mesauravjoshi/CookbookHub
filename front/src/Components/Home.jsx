@@ -5,19 +5,9 @@ import './Home.css'
 function Home() {
   const { user, setUser } = useUser();
   const [isBooked, setIsBooked] = useState(false);
-  const [track_postId, setTrack_postId] = useState([]);
   const [recipes, setRecipes] = useState([]); // State to hold fetched recipes
 
   const handleBookMark = async (post_id, saved_by) => {
-
-    // const track_postId = [];
-    // // Check if the post_id is already in the array to avoid duplicates
-    // if (!track_postId.includes(post_id)) {
-    //   // Update the track_postId state with the new post_id
-    //   setTrack_postId(prevTrackPostId => [...prevTrackPostId, post_id]);
-    // }
-    // console.log(track_postId);
-
     const savedPost = {
       post_id: post_id,
       saved_by: saved_by
@@ -71,38 +61,7 @@ function Home() {
         setRecipes(data); // Set the recipes state with fetched data
 
 // fetch bookmark's post id ***************************************************
-        const users_saved = await fetch('http://localhost:3000/bookmarked', {
-          method: 'GET',
-          headers: {
-            'Authorization': `Bearer ${token}`, // Include token in the header
-            'Content-Type': 'application/json'
-          }
-        });
-        if (!users_saved.ok) {
-          throw new Error('Network response was not ok');
-        }
-        const users_saved_data = await users_saved.json();
-        // console.log(data);
-
-        const postIds = users_saved_data.map(item => item.post_id); // object of bookmark_id
-
-        const bookmark_post_api = await fetch('http://localhost:3000/bookmarked_recipies', {
-          method: 'GET',
-          headers: {
-            'Authorization': `Bearer ${token}`, // Include token in the header
-            'Content-Type': 'application/json'
-          }
-        });
-        if (!bookmark_post_api.ok) {
-          throw new Error('Network response was not ok');
-        }
-        const bookmark_post = await bookmark_post_api.json();
-        // console.log(bookmark_post);  // all recipie api 
-
-        const filteredPosts = bookmark_post.filter(post => postIds.includes(post._id));
-        // console.log(filteredPosts);
-        setTrack_postId(filteredPosts);
-
+      
       } catch (error) {
         console.error('Error fetching data:', error);
       }

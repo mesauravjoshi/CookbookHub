@@ -38,10 +38,10 @@ function Signup() {
   return (
     <>
       {/* Form code  sign up*/}
-      <div class="login-page">
+      <div className="login-page">
         <center> <h3>SIGN IN</h3> </center>
-        <div class="form">
-          <form class="login-form" onSubmit={handleSubmit}>
+        <div className="form">
+          <form className="login-form" onSubmit={handleSubmit}>
             <input onChange={handleForm} name='name' type="text" placeholder="Name" required />
             <input onChange={handleForm} name='username' type="text" placeholder="Username" required />
             <input onChange={handleForm} name='password' type="text" placeholder="Password" required />
@@ -50,7 +50,7 @@ function Signup() {
               <small id="emailHelp" className="form-text ">&nbsp;</small> : <small id="emailHelp" className="form-text text-muted">Incorrect Username or Password</small>
             }
             <button type="submit" >login</button>
-            <p class="message">Already registered? <a href="/login">Log In</a></p>
+            <p className="message">Already registered? <a href="/login">Log In</a></p>
           </form>
         </div>
       </div>

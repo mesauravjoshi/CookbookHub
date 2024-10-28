@@ -65,7 +65,7 @@ app.get('/bookmarked', async (req, res) => {
     }
 });
 
-app.get('/bookmarked_recipies', async (req, res) => {
+app.get('/bookmarked_recipies',jwtAuthMiddleware, async (req, res) => {
     try {
         const bookmarked = await Recipe.find(); // Fetch recipes for the specific user
         res.json(bookmarked); // Return the recipes as JSON
