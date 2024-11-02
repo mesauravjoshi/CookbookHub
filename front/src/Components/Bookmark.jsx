@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useUser } from './UserContext';
+import Nav from './Nav/Nav';
 
 function Bookmark() {
   const { user, setUser } = useUser();
   const [recipes, setRecipes] = useState([]);
-  const [isBookmarkEmpty, setIsBookmarkEmpty] = useState(true);
   const [bookmarkedItems, setBookmarkedItems] = useState([]);
 
   console.log(recipes);
@@ -18,7 +18,7 @@ function Bookmark() {
 
     const fetchData = async () => {
       try {
-        const bookmarksResponse = await fetch('http://localhost:3000/bookmarks', {
+        const bookmarksResponse = await fetch('http://localhost:3000/bookmark/bookmarks', {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -30,8 +30,6 @@ function Bookmark() {
         }
         const bookmarksData = await bookmarksResponse.json();
         setRecipes(bookmarksData);
-
-
 
         setBookmarkedItems(bookmarksData.map(item => item.Post_id)); // Populate bookmarked items
         // console.log(recipes);
@@ -60,7 +58,7 @@ function Bookmark() {
     };
     console.log(saving_post);
 
-    const response = await fetch('http://localhost:3000/bookmark_remove', {
+    const response = await fetch('http://localhost:3000/bookmark/bookmark_remove', {
       method: 'POST',
       body: JSON.stringify(saving_post),
       headers: {
@@ -82,6 +80,9 @@ function Bookmark() {
 
   return (
     <div>
+      
+      <Nav/>
+
       {user ? (
         <h1>Welcome back, {user.username}!</h1>
       ) : (
@@ -121,7 +122,6 @@ function Bookmark() {
                     }
                   </svg>
 
-                  <div className="name">{recipe.Post_id}</div>
                   <div className="name">Recipe Name:
                     <p>{recipe.Recipes}</p>
                   </div>

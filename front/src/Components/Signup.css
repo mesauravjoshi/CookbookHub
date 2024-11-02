@@ -1,6 +1,8 @@
 
-h3{
-    color: rgb(255 255 255);
+.login-page h3{
+    color: white;
+    margin: 5px 0;
+    font-weight: 700;
 }
 .text-muted {
     color: #ce254c !important;

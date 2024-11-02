@@ -3,9 +3,10 @@
 .heading{
   margin: 1em .5em;
 }
-h1,h3{
+h1{
   margin: 0 0;
-  color: #26292b;
+  color: #353a4ee0;
+  font-weight: 700;
 }
 
 #container {
@@ -29,6 +30,15 @@ h1,h3{
 }
 
 /* Style div elements that have class equal to tag */
+
+.psot-line{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
 .tag {
   padding: 4px 8px;
   border: 1px solid #e5eaed;

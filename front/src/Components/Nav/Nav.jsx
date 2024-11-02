@@ -26,12 +26,8 @@ function Nav() {
             {
                 user &&
                 <div>
-
                     <Link to={`/profile/${user.username}`}>
                         <button className='nav-but'> My profile </button>
-                    </Link>
-                    <Link to={`/mark/${user.username}`}>
-                        <button className='nav-but'> mark </button>
                     </Link>
                 </div>
             }
