@@ -7,7 +7,7 @@ import Home from './Components/Home';
 import Bookmark from './Components/Bookmark';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
-import Test from './Components/Test';
+import Mark from './Components/Mark';
 
 function App() {
   return (
@@ -20,7 +20,7 @@ function App() {
                   <Route path="/home" element={<Home />} />
                   <Route path="/upload" element={<Upload />} />
                   <Route path="/bookmark" element={<Bookmark />} />
-                  <Route path="/test" element={<Test />} />
+                  <Route path="/mark/:username" element={<Mark />} />
                   <Route path="/profile/:username" element={<Profile />} /> {/* Dynamic route */}
 
               </Routes>

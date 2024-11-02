@@ -39,7 +39,7 @@ router.get('/user_data/:username', jwtAuthMiddleware, async (req, res) => {
         const recipes = await Recipe.find({ 'PostedBy.username': username }); // Fetch recipes for the specific user
         res.json(recipes); // Return the recipes as JSON
     } catch (error) {
-        console.error('Error fetching recipes:', error);
+        console.log('Error fetching recipes:', error);
         res.status(500).json({ message: 'Error fetching recipes' });
     }
 });

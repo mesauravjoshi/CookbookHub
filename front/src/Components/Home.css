@@ -8,26 +8,10 @@ h1,h3{
   color: #26292b;
 }
 
-.navbar {
-  display: flex;
-  padding: .6em 1em; 
-  color: white;
-}
-
-.nav-but button{
-  background-color: green;
-}
-
-
 #container {
   font-size: 1.2em;
-  /* max-width: 300px; */
-
-  /* Center the container in middle on horizontal axis */
   margin: 2em 3em;
-
-  /* Add empty space above the container (20% of the view height) */
-  /* margin-top: 20vh; */
+  margin-top: 60px; /* Ensure this value is enough to clear the navbar */
 }
 
 .card {
@@ -93,6 +77,9 @@ p {
   .card__details {
     /* Add space around the details */
     padding: 16px 8px 8px 8px;
+    svg {
+      cursor: pointer;
+    } 
   }
 
   /* Add style when button is focused or hovered */

@@ -5,7 +5,6 @@ import './Signup.css'
 
 function Signup() {
   const [form, setForm] = useState({})
-  const [failLoginMess, setFailLoginMess] = useState(false)
   const [alreadyEmail, setAlreadyEmail] = useState(false)
   const navigate = useNavigate();
 
@@ -46,10 +45,10 @@ function Signup() {
             <input onChange={handleForm} name='username' type="text" placeholder="Username" required />
             <input onChange={handleForm} name='password' type="text" placeholder="Password" required />
             {/* <span>Incorrect Username or Password</span> */}
-            {!failLoginMess ?
-              <small id="emailHelp" className="form-text ">&nbsp;</small> : <small id="emailHelp" className="form-text text-muted">Incorrect Username or Password</small>
+            {!alreadyEmail ?
+              <small id="emailHelp" className="form-text ">&nbsp;</small> : <small id="emailHelp" className="form-text text-muted">This email is Already registered</small>
             }
-            <button type="submit" >login</button>
+            <button type="submit" >SIGN IN</button>
             <p className="message">Already registered? <a href="/login">Log In</a></p>
           </form>
         </div>

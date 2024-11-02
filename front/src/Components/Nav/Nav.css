@@ -1,0 +1,23 @@
+.heading {
+    margin: 1em .5em;
+}
+
+h1,
+h3 {
+    margin: 0 0;
+    color: #26292b;
+}
+
+.navbar {
+    display: flex;
+    position: sticky;
+    top: 0;
+    padding: .6em 1em;
+    color: white;
+    z-index: 1000;
+    /* Ensure navbar stays above other content */
+}
+
+.nav-but button {
+    background-color: green;
+}
