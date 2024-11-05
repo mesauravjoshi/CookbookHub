@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import './Upload.css';
 import { useUser } from './UserContext'; // Import the context
+import PageNotFound from './PageNotFound/PageNotFound';
+import Nav from './Nav/Nav';
 
 function Upload() {
   const { user, setUser } = useUser(); // Get the user from context 
@@ -8,6 +11,13 @@ function Upload() {
   const [recipesName, setRecipesName] = useState('');
   const [ingredients, setIngredients] = useState('');
   const [instructions, setInstructions] = useState('');
+  const [isLoggedIn, setIsLoggedIn] = useState(true); // New state for login status
+
+  const handleLogOut = () => {
+    localStorage.removeItem('token')
+    localStorage.removeItem('name')
+    setIsLoggedIn(false); // Update login status
+  }
 
   const handleForm = (e) => {
     const { name, value } = e.target;
@@ -24,11 +34,11 @@ function Upload() {
     const token = localStorage.getItem('token');
     const name = localStorage.getItem('name');
     console.log(name);
-    
+
     const userData = JSON.parse(atob(token.split('.')[1])); // Decode token to get user data
     console.log(userData.username);
     console.log(userData.name);
-    
+
     const form = {
       Recipes: recipesName,
       Ingredients: ingredients,
@@ -73,58 +83,35 @@ function Upload() {
 
   return (
     <>
+      <Nav isLoggedIn={isLoggedIn} user={user} />
+
       <div>
-        {user && 
-        <>
-          <h1>Hello, {user.username}</h1>
-          <div id="container">
-            <div className="card">
-              <div className="card__details">
-                <form onSubmit={handleSubmit}>
-                  <div className="name">
-                    Image URL:
-                    <input onChange={handleForm} value={image_URL} type="text" name='Image_URL' placeholder='Image URL' required />
-                  </div>
-                  <div className="name">
-                    Recipes:
-                    <input onChange={handleForm} value={recipesName} type="text" name='Recipes' placeholder='Recipes name' required />
-                  </div>
-                  <div className="name">
-                    <label htmlFor="">Ingredients:</label>
-                    <textarea onChange={handleForm} value={ingredients} name='Ingredients' placeholder='Ingredients' required />
-                  </div>
-                  <div className="name">
-                    Instructions to make Recipes:
-                    <textarea onChange={handleForm} value={instructions} name='Instructions' placeholder='Instructions' required />
-                  </div>
-                  <button>Upload</button>
-                </form>
-              </div>
-            </div>
-          </div>
-        </>
+        {user &&
+          <>
+            <h1>Hello, {user.username}</h1>
+
+                  <form onSubmit={handleSubmit}>
+                    <div className="name">
+                      <input onChange={handleForm} value={image_URL} type="text" name='Image_URL' placeholder='Image URL' required />
+                    </div>
+                    <div className="name">
+                      <input onChange={handleForm} value={recipesName} type="text" name='Recipes' placeholder='Recipes name' required />
+                    </div>
+                    <div className="name">
+                      <textarea onChange={handleForm} value={ingredients} name='Ingredients' placeholder='Ingredients' required />
+                    </div>
+                    <div className="name">
+                      <textarea onChange={handleForm} value={instructions} name='Instructions' placeholder='Instructions' required />
+                    </div>
+                    <button>Upload</button>
+                  </form>
+
+          </>
         }
 
         {/* if not login  */}
-        {!user && 
-          <section class="py-3 py-md-5 min-vh-100 d-flex justify-content-center align-items-center">
-            <div class="container">
-              <div class="row">
-                <div class="col-12">
-                  <div class="text-center">
-                    <h2 class="d-flex justify-content-center align-items-center gap-2 mb-4">
-                      <span class="display-1 fw-bold">4</span>
-                      <i class="bi bi-exclamation-circle-fill text-danger display-4"></i>
-                      <span class="display-1 fw-bold bsb-flip-h">4</span>
-                    </h2>
-                    <h3 class="h2 mb-2">Oops! You're lost.</h3>
-                    <h4>Please login first.. </h4>
-                    <a class="btn bsb-btn-5xl btn-dark rounded-pill px-5 fs-6 m-0" href="/" role="button">Back to Home</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
+        {!user &&
+          <PageNotFound/>
         }
       </div>
     </>

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useUser } from './UserContext';
 import './Home.css'
 import Nav from './Nav/Nav';
+import Footer from './Footer/Footer';
 
 function Home() {
   const { user, setUser } = useUser();
@@ -37,7 +38,7 @@ function Home() {
         }
 
         const recipesData = await recipesResponse.json();
-        console.log(recipesData);
+        // console.log(recipesData);
         setRecipes(recipesData);
 
         // Fetch bookmarks for the user
@@ -53,10 +54,10 @@ function Home() {
         }
 
         if (bookmarksResponse.ok) {
-          console.log('inside if else line 55');
+          // console.log('inside if else line 55');
           const bookmarksData = await bookmarksResponse.json();
           const bookmarkIds = bookmarksData.map(item => item.Post_id); // Assuming Post_id is the identifier
-          console.log(bookmarkIds);
+          // console.log(bookmarkIds);
           setBookmarkedItems(bookmarkIds);
         } else {
           console.log('Failed to fetch bookmarks');
@@ -143,16 +144,21 @@ function Home() {
     // Log the current state of bookmarkedItems after updates
     console.log('Current bookmarkedItems: ', bookmarkedItems);
   };
+  // console.log(isLoggedIn);
+
 
   return (
     <>
-      <Nav />
+      <Nav isLoggedIn={isLoggedIn} user={user} />
 
-      <div>
+      <div className='welcome-title' >
         {isLoggedIn && user ? (
           <center><h1>Welcome, {user.username}</h1></center>
         ) : (
-          <center> <h1>Welcome to CookbookHub </h1><h1> <a href="/login">LogIn</a> to Post your Recipes</h1></center>
+          <center> <h1>Welcome to
+            <a className="brand_name" href="#"> C<span>oo</span>kb<span>oo</span>kHub </a>
+          </h1><h1> <a className='welcome_login' href="/login">LogIn</a> to Post your Recipes</h1>
+          </center>
         )}
       </div>
 
@@ -162,13 +168,13 @@ function Home() {
           {
             recipes.map((recipe, index) => (
               <div className="card" key={index}>
-                <img src={recipe.Image_URL} alt="Lago di Braies" />
+                <div className="car-iamge">
+                  <img src={recipe.Image_URL} alt="Recipe" />
+                </div>
                 <div className="card__details">
-
                   <div className='psot-line'>
                     <span className="tag">Posted By: {recipe.PostedBy.name}</span>
                     <span className="tag">Username: {recipe.PostedBy.username}</span>
-
                     <svg onClick={() => toggleBookmark(recipe)} xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" className="bi bi-bookmark-fill" viewBox="0 0 16 16">
                       {
                         bookmarkedItems.includes(recipe._id) ?
@@ -179,60 +185,27 @@ function Home() {
                     </svg>
                   </div>
 
-
                   <div className="name">Recipes Name:
-                    <p>
-                      {recipe.Recipes}
-                    </p>
+                    <p>{recipe.Recipes}</p>
                   </div>
                   <div className="name">Ingredients:
-                    <p>
-                      {recipe.Ingredients}
-                    </p>
+                    <p>{recipe.Ingredients}</p>
                   </div>
                   <div className="name">Instructions to make Recipes:
                     <p>{recipe.Instructions}</p>
                   </div>
+                  {/* Fixed Read More button */}
+                  <Link to={`/recipe/${recipe._id}`}>
+                  <button  className="read-more">Read more</button>
+                  </Link>
                 </div>
               </div>
             ))
           }
         </div>
       }
-
-      {/* Default Post */}
-      <div id="container">
-        <div className="card" >
-          <img src='https://images.pexels.com/photos/8105093/pexels-photo-8105093.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1' alt="Lago di Braies" />
-          <div className="card__details">
-            <span className="tag">Posted By: CookbookHub</span>
-            <div className="name">Recipes Name:
-              <p>
-                Dalgona coffee
-              </p>
-            </div>
-            <div className="name">Ingredients:
-              <p>
-                2 tablespoons instant coffee <br />
-                2 tablespoons sugar <br />
-                2 tablespoons hot water <br />
-                Milk (dairy or non-dairy, for serving) <br />
-                Ice (optional, for iced coffee) <br />
-              </p>
-            </div>
-            <div className="name">Instructions to make Recipes:
-              <p>
-                Combine Ingredients: In a mixing bowl, combine the instant coffee, sugar, and hot water. <br />
-                Whip the Mixture: Using a hand mixer or a whisk, whip the mixture until it becomes light, fluffy, and forms stiff peaks. This usually takes about 2-5 minutes with a mixer or longer by hand. <br />
-                Prepare the Milk: In a glass, fill it halfway with milk (hot or cold, depending on your preference) and add ice if desired. <br />
-                Top with Coffee Foam: Spoon the whipped coffee mixture on top of the milk. <br />
-                Mix and Enjoy: Stir the whipped coffee into the milk before drinking. Enjoy your creamy, frothy Dalgona coffee! <br />
-              </p>
-            </div>
-            <button>Read more</button>
-          </div>
-        </div>
-      </div>
+      <Footer/>
+     
     </>
   );
 }

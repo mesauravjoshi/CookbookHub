@@ -41,7 +41,7 @@ function Login() {
       console.log(data.user);
       
       setUser(data.user); // Set the user data in context
-      navigate(`/profile/${data.user.username}`);  //Redirect to profile
+      navigate(`/`);  //Redirect to profile
 
     } catch (error) {
       console.error('Login failed', error.message);

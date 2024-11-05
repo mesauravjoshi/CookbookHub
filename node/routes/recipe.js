@@ -44,4 +44,18 @@ router.get('/user_data/:username', jwtAuthMiddleware, async (req, res) => {
     }
 });
 
+// api for recipe id 
+router.get('/recipe/:_id', jwtAuthMiddleware, async (req, res) => {
+    const { _id } = req.params; // Extract username from URL
+    console.log(_id);
+    
+    try {
+        const recipe = await Recipe.find({ '_id': _id }); // Fetch recipes for the specific user
+        res.json(recipe); // Return the recipes as JSON
+    } catch (error) {
+        console.log('Error fetching recipes:', error);
+        res.status(500).json({ message: 'Error fetching recipes' });
+    }
+});
+
 module.exports = router;

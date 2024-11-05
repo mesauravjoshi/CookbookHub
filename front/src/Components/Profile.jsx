@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useUser } from './UserContext';
 import './Home.css'
+import Nav from './Nav/Nav';
+import PageNotFound from './PageNotFound/PageNotFound';
 
 function Profile() {
   const { username } = useParams(); // Get username from URL
@@ -9,12 +11,6 @@ function Profile() {
   const [isLoggedIn, setIsLoggedIn] = useState(true); // New state for login status
   const [recipes, setRecipes] = useState([]);
   const [bookmarkedItems, setBookmarkedItems] = useState([]);
-
-  const handleLogOut = () => {
-    localStorage.removeItem('token')
-    localStorage.removeItem('name')
-    setIsLoggedIn(false); // Update login status
-  }
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -157,27 +153,15 @@ function Profile() {
 
   return (
     <>
-      <nav className="navbar navbar-dark bg-dark">
-        <a className="navbar-brand" href="#">CookbookHub</a>
-        <Link className="nav-link" to='/home'>Home <span className="sr-only">(current)</span></Link>
-        <Link className="nav-link" to='/upload'>Upload Recipe <span className="sr-only">(current)</span></Link>
-
-        <Link className="nav-link" to='/bookmark'>
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-bookmarks" viewBox="0 0 16 16">
-            <path d="M2 4a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v11.5a.5.5 0 0 1-.777.416L7 13.101l-4.223 2.815A.5.5 0 0 1 2 15.5zm2-1a1 1 0 0 0-1 1v10.566l3.723-2.482a.5.5 0 0 1 .554 0L11 14.566V4a1 1 0 0 0-1-1z" />
-            <path d="M4.268 1H12a1 1 0 0 1 1 1v11.768l.223.148A.5.5 0 0 0 14 13.5V2a2 2 0 0 0-2-2H6a2 2 0 0 0-1.732 1" />
-          </svg>
-        </Link>
-        <Link to='/home'>
-          <button onClick={handleLogOut} className='nav-but'>Log Out</button>
-        </Link>
-      </nav>
+      <Nav isLoggedIn={isLoggedIn} user={user} />
 
       <div>
         {isLoggedIn && user ? (
           <h1>Hello {user.username}!</h1>
         ) : (
-          <h1>Please log in to see your profile.</h1>
+          <div>
+            <PageNotFound/>
+          </div>
         )}
       </div>
 
@@ -214,6 +198,7 @@ function Profile() {
                   <div className="name">Instructions to make Recipes:
                     <p>{recipe.Instructions}</p>
                   </div>
+                  <button className="read-more">Read more</button>
                 </div>
               </div>
             ))

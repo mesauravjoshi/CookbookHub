@@ -8,7 +8,26 @@ h3 {
     color: #26292b;
 }
 
+.nav-link {
+    display: block;
+    padding: var(--bs-nav-link-padding-y) var(--bs-nav-link-padding-x);
+    font-size: var(--bs-nav-link-font-size);
+    font-weight: var(--bs-nav-link-font-weight);
+    color: var(--bs-nav-link-color);
+    text-decoration: none;
+    background: 0 0;
+    border: 0;
+    transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out;
+    cursor: pointer;
+}
+
+.nav-link:hover {
+    font-weight: var(--bs-nav-link-font-weight);
+    color: #f0a06b; 
+}
+
 .navbar {
+    box-shadow: 0 0 20px 0 rgb(40 25 16), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
     display: flex;
     position: sticky;
     top: 0;
@@ -18,6 +37,20 @@ h3 {
     /* Ensure navbar stays above other content */
 }
 
+.navbar-brand span {
+    color: #c8c3be;
+    font-weight: 900;
+}
+
+button {
+    padding: 5px 9px;
+    border-radius: 10px;
+    font-weight: 700;
+    color: #212529;
+    background-color: #fff8f2;
+    border: none;
+}
+
 .nav-but button {
-    background-color: green;
+    /* background-color: green; */
 }

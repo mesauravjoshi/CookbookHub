@@ -1,12 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Raleway:wght@500;600&display=swap");
 
-img {
-  border-radius: 12px;
-  height: 173px;
-  object-fit: cover;
-  width: 100%;
-}
-
 .welcome-title {
   margin: 1em .5em;
 }
@@ -23,56 +16,33 @@ img {
   font-weight: 800;
 }
 
-.brand_name {
-  white-space: nowrap;
-  color: #ffffff;
-  text-decoration: none;
-  font-weight: 700;
-}
-
-.brand_name span {
-  color: #c8c3be;
-  font-weight: 900;
-}
-
-.brand_name:hover {
-  color: #ffffff;
-  text-decoration: none;
-  font-weight: 700;
-  cursor: default;
-}
-
 h1 {
   margin: 0 0;
   color: #494e50;
   font-weight: 700;
 }
 
-#container {
+#Recipe-container {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  /* Creates two equal columns */
-  gap: 2em;
-  /* Adds space between the columns */
   font-size: 1.2em;
   margin: 1% 13%;
   margin-top: 60px;
   /* Ensure this value is enough to clear the navbar */
 }
 
-.card {
-  position: relative;
-  /* Set position relative to contain absolutely positioned children */
-  overflow: hidden;
-  /* Ensure content does not overflow */
-  height: 22em;
-  /* Default height */
+.Recipe-card {
   background-color: white;
   border: 1px solid #bacdd8;
   padding: 0.3em 0.3em 2em 0.3em;
   border-radius: 12px;
-  transition: height 0.3s ease;
-  /* Smooth transition for height change */
+  margin-bottom: 3em;
+
+  img {
+    border-radius: 12px;
+    height: 15em;
+    object-fit: cover;
+    width: 100%;
+  }
 
   button {
     position: absolute;
@@ -99,21 +69,16 @@ h1 {
   }
 }
 
-/* Other styles remain unchanged */
-
-/* Style div elements that have class equal to tag */
-
-.psot-line {
+.Recipe-psot-line {
   display: flex;
-  overflow: hidden;
-  position: relative;
+  justify-content: flex-start;
   align-items: center;
   flex-direction: row;
   flex-wrap: wrap;
 }
 
-.tag {
-  padding-right: 0.9em;
+.Recipe-tag {
+  padding: 4px 8px;
   border: 1px solid #e5eaed;
   border-radius: 50px;
   /* font-size: 12px; */
@@ -122,7 +87,7 @@ h1 {
 }
 
 /* Style div elements that have class equal to name */
-.name {
+.Recipe-name {
   /* font-size: 24px; */
   font-weight: 600;
   margin-top: 16px;
@@ -136,17 +101,12 @@ p {
 }
 
 /* Style button element */
-.card {
-
-  .card__details {
-    /* Add space around the details */
+.Recipe-card {
+  .Recipe-card__details {
     padding: 16px 8px 8px 8px;
 
     svg {
-      top: 0;
-      right: 0;
       cursor: pointer;
-      position: absolute;
     }
   }
 }

@@ -6,6 +6,7 @@ function Bookmark() {
   const { user, setUser } = useUser();
   const [recipes, setRecipes] = useState([]);
   const [bookmarkedItems, setBookmarkedItems] = useState([]);
+  const [isLoggedIn, setIsLoggedIn] = useState(true); // New state for login status
 
   console.log(recipes);
 
@@ -80,8 +81,7 @@ function Bookmark() {
 
   return (
     <div>
-      
-      <Nav/>
+      <Nav isLoggedIn={isLoggedIn} user={user} />
 
       {user ? (
         <h1>Welcome back, {user.username}!</h1>

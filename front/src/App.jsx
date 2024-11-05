@@ -5,6 +5,7 @@ import Profile from './Components/Profile';
 import Upload from './Components/Upload';
 import Home from './Components/Home';
 import Bookmark from './Components/Bookmark';
+import Recipe from './Components/Recipe';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
 
@@ -19,6 +20,7 @@ function App() {
                   <Route path="/home" element={<Home />} />
                   <Route path="/upload" element={<Upload />} />
                   <Route path="/bookmark" element={<Bookmark />} />
+                  <Route path="/recipe/:_id" element={<Recipe />} />
                   <Route path="/profile/:username" element={<Profile />} /> {/* Dynamic route */}
               </Routes>
           </div>
