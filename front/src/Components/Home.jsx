@@ -10,6 +10,7 @@ function Home() {
   const [isLoggedIn, setIsLoggedIn] = useState(true); // New state for login status
   const [recipes, setRecipes] = useState([]);
   const [bookmarkedItems, setBookmarkedItems] = useState([]);
+  const [page, setPage] = useState(1);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -21,7 +22,7 @@ function Home() {
     const fetchData = async () => {
       try {
         // Fetch recipes
-        const recipesResponse = await fetch('http://localhost:3000/recipes/data', {
+        const recipesResponse = await fetch(`http://localhost:3000/recipes/data/?_limit=4&_page=${page}`, {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -39,7 +40,7 @@ function Home() {
 
         const recipesData = await recipesResponse.json();
         // console.log(recipesData);
-        setRecipes(recipesData);
+        setRecipes((prev) => [...prev,...recipesData]);
 
         // Fetch bookmarks for the user
         const bookmarksResponse = await fetch('http://localhost:3000/bookmark/bookmarks', {
@@ -68,7 +69,7 @@ function Home() {
     };
 
     fetchData();
-  }, []);
+  }, [page]);
 
   const toggleBookmark = async (item) => {
     if (bookmarkedItems.includes(item._id)) {
@@ -146,6 +147,25 @@ function Home() {
   };
   // console.log(isLoggedIn);
 
+  const handleScroll = async () => {
+    // console.log('scrollHeight', document.documentElement.scrollHeight);
+    // console.log('innerHeight', window.innerHeight);
+    // console.log('scrollTop', document.documentElement.scrollTop);
+    try {
+      if (window.innerHeight + document.documentElement.scrollTop +1 >= document.documentElement.scrollHeight) {
+        setPage((prev) => prev + 1 )
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    window.addEventListener('scroll',handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [])
+  
+
 
   return (
     <>
@@ -153,7 +173,7 @@ function Home() {
 
       <div className='welcome-title' >
         {isLoggedIn && user ? (
-          <center><h1>Welcome, {user.username}</h1></center>
+          <center><h1>Welcome to HOME, {user.username}</h1></center>
         ) : (
           <center> <h1>Welcome to
             <a className="brand_name" href="#"> C<span>oo</span>kb<span>oo</span>kHub </a>
@@ -204,7 +224,7 @@ function Home() {
           }
         </div>
       }
-      <Footer/>
+      {/* <Footer/> */}
      
     </>
   );

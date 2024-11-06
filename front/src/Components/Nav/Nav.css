@@ -8,15 +8,31 @@ h3 {
     color: #26292b;
 }
 
-.nav-link {
-    display: block;
-    padding: var(--bs-nav-link-padding-y) var(--bs-nav-link-padding-x);
-    font-size: var(--bs-nav-link-font-size);
-    font-weight: var(--bs-nav-link-font-weight);
-    color: var(--bs-nav-link-color);
+.center-nav {
+    width: 41em;
+    /* border: 1px solid wheat; */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+
+.nav-but-right .nav-link, 
+.nav-but-right a {
     text-decoration: none;
-    background: 0 0;
-    border: 0;
+}
+
+
+.nav-but-right {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    text-decoration: none;
+}
+
+.nav-link {
+    margin:0.2em 2.3em 0.2em 0em;
+    display: block;
+    color: white;
     transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out;
     cursor: pointer;
 }
@@ -29,11 +45,13 @@ h3 {
 .navbar {
     box-shadow: 0 0 20px 0 rgb(40 25 16), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
     display: flex;
+    flex-wrap: nowrap;
     position: sticky;
     top: 0;
-    padding: .6em 1em;
+    padding: .6em 2.9em;
     color: white;
     z-index: 1000;
+
     /* Ensure navbar stays above other content */
 }
 
@@ -43,6 +61,7 @@ h3 {
 }
 
 button {
+    display: flex;
     padding: 5px 9px;
     border-radius: 10px;
     font-weight: 700;
