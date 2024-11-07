@@ -1,5 +1,68 @@
 @import url("https://fonts.googleapis.com/css2?family=Raleway:wght@500;600&display=swap");
 
+/* Discover and Share Amazing Recipes! ---------------------- */
+.tagline {
+  /* border: 2px solid green; */
+  padding: 0em;
+  display: flex;
+  margin: 1em 2em;
+  /* height: 34em; */
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.tagline-but {
+  bottom: 6em;
+  position: relative;
+  display: flex;
+  /* border: 1px solid; */
+  /* margin: -5em 3em; */
+  flex-wrap: wrap;
+  align-content: center;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.tagline button {
+  background: #f1423a;
+  border-radius: 12px;
+  padding: 0.7em 0.8em;
+  margin: 0 0 1.2em 3em;
+  color: #ffffff;
+  /* display: inline-block; */
+  font: normal bold 27px / 1 "Calibri", sans-serif;
+  /* text-align: center; */
+  font-size: 1.7em;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Delius&family=Hind:wght@300;400;500;600;700&display=swap');
+
+#custom-h1 {
+  display: flex;
+  color: #f1423a;
+  font-size: 7em;
+  font-family: "Delius", cursive;
+  font-weight: 400;
+  font-style: normal;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+#custom-h1 svg {
+  /* height: 1em;
+  width: 1em; */
+  /* margin-bottom: 0em;
+  border: 1px solid; */
+  margin: -0.1em 2.4em;
+}
+
+/* .svg-cook{
+  
+} */
+
+/* END:  Discover and Share Amazing Recipes!  ---------------------- */
+
 img {
   border-radius: 12px;
   height: 173px;
@@ -8,7 +71,7 @@ img {
 }
 
 .welcome-title {
-  margin: 1em .5em;
+  margin: 3.5em .5em;
 }
 
 .welcome_login {
@@ -96,10 +159,6 @@ h1 {
   }
 }
 
-/* Other styles remain unchanged */
-
-/* Style div elements that have class equal to tag */
-
 .psot-line {
   display: flex;
   overflow: hidden;
@@ -118,7 +177,6 @@ h1 {
   color: #788697;
 }
 
-/* Style div elements that have class equal to name */
 .name {
   /* font-size: 24px; */
   font-weight: 600;
@@ -134,9 +192,7 @@ p {
 
 /* Style button element */
 .card {
-
   .card__details {
-    /* Add space around the details */
     padding: 16px 8px 8px 8px;
 
     svg {
@@ -153,6 +209,42 @@ p {
 @media (max-width: 768px) {
   #container {
     grid-template-columns: 1fr;
-    /* Switch to a single column layout */
+  }
+}
+
+@media (max-width: 1206px) {
+  #custom-h1 svg {
+    margin: 0em 1.2em;
+  }
+}
+
+@media (max-width: 918px) {
+  #custom-h1 svg {
+    margin: 0em 0.3em;
+  }
+
+}
+
+@media (max-width: 890px) {
+  .tagline-but {
+    position: static;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: center;
+    align-items: flex-start;
+    justify-content: flex;
+    flex-direction: row;
+  }
+  .tagline{
+    justify-content: center;
+  }
+  .tagline button {
+    margin: 0 0 1.2em 0.3em;
+}
+
+  #custom-h1 {
+    font-size: 5.7em;
+    display: flex;
+    align-items: center;
   }
 }

@@ -7,7 +7,6 @@ import Home from './Components/Home';
 import Bookmark from './Components/Bookmark';
 import RecipeID from './Components/RecipeID';
 import Recipe from './Components/Recipe';
-import InfiniteScrollExample from './Components/InfiniteScrollExample';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
 
@@ -24,7 +23,6 @@ function App() {
                   <Route path="/bookmark" element={<Bookmark />} />
                   <Route path="/recipe" element={<Recipe />} />
                   <Route path="/recipe/:_id" element={<RecipeID />} />
-                  <Route path="/InfiniteScrollExample" element={<InfiniteScrollExample />} />
                   <Route path="/profile/:username" element={<Profile />} /> {/* Dynamic route */}
               </Routes>
           </div>

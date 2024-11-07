@@ -5,11 +5,15 @@ import './Nav.css'
 
 function Nav({ isLoggedIn, user }) {
     const navigate = useNavigate();
+    const [showMenu, setShowMenu] = useState(false)
     const handleLogOut = () => {
         localStorage.removeItem('token')
         localStorage.removeItem('name')
         // setIsLoggedIn(false); // Update login status
         navigate('/')
+    }
+    const handleToggle = () => {
+        setShowMenu(!showMenu)
     }
 
     // console.log('nav.jsx line 8',isLoggedIn);
@@ -22,7 +26,7 @@ function Nav({ isLoggedIn, user }) {
             {
                 user && isLoggedIn ?
                     <>
-                        <div className='center-nav'>
+                        <div className={showMenu ? 'center-nav menu-mobile' : 'center-nav menu-web'}  >
                             <Link className="nav-link" to='/recipe'>Explore Recipe</Link>
                             <div className='search-icon'>
                                 <div className="nav-link">
@@ -54,14 +58,14 @@ function Nav({ isLoggedIn, user }) {
                         </div>
                         <div className='nav-but-right'>
                             <Link to={`/`}>
-                                <button onClick={handleLogOut} className='nav-but'><i class="bi bi-power"></i> Logout</button>
+                                <button onClick={handleLogOut} className='nav-but'><i className="bi bi-power"></i> Logout</button>
                             </Link>
                         </div>
                     </>
 
                     :
                     <>
-                        <div className='center-nav'>
+                        <div className={showMenu ? 'center-nav menu-mobile' : 'center-nav menu-web'} >
                             <Link className="nav-link" to='/home'>Explore Recipe</Link>
                             <div className='search-icon'>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-search"
@@ -73,11 +77,16 @@ function Nav({ isLoggedIn, user }) {
                         </div>
                         <div className='nav-but-right'>
                             <Link to='/login'>
-                                <button className='nav-but'><i class="bi bi-person-circle"></i> Login</button>
+                                <button className='nav-but'><i className="bi bi-person-circle"></i> Login</button>
                             </Link>
                         </div>
                     </>
             }
+            <div className="ham-menu">
+                <button onClick={handleToggle}>
+                    toggle 
+                </button>
+            </div>
         </nav>
     )
 }
