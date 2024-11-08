@@ -51,7 +51,6 @@ h3 {
 
 .navbar {
     /* color: #212529; */
-    box-shadow: 0 0 55px 12px #ee14094f, -11px 20px 83px 17px #f6d7a3;
     display: flex;
     flex-wrap: nowrap;
     position: sticky;
@@ -93,7 +92,6 @@ button {
 /* media query  */
 @media (max-width: 975px) {
     .navbar {
-        box-shadow: 0 0 55px 12px #ee14094f, -11px 20px 83px 17px #f6d7a3;
         display: flex;
         flex-wrap: nowrap;
         position: sticky;
@@ -113,6 +111,10 @@ button {
 
     .ham-menu {
         display: inline-block;
+        cursor: pointer;
+    }
+    .ham-menu:hover {
+        color: #e73d12;
     }
 
     .menu-mobile {

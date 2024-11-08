@@ -30,7 +30,7 @@ router.post('/recipie_data', jwtAuthMiddleware, async (req, res) => {
         return res.status(400).json({ message: 'All fields are required' });
     }
     // Create a new recipe document
-    const recipe = new Recipe({ Image_URL, Recipes, Ingredients, Instructions, PostedBy: PostedBy }); // Save UploadedBy as PostedBy
+    const recipe = new Recipe({Image_URL, Recipes, Ingredients, Instructions, PostedBy: PostedBy }); // Save UploadedBy as PostedBy
     try {
         const savedRecipe = await recipe.save();
         console.log('New recipe created:', savedRecipe);

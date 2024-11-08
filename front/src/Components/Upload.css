@@ -1,10 +1,37 @@
 @import url("https://fonts.googleapis.com/css2?family=Raleway:wght@500;600&display=swap");
 
+.upload {
+  margin: 2em 3em;
+}
+
+.uplaod-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.uplaod-button button {
+  background-color: #f1423a;
+  color: #fee1b2;
+  padding: 0.6em 2em;
+  font-size: 1.2em;
+  border: none;
+  border-radius: 0.6em;
+  cursor: pointer; 
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.uplaod-button button:hover {
+  background-color: #fa5148; /* Slightly darker green on hover */
+  transform: translateY(-2px); /* Button slightly moves up on hover */
+}
+
+
 
 /* Style div elements that have class equal to name */
 .name {
   /* font-size: 24px; */
   font-weight: 600;
-
   margin-top: 16px;
 }

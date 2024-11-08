@@ -1,12 +1,12 @@
 // Community Recipe Sharing Platform: 
-import Login from './Components/Login'
-import Signup from './Components/Signup';
+import Login from './Components/Auth/Login'
+import Signup from './Components/Auth/Signup';
 import Profile from './Components/Profile';
 import Upload from './Components/Upload';
-import Home from './Components/Home';
+import Home from './Components/Home/Home';
 import Bookmark from './Components/Bookmark';
-import RecipeID from './Components/RecipeID';
-import Recipe from './Components/Recipe';
+import RecipeID from './Components/Recipe/RecipeID';
+import Recipe from './Components/Recipe/Recipe';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
 

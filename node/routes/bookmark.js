@@ -48,7 +48,6 @@ router.get('/bookmarks',jwtAuthMiddleware, async (req, res) => {
     try {
         // Assuming you have a way to get the user's bookmarks based on their ID
         const bookmarks = await Bookmark.find(); // Adjust based on your user structure
-        console.log('line 104: ',bookmarks);
         res.json(bookmarks);
     } catch (error) {
         console.error('Error fetching bookmarks:', error);

@@ -1,8 +1,8 @@
 import React,{useState,useEffect} from 'react'
 import { Link, useParams } from 'react-router-dom';
-import Nav from './Nav/Nav'
+import Nav from '../Nav/Nav'
 import './RecipeID.css'
-import { useUser } from './UserContext';
+import { useUser } from '../UserContext';
 
 function RecipeID() {
     const { _id } = useParams(); // Get username from URL

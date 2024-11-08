@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import Form from 'react-bootstrap/Form';
 import './Upload.css';
 import { useUser } from './UserContext'; // Import the context
 import PageNotFound from './PageNotFound/PageNotFound';
@@ -30,14 +30,16 @@ function Upload() {
   };
 
   const handleSubmit = async (e) => {
+    console.log('clicked');
+
     e.preventDefault();
     const token = localStorage.getItem('token');
     const name = localStorage.getItem('name');
     console.log(name);
 
     const userData = JSON.parse(atob(token.split('.')[1])); // Decode token to get user data
-    console.log(userData.username);
-    console.log(userData.name);
+    // console.log(userData.username);
+    // console.log(userData.name);
 
     const form = {
       Recipes: recipesName,
@@ -50,6 +52,8 @@ function Upload() {
         _id: userData.id // Use userData.id or userData._id depending on your token structure
       }
     };
+    console.log(form);
+
 
     const response = await fetch('http://localhost:3000/recipes/recipie_data', {
       method: 'POST',
@@ -85,33 +89,29 @@ function Upload() {
     <>
       <Nav isLoggedIn={isLoggedIn} user={user} />
 
-      <div>
-        {user &&
-          <>
-            <h1>Hello, {user.username}</h1>
-
-                  <form onSubmit={handleSubmit}>
-                    <div className="name">
-                      <input onChange={handleForm} value={image_URL} type="text" name='Image_URL' placeholder='Image URL' required />
-                    </div>
-                    <div className="name">
-                      <input onChange={handleForm} value={recipesName} type="text" name='Recipes' placeholder='Recipes name' required />
-                    </div>
-                    <div className="name">
-                      <textarea onChange={handleForm} value={ingredients} name='Ingredients' placeholder='Ingredients' required />
-                    </div>
-                    <div className="name">
-                      <textarea onChange={handleForm} value={instructions} name='Instructions' placeholder='Instructions' required />
-                    </div>
-                    <button>Upload</button>
-                  </form>
-
-          </>
+      <div className='upload'>
+        {
+          user &&
+          <Form onSubmit={handleSubmit}>
+            <Form.Control size="lg" onChange={handleForm} value={image_URL} type="text" name='Image_URL' placeholder='Image URL' require />
+            <br />
+            <Form.Control size="lg" onChange={handleForm} value={recipesName} type="text" name='Recipes' placeholder='Recipes name' required />
+            <br />
+            <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
+              <Form.Control size="lg" onChange={handleForm} value={ingredients} name='Ingredients' placeholder='Ingredients' required as="textarea" rows={3} />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
+              <Form.Control size="lg" onChange={handleForm} value={instructions} name='Instructions' placeholder='Instructions' as="textarea" rows={3} required />
+            </Form.Group>
+            <div className="uplaod-button">
+              <button>Upload</button>
+            </div>
+          </Form>
         }
 
         {/* if not login  */}
         {!user &&
-          <PageNotFound/>
+          <PageNotFound />
         }
       </div>
     </>

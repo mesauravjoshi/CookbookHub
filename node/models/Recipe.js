@@ -8,6 +8,10 @@ const userSchema = new mongoose.Schema({
 });
 
 const recipeSchema = new mongoose.Schema({
+    Created_At: {
+        type: Date,
+        default: Date.now, // Automatically sets the current date
+    },
     Image_URL: { type: String, required: true },
     Recipes: { type: String, required: true },
     Ingredients: { type: String, required: true },

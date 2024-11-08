@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useUser } from './UserContext';
-import './Home.css'
+// import './Home.css'
 import Nav from './Nav/Nav';
 import PageNotFound from './PageNotFound/PageNotFound';
 
