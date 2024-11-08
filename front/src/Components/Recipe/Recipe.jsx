@@ -5,7 +5,8 @@ import Nav from '../Nav/Nav';
 
 function Recipe() {
   const { user, setUser } = useUser();
-  const [isLoggedIn, setIsLoggedIn] = useState(true); // New state for login status
+  const [isLoggedIn, setIsLoggedIn] = useState(true); 
+  const [showSaveIcon, setShowSaveIcon] = useState(false); 
   const [recipes, setRecipes] = useState([]);
   const [bookmarkedItems, setBookmarkedItems] = useState([]);
 
@@ -14,6 +15,7 @@ function Recipe() {
     if (token) {
       const userData = JSON.parse(atob(token.split('.')[1]));
       setUser(userData);
+      setShowSaveIcon(true)
     }
 
     const fetchData = async () => {
@@ -28,6 +30,7 @@ function Recipe() {
         });
         if (recipesResponse.status === 401) {
           setIsLoggedIn(false);
+          setShowSaveIcon(false)
           return; // Exit the function
         }
 
@@ -159,9 +162,11 @@ function Recipe() {
           </center>
         )}
       </div> */}
-      <h2>Newest</h2>
+      <center>
+         <h2>Newest</h2>
+        </center>
       {
-        isLoggedIn &&
+        // isLoggedIn &&
         <div id="container">
           {
             recipes.map((recipe, index) => (
@@ -174,6 +179,8 @@ function Recipe() {
                     <span className="tag">{(recipe.Created_At).substring(0, 10)}</span>
                     <span className="tag">Posted By: {recipe.PostedBy.name}</span>
                     <span className="tag">Username: {recipe.PostedBy.username}</span>
+                    {
+                      showSaveIcon &&
                     <svg onClick={() => toggleBookmark(recipe)} xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" className="bi bi-bookmark-fill" viewBox="0 0 16 16">
                       {
                         bookmarkedItems.includes(recipe._id) ?
@@ -182,6 +189,7 @@ function Recipe() {
                           <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1z" />
                       }
                     </svg>
+                    }
                   </div>
 
                   <div className="name">Recipes Name:

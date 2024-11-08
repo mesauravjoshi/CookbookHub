@@ -30,7 +30,7 @@ function Nav({ isLoggedIn, user }) {
             {
                 user && isLoggedIn ?
                     <>
-                        <div className={showMenu ? 'center-nav menu-mobile' : 'center-nav menu-web'}  >
+                        <div className={showMenu ? 'center-nav menu-mobile' : 'center-nav'}  >
                             <Link className="nav-link" to='/recipe'>Explore Recipe</Link>
                             <div className='search-icon'>
                                 <div className="nav-link">
@@ -60,7 +60,7 @@ function Nav({ isLoggedIn, user }) {
                                 <i className="bi bi-upload fs-6"></i>
                             </Link>
                         </div>
-                        <div className='nav-but-right'>
+                        <div className={showMenu ? 'nav-but-right menu-mobile-logout' : 'nav-but-right'} >
                             <Link to={`/`}>
                                 <button onClick={handleLogOut} className='nav-but'><i className="bi bi-power"></i> Logout</button>
                             </Link>
@@ -79,7 +79,7 @@ function Nav({ isLoggedIn, user }) {
                                 </svg>
                             </div>
                         </div>
-                        <div className='nav-but-right'>
+                        <div className={showMenu ? 'nav-but-right menu-mobile-logout' : 'nav-but-right'}>
                             <Link to='/login'>
                                 <button className='nav-but'><i className="bi bi-person-circle"></i> Login</button>
                             </Link>

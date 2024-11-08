@@ -81,10 +81,6 @@ button {
     border: none;
 }
 
-.nav-but button {
-    /* background-color: green; */
-}
-
 .ham-menu {
     display: none;
 }
@@ -121,19 +117,27 @@ button {
         background-color: #f6d7a3;
         /* border: 1px solid; */
         display: flex;
-        margin-bottom: 6em;
-        padding: 0em 3em;
+        margin-bottom: 8em;
+        padding: 0em 3em 3.3em 3em;
         position: absolute;
         top: 3em;
         width: 100%;
         right: 0;
         left: 0;
-        height: 18em;
+        height: 19em;
         flex-direction: column;
         align-items: flex-start;
         /* box-shadow: 0 15px 55px 12px #ee14094f, 0 25px 83px 17px #f6d7a3; */
         /* box-shadow: 0 5px 15px -5px rgba(0, 0, 0, 0.5);  */
         /* box-shadow: 0 0 55px 12px #ee14094f, -11px 20px 83px 17px #f6d7a3 */
+    }
+    .menu-mobile-logout{
+        border: 2ox solid;
+        display: flex;
+        position: absolute;
+        bottom: 0;
+        top: 18.6em;
+        align-items: flex-end;
     }
 
 
