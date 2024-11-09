@@ -1,4 +1,3 @@
-// Community Recipe Sharing Platform: 
 import Login from './Components/Auth/Login'
 import Signup from './Components/Auth/Signup';
 import Profile from './Components/Profile';
@@ -29,7 +28,7 @@ function App() {
                   <Route path="/RecipeNewest" element={<RecipeNewest />} />
                   <Route path="/RecipeCat" element={<RecipeCat />} />
                   <Route path="/RecipeCuisine" element={<RecipeCuisine />} />
-                  <Route path="/profile/:username" element={<Profile />} /> {/* Dynamic route */}
+                  <Route path="/profile/:username" element={<Profile />} />
               </Routes>
           </div>
       </Router>
