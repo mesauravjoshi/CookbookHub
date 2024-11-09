@@ -50,5 +50,10 @@ npx nodemon index.js
 2. Register a new user or log in with existing credentials.
 3. Post new recipes and explore recipes shared by others.
 
+## Images
+
+![App Screenshot](https://github.com/mesauravjoshi/CookbookHub/blob/main/front/src/assets/HomePage.jpg)
+
+![App Screenshot](https://github.com/mesauravjoshi/CookbookHub/blob/main/front/src/assets/RecipePage.jpg)
 
 
