@@ -1,0 +1,18 @@
+.cuisine {
+    border-radius: 62px;
+    border: 0.1em solid red;
+    display: flex;
+    margin: 0.3em 2em;
+    padding: 0em 2em;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    flex-direction: row;
+    cursor: pointer;
+    align-items: center;
+    align-content: center;
+}
+
+.cuisine p {
+    margin: 0.61em 0em;
+    color: red;
+}

@@ -25,12 +25,12 @@ router.get('/data',jwtAuthMiddleware, async (req, res) => {
 
 // Upload recipies 
 router.post('/recipie_data', jwtAuthMiddleware, async (req, res) => {
-    const { Image_URL, Recipes, Ingredients, Instructions, PostedBy } = req.body; // Ensure you destructure UploadedBy
-    if (!Image_URL || !Recipes || !Ingredients || !Instructions || !PostedBy) {
+    const { Category ,Cuisine,Image_URL, Recipes, Ingredients, Instructions, PostedBy } = req.body; // Ensure you destructure UploadedBy
+    if (!Category || !Cuisine || !Image_URL || !Recipes || !Ingredients || !Instructions || !PostedBy) {
         return res.status(400).json({ message: 'All fields are required' });
     }
     // Create a new recipe document
-    const recipe = new Recipe({Image_URL, Recipes, Ingredients, Instructions, PostedBy: PostedBy }); // Save UploadedBy as PostedBy
+    const recipe = new Recipe({ Category ,Cuisine ,Image_URL, Recipes, Ingredients, Instructions, PostedBy: PostedBy }); // Save UploadedBy as PostedBy
     try {
         const savedRecipe = await recipe.save();
         console.log('New recipe created:', savedRecipe);
@@ -54,7 +54,7 @@ router.get('/user_data/:username', jwtAuthMiddleware, async (req, res) => {
 });
 
 // api for recipe id 
-router.get('/recipe/:_id', jwtAuthMiddleware, async (req, res) => {
+router.get('/recipe/:_id', async (req, res) => {
     const { _id } = req.params; // Extract username from URL
     console.log(_id);
 

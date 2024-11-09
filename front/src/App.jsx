@@ -7,6 +7,9 @@ import Home from './Components/Home/Home';
 import Bookmark from './Components/Bookmark';
 import RecipeID from './Components/Recipe/RecipeID';
 import Recipe from './Components/Recipe/Recipe';
+import RecipeNewest from './Components/Recipe/RecipeNewest';
+import RecipeCat from './Components/Recipe/RecipeCat';
+import RecipeCuisine from './Components/Recipe/RecipeCuisine';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
 
@@ -23,6 +26,9 @@ function App() {
                   <Route path="/bookmark" element={<Bookmark />} />
                   <Route path="/recipe" element={<Recipe />} />
                   <Route path="/recipe/:_id" element={<RecipeID />} />
+                  <Route path="/RecipeNewest" element={<RecipeNewest />} />
+                  <Route path="/RecipeCat" element={<RecipeCat />} />
+                  <Route path="/RecipeCuisine" element={<RecipeCuisine />} />
                   <Route path="/profile/:username" element={<Profile />} /> {/* Dynamic route */}
               </Routes>
           </div>

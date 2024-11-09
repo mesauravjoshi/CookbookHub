@@ -20,8 +20,12 @@ function Hero() {
             </div>
 
             <div className='tagline-but'>
-              <button>Browse Recipes </button>
+              <Link to='/recipe'>
+              <button >Browse Recipes </button>
+              </Link>
+              <Link to='/login'>
               <button>Sign Up</button>
+              </Link>
             </div>
           </div>
 

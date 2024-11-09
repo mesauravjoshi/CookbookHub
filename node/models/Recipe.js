@@ -12,6 +12,8 @@ const recipeSchema = new mongoose.Schema({
         type: Date,
         default: Date.now, // Automatically sets the current date
     },
+    Category : { type: String, required: true },
+    Cuisine :{ type: String, required: true },
     Image_URL: { type: String, required: true },
     Recipes: { type: String, required: true },
     Ingredients: { type: String, required: true },

@@ -11,26 +11,28 @@ function Upload() {
   const [recipesName, setRecipesName] = useState('');
   const [ingredients, setIngredients] = useState('');
   const [instructions, setInstructions] = useState('');
-  const [isLoggedIn, setIsLoggedIn] = useState(true); // New state for login status
+  const [category, setCategory] = useState('');
+  const [cuisine, setCuisine] = useState('');
 
-  const handleLogOut = () => {
-    localStorage.removeItem('token')
-    localStorage.removeItem('name')
-    setIsLoggedIn(false); // Update login status
-  }
+  const [isLoggedIn, setIsLoggedIn] = useState(true); // New state for login status
 
   const handleForm = (e) => {
     const { name, value } = e.target;
+    console.log(e.target.value);
+
     if (name === 'Recipes') {
       setRecipesName(value);
     }
     if (name === 'Ingredients') setIngredients(value);
     if (name === 'Instructions') setInstructions(value);
     if (name === 'Image_URL') setImage_URL(value);
+    if (name === 'Category') setCategory(value);
+    if (name === 'Cuisine') setCuisine(value);
   };
 
   const handleSubmit = async (e) => {
     console.log('clicked');
+    console.log(category);
 
     e.preventDefault();
     const token = localStorage.getItem('token');
@@ -46,6 +48,8 @@ function Upload() {
       Ingredients: ingredients,
       Instructions: instructions,
       Image_URL: image_URL,
+      Category: category,
+      Cuisine: cuisine,
       PostedBy: {
         name: name,
         username: userData.username,
@@ -53,7 +57,6 @@ function Upload() {
       }
     };
     console.log(form);
-
 
     const response = await fetch('http://localhost:3000/recipes/recipie_data', {
       method: 'POST',
@@ -68,10 +71,12 @@ function Upload() {
       alert('Recipe saved');
       const data = await response.json();
       console.log(data);
+      setImage_URL('');
       setRecipesName('');
       setIngredients('');
       setInstructions('');
-      setImage_URL('');
+      setCategory('');
+      setCuisine('');
     } else {
       console.log('Error saving recipe');
     }
@@ -103,10 +108,37 @@ function Upload() {
             <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
               <Form.Control size="lg" onChange={handleForm} value={instructions} name='Instructions' placeholder='Instructions' as="textarea" rows={3} required />
             </Form.Group>
+
+            <Form.Select size="lg" aria-label="Category Select" value={category} name="Category" onChange={handleForm} >
+              <option disabled value="">
+                Category (e.g., Dessert, Main Course)
+              </option>
+              <option value="Beverage">Beverage</option>
+              <option value="Breakfast">Breakfast</option>
+              <option value="Dessert">Dessert</option>
+              <option value="Dinner">Dinner</option>
+              <option value="Lunch">Lunch</option>
+              <option value="Main Course">Main Course</option>
+              <option value="Salad">Salad</option>
+              <option value="Snack">Snack</option>
+            </Form.Select>
+
+            <br />
+            <Form.Select size="lg" onChange={handleForm} value={cuisine} type="text" name='Cuisine' require  >
+              <option disabled value="">
+                Cuisine (e.g., Indian, Italian)'
+              </option>
+              <option value="American">American</option>
+              <option value="Asian">Asian</option>
+              <option value="Indian">Indian</option>
+              <option value="Italian">Italian</option>
+              <option value="Korean">Korean</option>
+            </Form.Select>
             <div className="uplaod-button">
               <button>Upload</button>
             </div>
           </Form>
+
         }
 
         {/* if not login  */}
