@@ -22,7 +22,7 @@ function Recipe() {
     <>
       <Nav isLoggedIn={isLoggedIn} user={user} />
       <center>
-        <h2>....................Recipies....................</h2>
+        <h2>.................... Recipes ....................</h2>
       </center>
       <RecipeNewest/>
       <RecipeCat/>
