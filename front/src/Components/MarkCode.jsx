@@ -10,6 +10,8 @@ function MarkCode({ recipe, bookmarkedItems, setBookmarkedItems }) {
       console.log('Removing bookmark for:', updatedBookmarkedItems);
 
       const saving_post = {
+        Category: item.Category,
+        Cuisine: item.Cuisine,
         Post_id: item._id,
         Image_URL: item.Image_URL,
         Recipes: item.Recipes,
@@ -44,6 +46,8 @@ function MarkCode({ recipe, bookmarkedItems, setBookmarkedItems }) {
       setBookmarkedItems(updatedBookmarkedItems);
 
       const saving_post = {
+        Category: item.Category,
+        Cuisine: item.Cuisine,
         Post_id: item._id,
         Image_URL: item.Image_URL,
         Recipes: item.Recipes,
@@ -79,7 +83,10 @@ function MarkCode({ recipe, bookmarkedItems, setBookmarkedItems }) {
   return (
     <svg onClick={() => toggleBookmark(recipe)} xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" className="bi bi-bookmark-fill" viewBox="0 0 16 16">
       {bookmarkedItems.includes(recipe._id) ? (
-        <path d="M2 2v13.5a.5.5 0 0 0 .74.439L8 13.069l5.26 2.87A.5.5 0 0 0 14 15.5V2a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2" />
+        <>
+        {/* <h1>dasdf</h1> */}
+         <path d="M2 2v13.5a.5.5 0 0 0 .74.439L8 13.069l5.26 2.87A.5.5 0 0 0 14 15.5V2a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2" />
+        </>
       ) : (
         <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1z" />
       )}

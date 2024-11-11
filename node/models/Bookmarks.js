@@ -8,6 +8,8 @@ const userSchema = new mongoose.Schema({
 });
 
 const bookmarkSchema = new mongoose.Schema({
+    Category : { type: String, required: true },
+    Cuisine :{ type: String, required: true },
     Post_id: { type: String,  unique: true , required: true },
     Image_URL: { type: String, required: true },
     Recipes: { type: String, required: true },

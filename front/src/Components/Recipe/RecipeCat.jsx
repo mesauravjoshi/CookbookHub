@@ -60,6 +60,8 @@ function RecipeCat() {
 
         if (bookmarksResponse.ok) {
           const bookmarksData = await bookmarksResponse.json();
+          console.log(bookmarksData);
+          
           const bookmarkIds = bookmarksData.map(item => item.Post_id); // Assuming Post_id is the identifier
           // console.log(bookmarkIds);
           setBookmarkedItems(bookmarkIds);

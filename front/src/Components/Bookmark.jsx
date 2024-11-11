@@ -46,6 +46,8 @@ function Bookmark() {
     console.log(item.Post_id);
 
     const saving_post = {
+      Category: item.Category,
+      Cuisine: item.Cuisine,
       Post_id: item.Post_id,
       Image_URL: item.Image_URL,
       Recipes: item.Recipes,
@@ -76,7 +78,6 @@ function Bookmark() {
     } else {
       console.log('Failed to remove bookmark');
     }
-    // console.log(recipes);
   };
 
   return (
@@ -112,6 +113,7 @@ function Bookmark() {
                 <div className="card__details">
                   <div className='psot-line'>
 
+                    <span className="tag">CATE: {recipe.Category}</span>
                     <span className="tag">Posted By: {recipe.PostedBy.name}</span>
                     <span className="tag">Username: {recipe.PostedBy.username}</span>
 

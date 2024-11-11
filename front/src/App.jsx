@@ -1,6 +1,7 @@
-import Login from './Components/Auth/Login'
+import Login from './Components/Auth/Login';
 import Signup from './Components/Auth/Signup';
-import Profile from './Components/Profile';
+import MyRecipes from './Components/Profile/MyRecipes/MyRecipes';
+import EditRecipe from './Components/Profile/EditRecipe/EditRecipe';
 import Upload from './Components/Upload';
 import Home from './Components/Home/Home';
 import Bookmark from './Components/Bookmark';
@@ -28,11 +29,16 @@ function App() {
                   <Route path="/RecipeNewest" element={<RecipeNewest />} />
                   <Route path="/RecipeCat" element={<RecipeCat />} />
                   <Route path="/RecipeCuisine" element={<RecipeCuisine />} />
-                  <Route path="/profile/:username" element={<Profile />} />
+                  
+                  {/* Profile Route with Nested MyRecipes */}
+                  <Route path="/profile" >
+                      <Route path="MyRecipes" element={<MyRecipes />} />
+                      <Route path="EditRecipe/:_id" element={<EditRecipe />} />
+                  </Route>
               </Routes>
           </div>
       </Router>
   );
 }
 
-export default App
+export default App;
