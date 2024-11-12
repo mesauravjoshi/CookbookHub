@@ -8,7 +8,7 @@ import RecipeCuisine from './RecipeCuisine';
 
 function Recipe() {
   const { user, setUser } = useUser();
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(true); // state for login status
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -24,7 +24,7 @@ function Recipe() {
       <center>
         <h2>.................... Recipes ....................</h2>
       </center>
-      <RecipeNewest/>
+      <RecipeNewest isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}/>
       <RecipeCat/>
       <RecipeCuisine/>
     </>

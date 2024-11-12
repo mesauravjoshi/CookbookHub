@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams,useNavigate } from 'react-router-dom';
 import { useUser } from '../../UserContext';
 import Nav from '../../Nav/Nav';
 import MarkCode from '../../MarkCode';
@@ -7,7 +7,8 @@ import PageNotFound from '../../PageNotFound/PageNotFound';
 import './MyRecipes.css'
 
 function MyRecipes() {
-  const { _id } = useParams(); // Get username from URL
+  // const { _id } = useParams(); // Get username from URL
+  const navigate = useNavigate(); // Use useNavigate hook
   const [showSaveIcon, setShowSaveIcon] = useState(false);
   const { user, } = useUser();
   const [isLoggedIn, setIsLoggedIn] = useState(true); // New state for login status
@@ -85,6 +86,7 @@ function MyRecipes() {
   }, [user]);
 
   const handleDelete = async (_id) => {
+    alert('Want to delete post ?')
     try {
       const token = localStorage.getItem('token');
       const response = await fetch(`http://localhost:3000/recipes/edit_recipe/${_id}`, {
@@ -103,9 +105,7 @@ function MyRecipes() {
       console.log(result.message); // Log success message
       console.log('post deleted');
       
-
-      // Redirect to home or recipes list after deletion
-      // navigate('/recipes'); // You can change this to whatever route you want
+      navigate('/profile/MyRecipes'); // You can change this to whatever route you want
     } catch (error) {
       console.error('Error deleting recipe:', error);
     }
@@ -141,10 +141,9 @@ function MyRecipes() {
                     <div className='edit'> edit </div>
 
                     <div>
-                    <i onClick={handleDelete(recipe._id)} className="bi bi-trash3" style={{ color: 'red' }}></i>
+                    <i onClick={() => handleDelete(recipe._id)} className="bi bi-trash3" style={{ color: 'red' }}></i>
                     </div>
 
-                    
                     </Link>
                     {
                       showSaveIcon &&

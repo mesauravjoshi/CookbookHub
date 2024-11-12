@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useUser } from '../UserContext';
 import MarkCode from '../MarkCode';
 
-function RecipeNewest() {
+function RecipeNewest({ isLoggedIn, setIsLoggedIn }) {
   const { user, setUser } = useUser();
   const [showSaveIcon, setShowSaveIcon] = useState(false); 
   const [recipes, setRecipes] = useState([]);
@@ -29,6 +29,7 @@ function RecipeNewest() {
         });
         if (recipesResponse.status === 401) {
           setShowSaveIcon(false)
+          setIsLoggedIn(false);
           return; // Exit the function
         }
 
@@ -64,6 +65,7 @@ function RecipeNewest() {
         }
       } catch (error) {
         console.error('Error fetching data:', error);
+        setIsLoggedIn(false);
       }
     };
 

@@ -18,7 +18,7 @@ function Upload() {
 
   const handleForm = (e) => {
     const { name, value } = e.target;
-    console.log(e.target.value);
+    // console.log(e.target.value);
 
     if (name === 'Recipes') {
       setRecipesName(value);
@@ -31,8 +31,8 @@ function Upload() {
   };
 
   const handleSubmit = async (e) => {
-    console.log('clicked');
-    console.log(category);
+    // console.log('clicked');
+    // console.log(category);
 
     e.preventDefault();
     const token = localStorage.getItem('token');
@@ -132,7 +132,8 @@ function Upload() {
               <option value="Asian">Asian</option>
               <option value="Indian">Indian</option>
               <option value="Italian">Italian</option>
-              <option value="Korean">Korean</option>
+              <option value="Korean">Korean</option> 
+              <option value="Western">Western</option> 
             </Form.Select>
             <div className="uplaod-button">
               <button>Upload</button>

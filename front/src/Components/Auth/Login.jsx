@@ -52,7 +52,6 @@ function Login() {
   return (
     <>
       {/* Form code  sign up*/}
-
       <div className="login-page">
         <center> <h3>Log In</h3> </center>
         <div className="form">
