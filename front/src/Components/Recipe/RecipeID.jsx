@@ -70,6 +70,8 @@ function RecipeID() {
                       }
                     </svg> */}
                   </div>
+                  <span className="tag">Category: {recipe.Category}</span>
+                    <span className="tag">Cuisine: {recipe.Cuisine}</span>
 
                   <div className="Recipe-name">Recipes Name:
                     <p>{recipe.Recipes}</p>

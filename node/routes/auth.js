@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../models/User'); // Use lowercase 'user'
-const { generateToken } = require('../jwt');
+const { generateToken, jwtAuthMiddleware } = require('../jwt');
 
 router.post('/signup', async (req, res) => {
-    const { name,username, password } = req.body;
+    const { name, username, password } = req.body;
 
     // Check if user already exists
     const existingUser = await User.findOne({ username });
@@ -19,7 +19,7 @@ router.post('/signup', async (req, res) => {
     user.password = password;
 
     const doc = await user.save();
-    console.log('New user created:', doc);  
+    console.log('New user created:', doc);
 
     const payload = {
         id: doc.id,
@@ -30,8 +30,8 @@ router.post('/signup', async (req, res) => {
     console.log(JSON.stringify((payload)));
     const token = generateToken(payload);
     console.log('Token is : ', token);
-    
-    res.json({doc: doc, token : token});
+
+    res.json({ doc: doc, token: token });
 })
 
 router.post('/login', async (req, res) => {
@@ -46,7 +46,7 @@ router.post('/login', async (req, res) => {
         return res.status(400).json({ message: 'Incorrect username' });
     }
     // Compare passwords
-    const isPasswordMatch = user.comparePassword(password)
+    const isPasswordMatch = await user.comparePassword(password)
     if (!isPasswordMatch) {
         return res.status(400).json({ message: 'Incorrect password' });
     }
@@ -58,7 +58,48 @@ router.post('/login', async (req, res) => {
     }
     const token = generateToken(payload)
     // Successful login
-    res.json({ message: 'Login successful', user ,token });
+    res.json({ message: 'Login successful', user, token });
+})
+
+router.post('/changePassword', jwtAuthMiddleware, async (req, res) => {
+    const { oldPassword, newPassword } = req.body;
+    console.log(oldPassword, newPassword);
+
+    try {
+        // Find the user by ID from the token payload
+        const user = await User.findById(req.user.id); // req.user is set by verifyToken middleware
+        console.log(user);
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        // Compare the old password with the stored password
+        const isOldPasswordCorrect = await user.comparePassword(oldPassword);
+        console.log('isOldPasswordCorrect: ', isOldPasswordCorrect);
+        if (!isOldPasswordCorrect) {
+            return res.status(400).json({ message: 'Old password is incorrect' });
+        }
+
+        // Hash the new password
+        // const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+
+        // Update the user's password
+        // user.password = hashedNewPassword;
+        // await user.save();
+
+        // Set the new password (this will trigger the pre-save hook)
+        user.password = newPassword;
+
+        // Save the user document
+        await user.save();
+        // Return success message
+        res.json({ message: 'Password changed successfully' });
+
+    } catch (error) {
+        console.error('Error changing password:', error);
+        res.status(500).json({ message: 'An error occurred while changing the password' });
+    }
 })
 
 module.exports = router;

@@ -31,14 +31,14 @@ function Login() {
         throw new Error(response.statusText);
       }
       const data = await response.json();
-      console.log('Login successful', data);
+      // console.log('Login successful', data);
 
       // Store token in local storage
       localStorage.setItem('token', data.token);
       localStorage.setItem('name', data.user.name);
-      console.log(data.token);
-      console.log(data.user.name);
-      console.log(data.user);
+      // console.log(data.token);
+      // console.log(data.user.name);
+      // console.log(data.user);
       
       setUser(data.user); // Set the user data in context
       navigate(`/`);  //Redirect to profile

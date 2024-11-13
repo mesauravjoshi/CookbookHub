@@ -5,10 +5,11 @@
   padding: 8% 0 0;
   margin: auto;
 }
+
 .form {
   position: relative;
   z-index: 1;
-  background: #FFFFFF;
+  background: #fee1b2;
   max-width: 360px;
   margin: 0 auto 100px;
   padding: 45px;
@@ -30,7 +31,7 @@
   font-family: "Roboto", sans-serif;
   text-transform: uppercase;
   outline: 0;
-  background: #f3a860;
+  background: #f1423a;
   width: 100%;
   border: 0;
   padding: 15px;
@@ -52,7 +53,7 @@
   font-size: 12px;
 }
 .form .message a {
-  color: #f18d29;
+  color: #f1423a;
   text-decoration: none;
 }
 .form .register-form {

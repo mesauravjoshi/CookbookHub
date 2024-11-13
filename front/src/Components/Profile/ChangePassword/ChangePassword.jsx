@@ -44,6 +44,8 @@ function ChangePassword() {
         setOldPassword('')
         setNewPassword('')
         setConfirmPassword('')
+        console.log('last line');
+        
     };
 
     return (

@@ -6,6 +6,7 @@ import './Signup.css'
 function Signup() {
   const [form, setForm] = useState({})
   const [alreadyEmail, setAlreadyEmail] = useState(false)
+  const [isPasswordValid, setIsPasswordValid] = useState(false)
   const navigate = useNavigate();
 
   const handleForm = (e) => {
@@ -15,8 +16,20 @@ function Signup() {
     })
   }
 
+  const validatePassword = (password) => {
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    return passwordRegex.test(password);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!validatePassword(form.password)) {
+      // Log the error message to the console
+      console.log('Password must be at least 8 characters long, include an uppercase letter, a lowercase letter, a number, and a special character.');
+      setIsPasswordValid(true)
+      return;
+    }
+
     const response = await fetch('http://localhost:3000/auth/signup', {
       method: 'POST',
       body: JSON.stringify(form),
@@ -26,7 +39,7 @@ function Signup() {
     })
     const data = await response.json();
     if (response.ok) {
-      console.log(data);
+      // console.log(data);
       navigate('/login'); // Redirect to /login
     } else {
       // console.error('line 30: ',data.message); // Log the error message
@@ -45,8 +58,11 @@ function Signup() {
             <input onChange={handleForm} name='username' type="text" placeholder="Username" required />
             <input onChange={handleForm} name='password' type="text" placeholder="Password" required />
             {/* <span>Incorrect Username or Password</span> */}
-            {!alreadyEmail ?
-              <small id="emailHelp" className="form-text ">&nbsp;</small> : <small id="emailHelp" className="form-text text-muted">This email is Already registered</small>
+            {alreadyEmail &&
+              <small id="emailHelp" className="form-text text-muted">This email is Already registered</small>
+            }
+            {!isPasswordValid ?
+              null : <small id="emailHelp" className="form-text text-muted"> Password must be at least 8 characters long, include an uppercase letter, a lowercase letter, a number, and a special character </small>
             }
             <button type="submit" >SIGN IN</button>
             <p className="message">Already registered? <a href="/login">Log In</a></p>

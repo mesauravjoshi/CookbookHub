@@ -98,7 +98,7 @@ function Upload() {
         {
           user &&
           <Form onSubmit={handleSubmit}>
-            <Form.Control size="lg" onChange={handleForm} value={image_URL} type="text" name='Image_URL' placeholder='Image URL' require />
+            <Form.Control size="lg" onChange={handleForm} value={image_URL} type="text" name='Image_URL' placeholder='Image URL' required />
             <br />
             <Form.Control size="lg" onChange={handleForm} value={recipesName} type="text" name='Recipes' placeholder='Recipes name' required />
             <br />
@@ -124,7 +124,7 @@ function Upload() {
             </Form.Select>
 
             <br />
-            <Form.Select size="lg" onChange={handleForm} value={cuisine} type="text" name='Cuisine' require  >
+            <Form.Select size="lg" onChange={handleForm} value={cuisine} type="text" name='Cuisine' required  >
               <option disabled value="">
                 Cuisine (e.g., Indian, Italian)'
               </option>
@@ -135,7 +135,7 @@ function Upload() {
               <option value="Korean">Korean</option> 
               <option value="Western">Western</option> 
             </Form.Select>
-            <div className="uplaod-button">
+            <div className="upload-button">
               <button>Upload</button>
             </div>
           </Form>

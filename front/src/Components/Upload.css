@@ -2,16 +2,17 @@
 
 .upload {
   margin: 2em 3em;
+  padding-bottom: 2em;
 }
 
-.uplaod-button {
+.upload-button {
   display: flex;
   justify-content: center;
   align-items: center;
   margin-top: 20px;
 }
 
-.uplaod-button button {
+.upload-button button {
   background-color: #f1423a;
   color: #fee1b2;
   padding: 0.6em 2em;
@@ -22,7 +23,7 @@
   transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
-.uplaod-button button:hover {
+.upload-button button:hover {
   background-color: #fa5148; /* Slightly darker green on hover */
   transform: translateY(-2px); /* Button slightly moves up on hover */
 }

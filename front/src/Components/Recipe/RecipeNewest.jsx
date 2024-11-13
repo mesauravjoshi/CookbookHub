@@ -40,7 +40,7 @@ function RecipeNewest({ isLoggedIn, setIsLoggedIn }) {
         const recipesData = await recipesResponse.json();
         // console.log( typeof recipesData[0].Created_At);
         recipesData.sort((a, b) => new Date(b.Created_At) - new Date(a.Created_At));
-        console.log(recipesData);
+        // console.log(recipesData);
         setRecipes(recipesData);
         // Fetch bookmarks for the user
         const bookmarksResponse = await fetch('http://localhost:3000/bookmark/bookmarks', {
