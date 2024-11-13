@@ -3,6 +3,17 @@ const router = express.Router();
 const User = require('../models/User'); // Use lowercase 'user'
 const { generateToken, jwtAuthMiddleware } = require('../jwt');
 
+// Check if username exists
+router.get('/usernameExists/:username', async (req, res) => {
+    const { username } = req.params;
+    const existingUser = await User.findOne({ username });
+    if (existingUser) {
+      return res.json({ exists: true });
+    }
+    return res.json({ exists: false });
+  });
+  
+
 router.post('/signup', async (req, res) => {
     const { name, username, password } = req.body;
 
