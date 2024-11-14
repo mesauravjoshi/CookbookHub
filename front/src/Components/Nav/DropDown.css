@@ -1,0 +1,15 @@
+
+.drop-down{
+    margin-left: -1em;
+    padding: 0em 0em 1em 1em;
+    top: 3.em;
+    /* border: 1px solid; */
+    position: absolute;
+    background-color: #f6d7a3;
+    /* background-color: #26292b; */
+
+    .nav-link{
+        /* background: #000; */
+        margin: 0.5em 0em 0.5em 0px;
+    }
+}

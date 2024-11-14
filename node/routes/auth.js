@@ -113,4 +113,33 @@ router.post('/changePassword', jwtAuthMiddleware, async (req, res) => {
     }
 })
 
+router.post('/checkPasswordCorrect', jwtAuthMiddleware, async (req, res) => {
+    const { oldPassword } = req.body;
+    console.log('inside checkPasswordCorrect',oldPassword);
+
+    try {
+        // Find the user by ID from the token payload
+        const user = await User.findById(req.user.id); // req.user is set by verifyToken middleware
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        // Compare the old password with the stored password
+        const isOldPasswordCorrect = await user.comparePassword(oldPassword);
+        console.log('isOldPasswordCorrect: ', isOldPasswordCorrect);
+        if (!isOldPasswordCorrect) {
+            // return res.status(400).json({ message: 'Old password is incorrect' });
+            return res.status(400).json({ message: false });
+        }
+
+        // res.json({ message: 'Old Password is correct ' });
+        res.json({ message: true });
+
+    } catch (error) {
+        console.error('Error changing password:', error);
+        res.status(500).json({ message: 'An error occurred while changing the password' });
+    }
+})
+
 module.exports = router;

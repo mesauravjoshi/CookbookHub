@@ -118,3 +118,11 @@ p {
     /* Switch to a single column layout */
   }
 }
+
+@media (max-width: 1000px) {
+  #container {
+    background: #000;
+    /* grid-template-columns: 1fr; */
+    /* Switch to a single column layout */
+  }
+}

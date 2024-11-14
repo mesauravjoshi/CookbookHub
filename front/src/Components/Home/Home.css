@@ -112,7 +112,7 @@ h1 {
 
 #container {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   column-gap: 2em;
   font-size: 1.2em;
   font-size: 1em;
@@ -247,5 +247,14 @@ p {
     font-size: 5.7em;
     display: flex;
     align-items: center;
+  }
+}
+
+@media (max-width: 983px) {
+  #container {
+    /* background: #000; */
+  grid-template-columns: repeat(2, 1fr);
+    /* grid-template-columns: 2fr; */
+    /* Switch to a single column layout */
   }
 }

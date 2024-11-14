@@ -44,10 +44,15 @@ h3 {
     cursor: pointer;
 }
 
+
+
 .nav-link:hover {
     font-weight: var(--bs-nav-link-font-weight);
     color: #f00909;
 }
+/* .My-profile:hover{
+    background-color: pink;
+} */
 
 .navbar {
     /* color: #212529; */
@@ -86,7 +91,7 @@ button {
 }
 
 /* media query  */
-@media (max-width: 975px) {
+@media (max-width: 935px) {
     .navbar {
         display: flex;
         flex-wrap: nowrap;
