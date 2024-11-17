@@ -67,7 +67,7 @@ function Home() {
     fetchData();
   }, [page]);
 
-  const handleScroll = async () => {
+  const handleScroll =  () => {
     if (window.innerHeight + document.documentElement.scrollTop + 1 >= document.documentElement.scrollHeight) {
       setPage((prev) => prev + 1);
     }

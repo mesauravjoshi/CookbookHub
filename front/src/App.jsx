@@ -1,6 +1,7 @@
 import Login from './Components/Auth/Login';
 import Signup from './Components/Auth/Signup';
 import MyRecipes from './Components/Profile/MyRecipes/MyRecipes';
+import EditProfile from './Components/Profile/EditProfile/EditProfile';
 import EditRecipe from './Components/Profile/EditRecipe/EditRecipe';
 import ChangePassword from './Components/Profile/ChangePassword/ChangePassword';
 import Upload from './Components/Upload';
@@ -34,6 +35,7 @@ function App() {
                   {/* Profile Route with Nested MyRecipes */}
                   <Route path="/profile" >
                       <Route path="MyRecipes" element={<MyRecipes />} />
+                      <Route path="EditProfile" element={<EditProfile />} />
                       <Route path="EditRecipe/:_id" element={<EditRecipe />} />
                       <Route path="ChangePassword" element={<ChangePassword />} />
                   </Route>

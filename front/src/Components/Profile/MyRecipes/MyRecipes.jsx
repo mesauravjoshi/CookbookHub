@@ -154,7 +154,7 @@ function MyRecipes() {
                       />
                     }
                   </div>
-                  <div className="name">Recipes Name:
+                  <div className="name">Recipes Nameeeeeeeeeee:
                     <p>
                       {recipe.Recipes}
                     </p>

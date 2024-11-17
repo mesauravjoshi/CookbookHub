@@ -60,7 +60,7 @@ h3 {
     flex-wrap: nowrap;
     position: sticky;
     top: 0;
-    padding: .6em 2.9em;
+    padding: .6em 2.9em 0.3em 2.9em;
     z-index: 1000;
     color: black;
 
