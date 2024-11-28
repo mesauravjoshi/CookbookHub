@@ -67,8 +67,8 @@ h3 {
     /* Ensure navbar stays above other content */
 }
 
-.navbar-brand {
-    color: black;
+.navbar-dark .navbar-brand {
+    color: #494e50;
 }
 
 .navbar-brand span {

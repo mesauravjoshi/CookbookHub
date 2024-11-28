@@ -4,13 +4,14 @@ const Bookmark = require('../models/Bookmarks'); // Use lowercase 'user'
 const { generateToken, jwtAuthMiddleware } = require('../jwt');
 
 router.post('/bookmark_add', async (req, res) => {
-    const { Category, Cuisine , Post_id, Image_URL, Recipes, Ingredients, Instructions, PostedBy} = req.body;
+    const {BookmarkBy, Category, Cuisine , Post_id, Image_URL, Recipes, Ingredients, Instructions, PostedBy} = req.body;
     // Check if 
-    if (!Category || !Cuisine || !Post_id || !Image_URL || !Recipes || !Ingredients || !Instructions || !PostedBy) {
+    if ( !BookmarkBy || !Category || !Cuisine || !Post_id || !Image_URL || !Recipes || !Ingredients || !Instructions || !PostedBy) {
         return res.status(400).json({ message: 'All fields are required' });
     }
 
     let bookmark = new Bookmark();
+    bookmark.BookmarkBy = BookmarkBy;
     bookmark.Category = Category;
     bookmark.Cuisine= Cuisine;
     bookmark.Post_id = Post_id;
@@ -26,16 +27,20 @@ router.post('/bookmark_add', async (req, res) => {
 });
 
 router.post('/bookmark_remove', async (req, res) => {
-    const { Category, Cuisine ,Post_id, Image_URL, Recipes, Ingredients, Instructions, PostedBy} = req.body;
+    const {BookmarkBy, Category, Cuisine ,Post_id, Image_URL, Recipes, Ingredients, Instructions, PostedBy} = req.body;
 
-    console.log(PostedBy);
-    if (!Category || !Cuisine || !Post_id || !Image_URL || !Recipes || !Ingredients || !Instructions || !PostedBy) {
+    console.log(BookmarkBy);
+    if (!BookmarkBy || !Category || !Cuisine || !Post_id || !Image_URL || !Recipes || !Ingredients || !Instructions || !PostedBy) {
+        console.log('inside if ');
+        
         return res.status(400).json({ message: 'All fields are required' });
     }
 
     try {
-        const result = await Bookmark.deleteOne({Category, Cuisine , Post_id, Image_URL, Recipes, Ingredients, Instructions, PostedBy }); // Use the correct field name
+        
+        const result = await Bookmark.deleteOne({BookmarkBy, Category, Cuisine , Post_id, Image_URL, Recipes, Ingredients, Instructions, PostedBy }); // Use the correct field name
         if (result.deletedCount === 0) {
+            console.log('inside try');
             return res.status(404).json({ message: 'Bookmark not found' });
         }
         console.log('Bookmark removed for Post_id:', Post_id);

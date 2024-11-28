@@ -46,6 +46,10 @@ function Bookmark() {
     console.log(item.Post_id);
 
     const saving_post = {
+      BookmarkBy: {
+        username: user.username,
+        _id: user.id
+      },
       Category: item.Category,
       Cuisine: item.Cuisine,
       Post_id: item.Post_id,

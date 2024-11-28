@@ -1,15 +1,25 @@
 // BookmarkIcon.jsx
 import React, { useState } from 'react';
+import { useUser } from './UserContext';
 
 function MarkCode({ recipe, bookmarkedItems, setBookmarkedItems }) {
+  const { user, } = useUser();
+  console.log(user.id);
+  
   const toggleBookmark = async (item) => {
     const token = localStorage.getItem('token');
     if (bookmarkedItems.includes(item._id)) {
+      console.log('hai bhai present');
+      
       // Remove from bookmarks
       const updatedBookmarkedItems = bookmarkedItems.filter((id) => id !== item._id);
       console.log('Removing bookmark for:', updatedBookmarkedItems);
 
       const saving_post = {
+        BookmarkBy: {
+          username: user.username,
+          _id: user.id
+        },
         Category: item.Category,
         Cuisine: item.Cuisine,
         Post_id: item._id,
@@ -23,6 +33,7 @@ function MarkCode({ recipe, bookmarkedItems, setBookmarkedItems }) {
           _id: item.PostedBy._id
         }
       };
+      console.log(saving_post.BookmarkBy);
 
       const response = await fetch('http://localhost:3000/bookmark/bookmark_remove', {
         method: 'POST',
@@ -46,6 +57,10 @@ function MarkCode({ recipe, bookmarkedItems, setBookmarkedItems }) {
       setBookmarkedItems(updatedBookmarkedItems);
 
       const saving_post = {
+        BookmarkBy: {
+          username: user.username,
+          _id: user.id
+        },
         Category: item.Category,
         Cuisine: item.Cuisine,
         Post_id: item._id,
@@ -59,6 +74,7 @@ function MarkCode({ recipe, bookmarkedItems, setBookmarkedItems }) {
           _id: item.PostedBy._id
         }
       };
+      // console.log(saving_post);
 
       const response = await fetch('http://localhost:3000/bookmark/bookmark_add', {
         method: 'POST',

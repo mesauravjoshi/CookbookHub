@@ -26,7 +26,7 @@ function MyRecipes() {
           } else{
               setShowSaveIcon(true)
           }
-          console.log(user.username);
+          console.log(user);
 
           const response = await fetch(`http://localhost:3000/recipes/user_data/${user.username}`, {
             method: 'GET',
@@ -38,7 +38,7 @@ function MyRecipes() {
           if (response.status === 401) {
             // Token is expired or invalid
             setShowSaveIcon(false)
-            setIsLoggedIn(false);
+            // setIsLoggedIn(false);
             // setUser(null); // Clear user context
             return; // Exit the function
           }
@@ -47,7 +47,7 @@ function MyRecipes() {
           }
           const data = await response.json();
           setRecipes(data);
-          console.log(recipes);
+          // console.log(recipes);
 
           // Fetch bookmarks for the user-----------------------------------------
           const bookmarksResponse = await fetch('http://localhost:3000/bookmark/bookmarks', {
@@ -74,7 +74,7 @@ function MyRecipes() {
 
         } catch (error) {
           console.error('Error fetching data:', error);
-          setIsLoggedIn(false); // Set logged out state on error
+          // setIsLoggedIn(false); // Set logged out state on error
         }
       }
       fetchData();
@@ -102,7 +102,7 @@ function MyRecipes() {
       }
 
       const result = await response.json();
-      console.log(result.message); // Log success message
+      // console.log(result.message); // Log success message
       console.log('post deleted');
       
       navigate('/profile/MyRecipes'); // You can change this to whatever route you want

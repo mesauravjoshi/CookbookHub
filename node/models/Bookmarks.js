@@ -7,7 +7,13 @@ const userSchema = new mongoose.Schema({
     _id: String,
 });
 
+const BookmarkBy = new mongoose.Schema({
+    username: String,
+    _id: String,
+});
+
 const bookmarkSchema = new mongoose.Schema({
+    BookmarkBy: { type: BookmarkBy, required: true },
     Category : { type: String, required: true },
     Cuisine :{ type: String, required: true },
     Post_id: { type: String,  unique: true , required: true },
