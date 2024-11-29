@@ -10,7 +10,7 @@ function MyRecipes() {
   // const { _id } = useParams(); // Get username from URL
   const navigate = useNavigate(); // Use useNavigate hook
   const [showSaveIcon, setShowSaveIcon] = useState(false);
-  const { user, } = useUser();
+  const { user } = useUser();
   const [isLoggedIn, setIsLoggedIn] = useState(true); // New state for login status
   const [recipes, setRecipes] = useState([]);
   const [bookmarkedItems, setBookmarkedItems] = useState([]);
@@ -80,7 +80,6 @@ function MyRecipes() {
     } else {
       console.log('User is not logged in or no username found');
     }
-    // old 
 
   }, [user]);
 

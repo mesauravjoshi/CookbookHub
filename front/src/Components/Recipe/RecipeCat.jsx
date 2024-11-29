@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useUser } from '../UserContext';
 import './RecipeCat.css'
-import MarkCode from '../MarkCode'; 
+import MarkCode from '../MarkCode';
 
 function RecipeCat() {
-  const { user, setUser } = useUser();
+  const { user } = useUser();
   const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [showSaveIcon, setShowSaveIcon] = useState(false);
   const [recipes, setRecipes] = useState([]);
@@ -17,64 +17,60 @@ function RecipeCat() {
   }
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      const userData = JSON.parse(atob(token.split('.')[1]));
-      setUser(userData);
-      setShowSaveIcon(true)
+    if (user && user.username) {
+      const token = localStorage.getItem('token');
+      const fetchData = async () => {
+        try {
+          // Fetch recipes
+          const recipesResponse = await fetch(`http://localhost:3000/recipe_category/recipe_category?category=${category}`, {
+            method: 'GET',
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
+          });
+          if (recipesResponse.status === 401) {
+            setIsLoggedIn(false);
+            setShowSaveIcon(false)
+            return; // Exit the function
+          }
+
+          if (!recipesResponse.ok) {
+            throw new Error('Network response was not ok');
+          }
+
+          const recipesData = await recipesResponse.json();
+          setRecipes(recipesData);
+          // Fetch bookmarks for the user
+          const bookmarksResponse = await fetch(`http://localhost:3000/bookmark/bookmarks/${user.username}`, {
+            method: 'GET',
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
+          });
+          if (!bookmarksResponse.ok) {
+            throw new Error('Network response was not ok');
+          }
+
+          if (bookmarksResponse.ok) {
+            const bookmarksData = await bookmarksResponse.json();
+            // console.log(bookmarksData);
+
+            const bookmarkIds = bookmarksData.map(item => item.Post_id); // Assuming Post_id is the identifier
+            // console.log(bookmarkIds);
+            setBookmarkedItems(bookmarkIds);
+          } else {
+            console.log('Failed to fetch bookmarks');
+          }
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
+      };
+
+      fetchData();
     }
-
-    const fetchData = async () => {
-      try {
-        // Fetch recipes
-        const recipesResponse = await fetch(`http://localhost:3000/recipe_category/recipe_category?category=${category}`, {
-          method: 'GET',
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          },
-        });
-        if (recipesResponse.status === 401) {
-          setIsLoggedIn(false);
-          setShowSaveIcon(false)
-          return; // Exit the function
-        }
-
-        if (!recipesResponse.ok) {
-          throw new Error('Network response was not ok');
-        }
-
-        const recipesData = await recipesResponse.json();
-        setRecipes(recipesData);
-        // Fetch bookmarks for the user
-        const bookmarksResponse = await fetch(`http://localhost:3000/bookmark/bookmarks/${user.username}`, {
-          method: 'GET',
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          },
-        });
-        if (!bookmarksResponse.ok) {
-          throw new Error('Network response was not ok');
-        }
-
-        if (bookmarksResponse.ok) {
-          const bookmarksData = await bookmarksResponse.json();
-          // console.log(bookmarksData);
-          
-          const bookmarkIds = bookmarksData.map(item => item.Post_id); // Assuming Post_id is the identifier
-          // console.log(bookmarkIds);
-          setBookmarkedItems(bookmarkIds);
-        } else {
-          console.log('Failed to fetch bookmarks');
-        }
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-
-    fetchData();
-  }, [category]);
+  }, [category,user]);
 
   return (
     <>
@@ -82,7 +78,7 @@ function RecipeCat() {
       <center>
         <h2>CATEGORY</h2>
       </center>
-      
+
       <div className="category-wrapper">
         <div className="category">
           <p onClick={handleCategory}>Dinner</p>
@@ -115,9 +111,9 @@ function RecipeCat() {
                     {
                       showSaveIcon &&
                       <MarkCode
-                      recipe={recipe}
-                      bookmarkedItems={bookmarkedItems}
-                      setBookmarkedItems={setBookmarkedItems} // Pass the state setter here
+                        recipe={recipe}
+                        bookmarkedItems={bookmarkedItems}
+                        setBookmarkedItems={setBookmarkedItems} // Pass the state setter here
                       />
                     }
                   </div>

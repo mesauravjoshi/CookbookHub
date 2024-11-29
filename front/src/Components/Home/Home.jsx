@@ -5,7 +5,7 @@ import { useUser } from '../UserContext';
 import './Home.css';
 import Nav from '../Nav/Nav';
 import Hero from './Hero';
-import MarkCode from '../MarkCode'; 
+import MarkCode from '../MarkCode';
 
 function Home() {
   const { user, setUser } = useUser();
@@ -15,59 +15,60 @@ function Home() {
   const [page, setPage] = useState(1);
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      const userData = JSON.parse(atob(token.split('.')[1]));
-      setUser(userData);
-    }
+    if (user && user.username) {
+      const fetchData = async () => {
+        const token = localStorage.getItem('token');
+        if (token) {
+          const userData = JSON.parse(atob(token.split('.')[1]));
+          setUser(userData);
+        }
+        try {
+          const recipesResponse = await fetch(`http://localhost:3000/recipes/data/?_limit=4&_page=${page}`, {
+            method: 'GET',
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
+          });
 
-    const fetchData = async () => {
-      try {
-        const recipesResponse = await fetch(`http://localhost:3000/recipes/data/?_limit=4&_page=${page}`, {
-          method: 'GET',
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          },
-        });
+          if (recipesResponse.status === 401) {
+            setIsLoggedIn(false);
+            return;
+          }
 
-        if (recipesResponse.status === 401) {
+          if (!recipesResponse.ok) {
+            throw new Error('Network response was not ok');
+          }
+
+          const recipesData = await recipesResponse.json();
+          setRecipes((prev) => [...prev, ...recipesData]);
+
+          const bookmarksResponse = await fetch(`http://localhost:3000/bookmark/bookmarks/${user.username}`, {
+            method: 'GET',
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
+          });
+
+          if (!bookmarksResponse.ok) {
+            throw new Error('Network response was not ok');
+          }
+
+          const bookmarksData = await bookmarksResponse.json();
+          const bookmarkIds = bookmarksData.map((item) => item.Post_id);
+          setBookmarkedItems(bookmarkIds);
+        } catch (error) {
+          console.error('Error fetching data:', error);
           setIsLoggedIn(false);
-          return;
         }
+      };
 
-        if (!recipesResponse.ok) {
-          throw new Error('Network response was not ok');
-        }
-
-        const recipesData = await recipesResponse.json();
-        setRecipes((prev) => [...prev, ...recipesData]);
-
-        const bookmarksResponse = await fetch(`http://localhost:3000/bookmark/bookmarks/${user.username}`, {
-          method: 'GET',
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          },
-        });
-
-        if (!bookmarksResponse.ok) {
-          throw new Error('Network response was not ok');
-        }
-
-        const bookmarksData = await bookmarksResponse.json();
-        const bookmarkIds = bookmarksData.map((item) => item.Post_id);
-        setBookmarkedItems(bookmarkIds);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-        setIsLoggedIn(false);
-      }
-    };
-
-    fetchData();
+      fetchData();
+    }
   }, [page]);
 
-  const handleScroll =  () => {
+  const handleScroll = () => {
     if (window.innerHeight + document.documentElement.scrollTop + 1 >= document.documentElement.scrollHeight) {
       setPage((prev) => prev + 1);
     }

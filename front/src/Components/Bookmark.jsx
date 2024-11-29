@@ -3,42 +3,39 @@ import { useUser } from './UserContext';
 import Nav from './Nav/Nav';
 
 function Bookmark() {
-  const { user, setUser } = useUser();
+  const { user, } = useUser();
   const [recipes, setRecipes] = useState([]);
   const [bookmarkedItems, setBookmarkedItems] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(true); // New state for login status
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      const userData = JSON.parse(atob(token.split('.')[1]));
-      setUser(userData);
-    }
+    if (user && user.username) {
+      const fetchData = async () => {
+        try {
+          const token = localStorage.getItem('token');  // Get the token from localStorage
+          const bookmarksResponse = await fetch(`http://localhost:3000/bookmark/bookmarks/${user.username}`, {
+            method: 'GET',
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
+          });
+          if (!bookmarksResponse.ok) {
+            throw new Error('Network response was not ok');
+          }
+          const bookmarksData = await bookmarksResponse.json();
+          setRecipes(bookmarksData);
 
-    const fetchData = async () => {
-      try {
-        const bookmarksResponse = await fetch(`http://localhost:3000/bookmark/bookmarks/${user.username}`, {
-          method: 'GET',
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          },
-        });
-        if (!bookmarksResponse.ok) {
-          throw new Error('Network response was not ok');
+          setBookmarkedItems(bookmarksData.map(item => item.Post_id)); // Populate bookmarked items
+          // console.log(recipes);
+        } catch (error) {
+          console.error('Error fetching data:', error);
         }
-        const bookmarksData = await bookmarksResponse.json();
-        setRecipes(bookmarksData);
+      };
 
-        setBookmarkedItems(bookmarksData.map(item => item.Post_id)); // Populate bookmarked items
-        // console.log(recipes);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-
-    fetchData();
-  }, [setUser]);
+      fetchData();
+    }
+  }, [user]);
 
   const toggleBookmark = async (item) => {
     // console.log(item.Post_id);

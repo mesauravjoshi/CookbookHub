@@ -5,7 +5,7 @@ import './RecipeCuisine.css'
 import MarkCode from '../MarkCode';
 
 function RecipeCuisine() {
-  const { user, setUser } = useUser();
+  const { user} = useUser();
   const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [showSaveIcon, setShowSaveIcon] = useState(false);
   const [recipes, setRecipes] = useState([]);
@@ -19,63 +19,60 @@ function RecipeCuisine() {
   }
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      const userData = JSON.parse(atob(token.split('.')[1]));
-      setUser(userData);
-      setShowSaveIcon(true)
+    if (user && user.username) {
+      const token = localStorage.getItem('token');
+
+      const fetchData = async () => {
+        try {
+          // Fetch recipes
+          const recipesResponse = await fetch(`http://localhost:3000/recipe_category/recipe_cuisine?cuisine=${cuisine}`, {
+            method: 'GET',
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
+          });
+          if (recipesResponse.status === 401) {
+            setIsLoggedIn(false);
+            return; // Exit the function
+          }
+
+          if (!recipesResponse.ok) {
+            throw new Error('Network response was not ok');
+          }
+
+          const recipesData = await recipesResponse.json();
+          // console.log(recipesData);
+          setRecipes(recipesData);
+          // Fetch bookmarks for the user
+          const bookmarksResponse = await fetch(`http://localhost:3000/bookmark/bookmarks/${user.username}`, {
+            method: 'GET',
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
+          });
+          if (!bookmarksResponse.ok) {
+            throw new Error('Network response was not ok');
+          }
+
+          if (bookmarksResponse.ok) {
+            // console.log('inside if else line 55');
+            const bookmarksData = await bookmarksResponse.json();
+            const bookmarkIds = bookmarksData.map(item => item.Post_id); // Assuming Post_id is the identifier
+            // console.log(bookmarkIds);
+            setBookmarkedItems(bookmarkIds);
+          } else {
+            console.log('Failed to fetch bookmarks');
+          }
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
+      };
+
+      fetchData();
     }
-
-    const fetchData = async () => {
-      try {
-        // Fetch recipes
-        const recipesResponse = await fetch(`http://localhost:3000/recipe_category/recipe_cuisine?cuisine=${cuisine}`, {
-          method: 'GET',
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          },
-        });
-        if (recipesResponse.status === 401) {
-          setIsLoggedIn(false);
-          return; // Exit the function
-        }
-
-        if (!recipesResponse.ok) {
-          throw new Error('Network response was not ok');
-        }
-
-        const recipesData = await recipesResponse.json();
-        // console.log(recipesData);
-        setRecipes(recipesData);
-        // Fetch bookmarks for the user
-        const bookmarksResponse = await fetch(`http://localhost:3000/bookmark/bookmarks/${user.username}`, {
-          method: 'GET',
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          },
-        });
-        if (!bookmarksResponse.ok) {
-          throw new Error('Network response was not ok');
-        }
-
-        if (bookmarksResponse.ok) {
-          // console.log('inside if else line 55');
-          const bookmarksData = await bookmarksResponse.json();
-          const bookmarkIds = bookmarksData.map(item => item.Post_id); // Assuming Post_id is the identifier
-          // console.log(bookmarkIds);
-          setBookmarkedItems(bookmarkIds);
-        } else {
-          console.log('Failed to fetch bookmarks');
-        }
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-
-    fetchData();
-  }, [cuisine]);
+  }, [cuisine,user]);
 
 
   return (
