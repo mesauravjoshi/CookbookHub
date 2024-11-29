@@ -8,8 +8,6 @@ function Bookmark() {
   const [bookmarkedItems, setBookmarkedItems] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(true); // New state for login status
 
-  console.log(recipes);
-
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
@@ -19,7 +17,7 @@ function Bookmark() {
 
     const fetchData = async () => {
       try {
-        const bookmarksResponse = await fetch('http://localhost:3000/bookmark/bookmarks', {
+        const bookmarksResponse = await fetch(`http://localhost:3000/bookmark/bookmarks/${user.username}`, {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -43,7 +41,7 @@ function Bookmark() {
   }, [setUser]);
 
   const toggleBookmark = async (item) => {
-    console.log(item.Post_id);
+    // console.log(item.Post_id);
 
     const saving_post = {
       BookmarkBy: {
@@ -63,7 +61,6 @@ function Bookmark() {
         _id: item.PostedBy._id
       }
     };
-    console.log(saving_post);
 
     const response = await fetch('http://localhost:3000/bookmark/bookmark_remove', {
       method: 'POST',
@@ -76,7 +73,7 @@ function Bookmark() {
 
     if (response.ok) {
       const data = await response.json();
-      console.log('Removed bookmark:', data);
+      // console.log('Removed bookmark:', data);
       // Refresh the page after successful removal
       window.location.reload();
     } else {

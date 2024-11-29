@@ -43,7 +43,7 @@ function Home() {
         const recipesData = await recipesResponse.json();
         setRecipes((prev) => [...prev, ...recipesData]);
 
-        const bookmarksResponse = await fetch('http://localhost:3000/bookmark/bookmarks', {
+        const bookmarksResponse = await fetch(`http://localhost:3000/bookmark/bookmarks/${user.username}`, {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`,

@@ -4,16 +4,15 @@ import { useUser } from './UserContext';
 
 function MarkCode({ recipe, bookmarkedItems, setBookmarkedItems }) {
   const { user, } = useUser();
-  console.log(user.id);
+  // console.log(user.id);
   
   const toggleBookmark = async (item) => {
     const token = localStorage.getItem('token');
     if (bookmarkedItems.includes(item._id)) {
-      console.log('hai bhai present');
       
       // Remove from bookmarks
       const updatedBookmarkedItems = bookmarkedItems.filter((id) => id !== item._id);
-      console.log('Removing bookmark for:', updatedBookmarkedItems);
+      // console.log('Removing bookmark for:', updatedBookmarkedItems);
 
       const saving_post = {
         BookmarkBy: {
@@ -33,7 +32,6 @@ function MarkCode({ recipe, bookmarkedItems, setBookmarkedItems }) {
           _id: item.PostedBy._id
         }
       };
-      console.log(saving_post.BookmarkBy);
 
       const response = await fetch('http://localhost:3000/bookmark/bookmark_remove', {
         method: 'POST',
@@ -46,7 +44,7 @@ function MarkCode({ recipe, bookmarkedItems, setBookmarkedItems }) {
 
       if (response.ok) {
         const data = await response.json();
-        console.log('Removed bookmark:', data);
+        // console.log('Removed bookmark:', data);
         setBookmarkedItems(updatedBookmarkedItems);
       } else {
         console.log('Failed to remove bookmark');
@@ -87,13 +85,13 @@ function MarkCode({ recipe, bookmarkedItems, setBookmarkedItems }) {
 
       if (response.ok) {
         const data = await response.json();
-        console.log('Added bookmark:', data);
+        // console.log('Added bookmark:', data);
       } else {
         console.log('Failed to add bookmark');
         setBookmarkedItems(bookmarkedItems); // Revert state on failure
       }
     }
-    console.log('Current bookmarkedItems: ', bookmarkedItems);
+    // console.log('Current bookmarkedItems: ', bookmarkedItems);
   };
 
   return (

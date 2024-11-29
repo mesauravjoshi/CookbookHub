@@ -43,7 +43,7 @@ function RecipeNewest({ isLoggedIn, setIsLoggedIn }) {
         // console.log(recipesData);
         setRecipes(recipesData);
         // Fetch bookmarks for the user
-        const bookmarksResponse = await fetch('http://localhost:3000/bookmark/bookmarks', {
+        const bookmarksResponse = await fetch(`http://localhost:3000/bookmark/bookmarks/${user.username}`, {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -86,7 +86,7 @@ function RecipeNewest({ isLoggedIn, setIsLoggedIn }) {
                 </div>
                 <div className="card__details">
                   <div className='psot-line'>
-                    <span className="tag">{(recipe.Created_At).substring(0, 10)}</span>
+                    {/* <span className="tag">{(recipe.Created_At).substring(0, 10)}</span> */}
                     <span className="tag">Posted By: {recipe.PostedBy.name}</span>
                     <span className="tag">Username: {recipe.PostedBy.username}</span>
                     {

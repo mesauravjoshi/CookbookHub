@@ -49,7 +49,7 @@ function RecipeCuisine() {
         // console.log(recipesData);
         setRecipes(recipesData);
         // Fetch bookmarks for the user
-        const bookmarksResponse = await fetch('http://localhost:3000/bookmark/bookmarks', {
+        const bookmarksResponse = await fetch(`http://localhost:3000/bookmark/bookmarks/${user.username}`, {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`,

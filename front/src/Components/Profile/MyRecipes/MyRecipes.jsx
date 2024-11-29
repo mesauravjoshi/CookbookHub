@@ -26,7 +26,7 @@ function MyRecipes() {
           } else{
               setShowSaveIcon(true)
           }
-          console.log(user);
+          // console.log(user);
 
           const response = await fetch(`http://localhost:3000/recipes/user_data/${user.username}`, {
             method: 'GET',
@@ -38,7 +38,7 @@ function MyRecipes() {
           if (response.status === 401) {
             // Token is expired or invalid
             setShowSaveIcon(false)
-            // setIsLoggedIn(false);
+            setIsLoggedIn(false);
             // setUser(null); // Clear user context
             return; // Exit the function
           }
@@ -50,7 +50,7 @@ function MyRecipes() {
           // console.log(recipes);
 
           // Fetch bookmarks for the user-----------------------------------------
-          const bookmarksResponse = await fetch('http://localhost:3000/bookmark/bookmarks', {
+          const bookmarksResponse = await fetch(`http://localhost:3000/bookmark/bookmarks/${user.username}`, {
             method: 'GET',
             headers: {
               'Authorization': `Bearer ${token}`,
@@ -62,10 +62,9 @@ function MyRecipes() {
           }
 
           if (bookmarksResponse.ok) {
-            console.log('inside if else line 55');
             const bookmarksData = await bookmarksResponse.json();
             const bookmarkIds = bookmarksData.map(item => item.Post_id); // Assuming Post_id is the identifier
-            console.log(bookmarkIds);
+            console.log(bookmarksData);
             setBookmarkedItems(bookmarkIds);
           } else {
             console.log('Failed to fetch bookmarks');
@@ -74,7 +73,7 @@ function MyRecipes() {
 
         } catch (error) {
           console.error('Error fetching data:', error);
-          // setIsLoggedIn(false); // Set logged out state on error
+          setIsLoggedIn(false); // Set logged out state on error
         }
       }
       fetchData();
@@ -154,7 +153,7 @@ function MyRecipes() {
                       />
                     }
                   </div>
-                  <div className="name">Recipes Nameeeeeeeeeee:
+                  <div className="name">Recipes :
                     <p>
                       {recipe.Recipes}
                     </p>
