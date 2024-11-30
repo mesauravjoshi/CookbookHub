@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useParams,useNavigate } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import { useUser } from '../../UserContext';
 import Nav from '../../Nav/Nav';
 import MarkCode from '../../MarkCode';
@@ -14,6 +14,28 @@ function MyRecipes() {
   const [isLoggedIn, setIsLoggedIn] = useState(true); // New state for login status
   const [recipes, setRecipes] = useState([]);
   const [bookmarkedItems, setBookmarkedItems] = useState([]);
+  const [activeRecipeId, setActiveRecipeId] = useState(null); // State to track which recipe's dropdown is active
+
+  const handleThreeDot = (recipeId) => {
+    setActiveRecipeId(prevId => (prevId === recipeId ? null : recipeId));
+  }
+
+  // Close the dropdown if the user clicks outside of the card
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      const isClickInside = event.target.closest('.bi-three-dots-vertical');
+      if (!isClickInside) {
+        setActiveRecipeId(null); // Close the dropdown if clicked outside
+      }
+    };
+
+    document.addEventListener('click', handleClickOutside);
+
+    // Clean up the event listener when the component unmounts
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, []);
 
   useEffect(() => {
     // new 
@@ -23,8 +45,8 @@ function MyRecipes() {
           const token = localStorage.getItem('token');  // Get the token from localStorage
           if (!token) {
             throw new Error('No authentication token found');
-          } else{
-              setShowSaveIcon(true)
+          } else {
+            setShowSaveIcon(true)
           }
           // console.log(user);
 
@@ -46,8 +68,12 @@ function MyRecipes() {
             throw new Error('Network response was not ok');
           }
           const data = await response.json();
-          setRecipes(data);
-          // console.log(recipes);
+          const updatedData = data.map(item => ({
+            ...item, // spread the existing properties of the object
+            isThreeDotShow: false // add isShow: true
+          }));
+          console.log(updatedData);
+          setRecipes(updatedData);
 
           // Fetch bookmarks for the user-----------------------------------------
           const bookmarksResponse = await fetch(`http://localhost:3000/bookmark/bookmarks/${user.username}`, {
@@ -102,7 +128,7 @@ function MyRecipes() {
       const result = await response.json();
       // console.log(result.message); // Log success message
       console.log('post deleted');
-      
+
       navigate('/profile/MyRecipes'); // You can change this to whatever route you want
     } catch (error) {
       console.error('Error deleting recipe:', error);
@@ -127,22 +153,35 @@ function MyRecipes() {
         <div id="container">
           {
             recipes.map((recipe, index) => (
-              <div className="card" key={index}>
+              <div className="my-card" key={index}>
+
+                <div onClick={() => handleThreeDot(recipe._id)} className='three-dot'> <i className="bi bi-three-dots-vertical"></i> </div>
+                {
+                  activeRecipeId === recipe._id &&
+                  <div className="post-mini-box">
+                    <Link to={`/profile/EditRecipe/${recipe._id}`} className="link-style">
+                      <div className='edit'>
+                        <i class="bi bi-pen"></i>
+                        Edit 
+                      </div>
+                    </Link>
+                    <div onClick={() => handleDelete(recipe._id)} className='delete'>
+                      <i className="bi bi-trash3"></i>
+                      Delete
+                    </div>
+                  </div>
+                }
+
+                <span className="tag username-top"><span>Posted By:&nbsp;</span> {recipe.PostedBy.username}</span>
                 <img src={recipe.Image_URL} alt="Lago di Braies" />
                 <div className="card__details">
                   <div className='psot-line'>
                     <span className="tag">Category: {recipe.Category}</span>
                     <span className="tag">Cuisine: {recipe.Cuisine}</span>
-                    <span className="tag"> {recipe._id}</span>
+                    <span className="tag">three: {recipe.isThreeDotShow}</span>
+                    {/* <span className="tag"> {recipe._id}</span> */}
                     {/* <Link to={`/EditEecipe/${recipe._id}`} > */}
-                    <Link to={`/profile/EditRecipe/${recipe._id}`} >
-                    <div className='edit'> edit </div>
 
-                    <div>
-                    <i onClick={() => handleDelete(recipe._id)} className="bi bi-trash3" style={{ color: 'red' }}></i>
-                    </div>
-
-                    </Link>
                     {
                       showSaveIcon &&
                       <MarkCode
@@ -159,11 +198,9 @@ function MyRecipes() {
                   </div>
                   <div className="name">Ingredients:
                     <p>
-                      {recipe.Ingredients}
+                      {(recipe.Ingredients).slice(0, 30)}
+                      {/* {recipe.Ingredients}  */}
                     </p>
-                  </div>
-                  <div className="name">Instructions to make Recipes:
-                    <p>{recipe.Instructions}</p>
                   </div>
                   <Link to={`/recipe/${recipe._id}`}>
                     <button className="read-more">Read more</button>

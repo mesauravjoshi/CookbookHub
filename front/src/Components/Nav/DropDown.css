@@ -1,4 +1,4 @@
-.drop-down-toogle{
+.drop-down-toogle {
     margin: -2.4em;
     border: 2px solid #efebe4;
     height: 7em;
@@ -7,13 +7,14 @@
     border-radius: 16px;
     padding: 0em 0.6em 0.5em 1em;
     position: absolute;
-    .nav-link{
+
+    .nav-link {
         /* background: #000; */
         margin: 0.5em 0em 0.5em 0px;
     }
 }
 
-.drop-down{
+.drop-down {
     border-radius: 16px;
     margin-left: -1em;
     padding: 0em 0.6em 0.5em 1em;
@@ -23,8 +24,20 @@
     background-color: #f6d7a3;
     /* background-color: #26292b; */
 
-    .nav-link{
+    .nav-link {
         /* background: #000; */
         margin: 0.5em 0em 0.5em 0px;
     }
+}
+
+.material-symbols-outlined {
+    font-variation-settings:
+        'FILL' 1,
+        'wght' 100,
+        'GRAD' 0,
+        'opsz' 20
+}
+
+.nav-link:hover svg {
+    fill: red;
 }

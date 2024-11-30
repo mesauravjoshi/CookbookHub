@@ -27,7 +27,7 @@ function EditRecipe() {
         if (!token) {
           throw new Error('No authentication token found');
         }
-        
+
         const response = await fetch(`http://localhost:3000/recipes/edit_recipe/${_id}`, {
           method: 'GET',
           headers: {
@@ -46,9 +46,9 @@ function EditRecipe() {
         }
 
         const data = await response.json();
-        
-        console.log('inside IF ELSE',data.Image_URL);
-        if (data ) {
+
+        console.log('inside IF ELSE', data.Image_URL);
+        if (data) {
           setRecipe({
             Image_URL: data.Image_URL,
             Recipes: data.Recipes,
@@ -82,8 +82,8 @@ function EditRecipe() {
     e.preventDefault();
     try {
       const token = localStorage.getItem('token');
-      console.log('sending' ,recipe);
-      
+      console.log('sending', recipe);
+
       const response = await fetch(`http://localhost:3000/recipes/edit_recipe/${_id}`, {
         method: 'PUT',
         headers: {
@@ -99,7 +99,7 @@ function EditRecipe() {
 
       const updatedRecipe = await response.json();
       console.log('Updated recipe:', updatedRecipe);
-      
+
       // Redirect after successful update using navigate()
       navigate(`/recipe/${_id}`); // Redirect to the updated recipe's detail page
     } catch (error) {
@@ -107,7 +107,7 @@ function EditRecipe() {
     }
   };
   // console.log('line 110',recipe);
-  
+
 
   return (
     <>
@@ -115,86 +115,91 @@ function EditRecipe() {
       <div className="upload">
         {
           user ?
-          <Form onSubmit={handleSaveChanges}>
-            <Form.Control
-              size="lg"
-              type="text"
-              name="Image_URL"
-              value={recipe.Image_URL}
-              placeholder="Image URL"
-              onChange={handleInputChange}
-              required
-            />
-            <br />
-            <Form.Control
-              size="lg"
-              type="text"
-              name="Recipes"
-              value={recipe.Recipes}
-              placeholder="Recipe Name"
-              onChange={handleInputChange}
-              required
-            />
-            <br />
-            <Form.Group className="mb-3">
+            <Form onSubmit={handleSaveChanges}>
               <Form.Control
                 size="lg"
-                as="textarea"
-                rows={3}
-                name="Ingredients"
-                value={recipe.Ingredients}
-                placeholder="Ingredients"
+                type="text"
+                name="Image_URL"
+                value={recipe.Image_URL}
+                placeholder="Image URL"
                 onChange={handleInputChange}
                 required
               />
-            </Form.Group>
-            <Form.Group className="mb-3">
+              <br />
               <Form.Control
                 size="lg"
-                as="textarea"
-                rows={3}
-                name="Instructions"
-                value={recipe.Instructions}
-                placeholder="Instructions"
+                type="text"
+                name="Recipes"
+                value={recipe.Recipes}
+                placeholder="Recipe Name"
                 onChange={handleInputChange}
                 required
               />
-            </Form.Group>
-            <Form.Select
-              size="lg"
-              name="Category"
-              value={recipe.Category}
-              onChange={handleInputChange}
-            >
-              <option value="" disabled>Category</option>
-              <option value="Beverage">Beverage</option>
-              <option value="Breakfast">Breakfast</option>
-              <option value="Dessert">Dessert</option>
-              <option value="Dinner">Dinner</option>
-              <option value="Lunch">Lunch</option>
-              <option value="Main Course">Main Course</option>
-              <option value="Salad">Salad</option>
-              <option value="Snack">Snack</option>
-            </Form.Select>
-            <br />
-            <Form.Select
-              size="lg"
-              name="Cuisine"
-              value={recipe.Cuisine}
-              onChange={handleInputChange}
-            >
-              <option value="" disabled>Cuisine</option>
-              <option value="American">American</option>
-              <option value="Asian">Asian</option>
-              <option value="Indian">Indian</option>
-              <option value="Italian">Italian</option>
-              <option value="Korean">Korean</option>
-            </Form.Select>
-            <div className="upload-button">
-              <button type="submit">Save Changes</button>
-            </div>
-          </Form>
-          : <PageNotFound />
+              <br />
+              <Form.Group className="mb-3">
+                <Form.Control
+                  size="lg"
+                  as="textarea"
+                  rows={3}
+                  name="Ingredients"
+                  value={recipe.Ingredients}
+                  placeholder="Ingredients"
+                  onChange={handleInputChange}
+                  required
+                />
+              </Form.Group>
+              <Form.Group className="mb-3">
+                <Form.Control
+                  size="lg"
+                  as="textarea"
+                  rows={3}
+                  name="Instructions"
+                  value={recipe.Instructions}
+                  placeholder="Instructions"
+                  onChange={handleInputChange}
+                  required
+                />
+              </Form.Group>
+              <Form.Select
+                size="lg"
+                name="Category"
+                value={recipe.Category}
+                onChange={handleInputChange}
+              >
+                <option value="" disabled>Category</option>
+                <option value="Beverage">Beverage</option>
+                <option value="Breakfast">Breakfast</option>
+                <option value="Dessert">Dessert</option>
+                <option value="Dinner">Dinner</option>
+                <option value="Lunch">Lunch</option>
+                <option value="Main Course">Main Course</option>
+                <option value="Salad">Salad</option>
+                <option value="Snack">Snack</option>
+              </Form.Select>
+              <br />
+              <Form.Select
+                size="lg"
+                name="Cuisine"
+                value={recipe.Cuisine}
+                onChange={handleInputChange}
+              >
+                <option value="" disabled>Cuisine</option>
+                <option value="American">American</option>
+                <option value="Asian">Asian</option>
+                <option value="Indian">Indian</option>
+                <option value="Italian">Italian</option>
+                <option value="Korean">Korean</option>
+              </Form.Select>
+              <div className="buttons-container">
+                <div className="upload-button">
+                  <button type="submit">Save Changes</button>
+                </div>
+                <div className="upload-button">
+                  <button type="">Cancel</button>
+                </div>
+              </div>
+            </Form>
+            : <PageNotFound />
         }
       </div>
     </>

@@ -152,14 +152,15 @@ h1 {
     background-color: #a13408;
     color: white;
     bottom: 0.2em;
-    transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out;
+    /* transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out; */
   }
 }
 
 .card:hover {
-  transform: scale(1.03);
+  transform: scale(1.01);
   box-shadow: 0 13px 40px -5px hsla(240, 30.1%, 28%, 0.12), 0 8px 32px -8px hsla(0, 0%, 0%, 0.14), 0 -6px 32px -6px hsla(0, 0%, 0%, 0.02);
 }
+
 .psot-line {
   display: flex;
   overflow: hidden;

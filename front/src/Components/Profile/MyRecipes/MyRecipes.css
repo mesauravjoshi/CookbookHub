@@ -1,3 +1,339 @@
-.edit {
+@import url("https://fonts.googleapis.com/css2?family=Raleway:wght@500;600&display=swap");
+
+.post-mini-box {
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+    position: absolute;
+    right: -31px;
+    background-color: #ffffff;
+    /* border: 1px solid red; */
+    border-radius: 10px;
+    padding: 0.6em 0em;
+    text-decoration: none;
+}
+
+.link-style {
+    text-decoration: none;  /* Remove underline */
+    color: inherit;         /* Inherit color from parent (or you can set a custom color) */
+  }
+  
+.link-style:focus, .link-style:hover {
+    text-decoration: none;
+  }
+
+
+.edit, .delete {
+    color: #5f4e4e;
     cursor: pointer;
+    padding: 0em 0.8em;
+    border: 1px solid #fee1b2;
+}
+.edit:hover {
+    color: green;
+    border-radius: 4px;
+    background-color: #fee1b2;
+}
+
+.delete:hover {
+    color: red;
+    border-radius: 4px;
+    background-color: #fee1b2;
+}
+
+.bi-pen{
+    margin-right: 1.2em;
+}
+
+.bi-trash3{
+    margin-right: 1.2em;
+}
+
+.username-top {
+    display: flex;
+    justify-content: flex-start;
+    margin: 5px;
+    top: 0;
+    /* right: 0; */
+    cursor: pointer;
+    position: absolute;
+    font-weight: bold;
+}
+
+.username-top span {
+    font-weight: bold;
+    color: #333333;
+}
+
+.three-dot {
+    display: flex;
+    justify-content: flex-start;
+    margin: 5px;
+    top: 0;
+    right: 3px;
+    cursor: pointer;
+    position: absolute;
+}
+
+
+/* Discover and Share Amazing Recipes! ---------------------- */
+.tagline {
+    /* border: 2px solid green; */
+    padding: 0em;
+    display: flex;
+    margin: 1em 2em;
+    /* height: 34em; */
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.tagline-but {
+    bottom: 6em;
+    position: relative;
+    display: flex;
+    /* border: 1px solid; */
+    /* margin: -5em 3em; */
+    flex-wrap: wrap;
+    align-content: center;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.tagline button {
+    background: #f1423a;
+    border-radius: 12px;
+    padding: 0.7em 0.8em;
+    margin: 0 0 1.2em 3em;
+    color: #ffffff;
+    /* display: inline-block; */
+    font: normal bold 27px / 1 "Calibri", sans-serif;
+    /* text-align: center; */
+    font-size: 1.7em;
+}
+
+
+#custom-h1 {
+    display: flex;
+    color: #f1423a;
+    font-size: 7em;
+    font-family: "Delius", cursive;
+    font-weight: 400;
+    font-style: normal;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+#custom-h1 svg {
+    /* height: 1em;
+  width: 1em; */
+    /* margin-bottom: 0em;
+  border: 1px solid; */
+    margin: -0.1em 2.4em;
+}
+
+/* .svg-cook{
+  
+} */
+
+/* END:  Discover and Share Amazing Recipes!  ---------------------- */
+
+img {
+    border-radius: 12px;
+    height: 173px;
+    object-fit: cover;
+    width: 100%;
+}
+
+.welcome-title {
+    margin: 3.5em .5em;
+}
+
+.welcome_login {
+    color: #ff194b;
+    text-decoration: none;
+    font-weight: 800;
+}
+
+.welcome_login:hover {
+    color: #ff194b;
+    text-decoration: none;
+    font-weight: 800;
+}
+
+.brand_name {
+    white-space: nowrap;
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 700;
+}
+
+.brand_name span {
+    color: #c8c3be;
+    font-weight: 900;
+}
+
+.brand_name:hover {
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 700;
+    cursor: default;
+}
+
+h1 {
+    margin: 0 0;
+    color: #494e50;
+    font-weight: 700;
+}
+
+#container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    column-gap: 2em;
+    font-size: 1.2em;
+    font-size: 1em;
+    margin: 1.5% 13%;
+}
+
+.my-card {
+    margin-bottom: 3em;
+    position: relative;
+    /* overflow: hidden; */
+    height: 24em;
+    background-color: white;
+    border: 1px solid #bacdd8;
+    padding: 2em 0.3em 2em 0.3em;
+    border-radius: 12px;
+    transition: height 0.3s ease;
+    transition: all ease 200ms;
+
+    button {
+        position: absolute;
+        padding: 0.2em 0.7em;
+        border-radius: 10px;
+        transform: translateX(-50%);
+        font-weight: 700;
+        color: #ffffff;
+        background-color: #ff5715;
+        border: none;
+        bottom: 0.2em;
+        left: 50%;
+        box-shadow: 0 0 9px 0 rgb(78 44 23), 0px 4px 20px 20px rgb(215 188 173);
+    }
+
+    /* Add style when button is focused or hovered */
+    button:focus,
+    button:hover {
+        height: 2em;
+        background-color: #a13408;
+        color: white;
+        bottom: 0.2em;
+        /* transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out; */
+    }
+}
+
+.my-card:hover {
+    transform: scale(1.01);
+    box-shadow: 0 13px 40px -5px hsla(240, 30.1%, 28%, 0.12), 0 8px 32px -8px hsla(0, 0%, 0%, 0.14), 0 -6px 32px -6px hsla(0, 0%, 0%, 0.02);
+}
+
+.psot-line {
+    display: flex;
+    overflow: hidden;
+    position: relative;
+    align-items: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.tag {
+    padding-right: 0.9em;
+    border: 1px solid #e5eaed;
+    border-radius: 50px;
+    /* font-size: 12px; */
+    font-weight: 600;
+    color: #788697;
+}
+
+.name {
+    /* font-size: 24px; */
+    font-weight: 600;
+    margin-top: 16px;
+}
+
+/* Style p element */
+p {
+    /* font-size: 14px; */
+    color: #7f8c9b;
+    line-height: 150%;
+}
+
+/* Style button element */
+.my-card {
+    .card__details {
+        padding: .2em 8px 8px 8px;
+
+        svg {
+            color: #cd6c33;
+            top: 0;
+            right: 0;
+            cursor: pointer;
+            position: absolute;
+        }
+    }
+}
+
+/* Media query for mobile devices */
+@media (max-width: 768px) {
+    #container {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 1206px) {
+    #custom-h1 svg {
+        margin: 0em 1.2em;
+    }
+}
+
+@media (max-width: 918px) {
+    #custom-h1 svg {
+        margin: 0em 0.3em;
+    }
+
+}
+
+@media (max-width: 890px) {
+    .tagline-but {
+        position: static;
+        display: flex;
+        flex-wrap: wrap;
+        align-content: center;
+        align-items: flex-start;
+        justify-content: flex;
+        flex-direction: row;
+    }
+
+    .tagline {
+        justify-content: center;
+    }
+
+    .tagline button {
+        margin: 0 0 1.2em 0.3em;
+    }
+
+    #custom-h1 {
+        font-size: 5.7em;
+        display: flex;
+        align-items: center;
+    }
+}
+
+@media (max-width: 983px) {
+    #container {
+        /* background: #000; */
+        grid-template-columns: repeat(2, 1fr);
+        /* grid-template-columns: 2fr; */
+        /* Switch to a single column layout */
+    }
 }
