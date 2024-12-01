@@ -12,11 +12,11 @@ function DropDown({ isToggle, showMenu }) {
                 &nbsp;&nbsp;My Recipes
             </Link>
             <Link className="nav-link" to={`/profile/EditProfile`}>
-                <i class="bi bi-person-lines-fill"></i>&nbsp;&nbsp;
+                <i className="bi bi-person-lines-fill"></i>&nbsp;&nbsp;
                 Edit Profile
             </Link>
             <Link className="nav-link" to={'/profile/ChangePassword'}>
-                <i class="bi bi-lock"></i>&nbsp;&nbsp;
+            <i className="bi bi-key"></i>&nbsp;&nbsp;
                 Change Password
             </Link>
 

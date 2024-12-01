@@ -41,11 +41,7 @@
     background-color: #fee1b2;
 }
 
-.bi-pen{
-    margin-right: 1.2em;
-}
-
-.bi-trash3{
+.bi-pen, .bi-trash3 ,.bi-share{
     margin-right: 1.2em;
 }
 
@@ -182,7 +178,7 @@ img {
 
 h1 {
     margin: 0 0;
-    color: #494e50;
+    color: var(--body_color);
     font-weight: 700;
 }
 

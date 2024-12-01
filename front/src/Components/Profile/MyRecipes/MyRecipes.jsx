@@ -110,30 +110,34 @@ function MyRecipes() {
   }, [user]);
 
   const handleDelete = async (_id) => {
-    alert('Want to delete post ?')
-    try {
-      const token = localStorage.getItem('token');
-      const response = await fetch(`http://localhost:3000/recipes/edit_recipe/${_id}`, {
-        method: 'DELETE',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
+    const isConfirmed = window.confirm('Do you want to delete this post?');
+    if (isConfirmed) {
+      try {
+        const token = localStorage.getItem('token');
+        const response = await fetch(`http://localhost:3000/recipes/edit_recipe/${_id}`, {
+          method: 'DELETE',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        });
+  
+        if (!response.ok) {
+          throw new Error('Failed to delete recipe');
         }
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to delete recipe');
+  
+        const result = await response.json();
+        console.log('Post deleted');
+        navigate('/profile/MyRecipes'); // Redirect after deletion
+      } catch (error) {
+        console.error('Error deleting recipe:', error);
       }
-
-      const result = await response.json();
-      // console.log(result.message); // Log success message
-      console.log('post deleted');
-
-      navigate('/profile/MyRecipes'); // You can change this to whatever route you want
-    } catch (error) {
-      console.error('Error deleting recipe:', error);
+    } else {
+      console.log('Post deletion canceled');
     }
   };
+  
+
   return (
     <>
       <Nav isLoggedIn={isLoggedIn} user={user} />
@@ -161,13 +165,17 @@ function MyRecipes() {
                   <div className="post-mini-box">
                     <Link to={`/profile/EditRecipe/${recipe._id}`} className="link-style">
                       <div className='edit'>
-                        <i class="bi bi-pen"></i>
-                        Edit 
+                        <i className="bi bi-pen"></i>
+                        Edit
                       </div>
                     </Link>
                     <div onClick={() => handleDelete(recipe._id)} className='delete'>
                       <i className="bi bi-trash3"></i>
                       Delete
+                    </div>
+                    <div className='delete'>
+                      <i className="bi bi-share"></i>
+                      Share
                     </div>
                   </div>
                 }
@@ -178,7 +186,6 @@ function MyRecipes() {
                   <div className='psot-line'>
                     <span className="tag">Category: {recipe.Category}</span>
                     <span className="tag">Cuisine: {recipe.Cuisine}</span>
-                    <span className="tag">three: {recipe.isThreeDotShow}</span>
                     {/* <span className="tag"> {recipe._id}</span> */}
                     {/* <Link to={`/EditEecipe/${recipe._id}`} > */}
 

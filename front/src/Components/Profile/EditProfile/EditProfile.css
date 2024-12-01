@@ -1,0 +1,11 @@
+.test-dark{
+    background-color: var(--body_background);
+    margin: 3em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid black;
+    height: 12em;
+    font-weight: 900;
+    color: var(--body_color);
+}

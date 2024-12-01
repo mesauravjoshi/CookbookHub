@@ -21,7 +21,7 @@
     /* top: 3.em; */
     /* border: 1px solid; */
     position: absolute;
-    background-color: #f6d7a3;
+    background-color: var(--nav_background);
     /* background-color: #26292b; */
 
     .nav-link {

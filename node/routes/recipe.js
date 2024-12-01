@@ -56,7 +56,7 @@ router.get('/user_data/:username', jwtAuthMiddleware, async (req, res) => {
 // api for recipe id 
 router.get('/recipe/:_id', async (req, res) => {
     const { _id } = req.params; 
-    console.log(_id);
+    // console.log(_id);
     try {
         const recipe = await Recipe.find({ '_id': _id }); // Fetch recipes for the specific user
         res.json(recipe); // Return the recipes as JSON

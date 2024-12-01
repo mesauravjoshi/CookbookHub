@@ -8,12 +8,13 @@ function Nav({ isLoggedIn, user }) {
     const [showMenu, setShowMenu] = useState(false)
     const [isToggle, setIsToggle] = useState(false)
     const [hideDropDown, setHideDropDown] = useState(true)
+    const [isModeDark, setIsModeDark] = useState(false)
 
     const handleMouseEnter = () => {
         setHideDropDown(false)
     }
 
-    const handleMouseLeave =() => {
+    const handleMouseLeave = () => {
         setHideDropDown(true)
     }
     const handleLogOut = () => {
@@ -33,8 +34,25 @@ function Nav({ isLoggedIn, user }) {
     // console.log('nav.jsx line 8',isLoggedIn);
     // console.log('nav.jsx line 9',user);
 
+    const setDarkMode = () => {
+        document.querySelector('body').setAttribute('data-theme', 'dark');
+    };
+
+    const setLightMode = () => {
+        document.querySelector('body').setAttribute('data-theme', 'light');
+    };
+
+    const handleToggleTheme = (e) => {
+        setIsModeDark(prev => !prev)
+        if (isModeDark)
+            setLightMode();
+        else {
+            setDarkMode(); // Set dark mode if it was light before
+        }
+    }
+
     return (
-        <nav className="navbar navbar-dark bg-dark">
+        <nav className="navbar navbar-dark bg-Dark">
             <a className="navbar-brand" href="/">C<span>oo</span>kb<span>oo</span>kHub </a>
 
             {
@@ -70,7 +88,7 @@ function Nav({ isLoggedIn, user }) {
                                 {isToggle}
                                 {
                                     !hideDropDown &&
-                                        <DropDown isToggle={isToggle} showMenu={showMenu} />
+                                    <DropDown isToggle={isToggle} showMenu={showMenu} />
                                     // <div className='drop_down' >
                                     // </div>
                                 }
@@ -81,6 +99,14 @@ function Nav({ isLoggedIn, user }) {
                             </Link>
                         </div>
                         <div className={showMenu ? 'nav-but-right menu-mobile-logout' : 'nav-but-right'} >
+                            {/* dark mode  */}
+                            <div className='dark-mode-icon' onClick={handleToggleTheme}>
+                                {
+                                    isModeDark ?
+                                        <i class="bi bi-moon"></i> :
+                                        <i class="bi bi-sun"></i>
+                                }
+                            </div>
                             <Link to={`/`}>
                                 <button onClick={handleLogOut} className='nav-but'><i className="bi bi-power"></i> Logout</button>
                             </Link>
@@ -100,6 +126,14 @@ function Nav({ isLoggedIn, user }) {
                             </div>
                         </div>
                         <div className={showMenu ? 'nav-but-right menu-mobile-logout' : 'nav-but-right'}>
+                            {/* dark mode  */}
+                            <div className='dark-mode-icon' onClick={handleToggleTheme}>
+                                {
+                                    isModeDark ?
+                                        <i class="bi bi-moon"></i> :
+                                        <i class="bi bi-sun"></i>
+                                }
+                            </div>
                             <Link to='/login'>
                                 <button className='nav-but'><i className="bi bi-person-circle"></i> Login</button>
                             </Link>

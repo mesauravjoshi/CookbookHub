@@ -2,9 +2,8 @@
     margin: 1em .5em;
 }
 
-.bg-dark {
-    --bs-bg-opacity: 1;
-    background-color: rgb(246 215 163) !important;
+.bg-Dark {
+    background-color: var(--nav_background) ;
 }
 
 h1,
@@ -39,16 +38,14 @@ h3 {
     font-size: 1.04em;
     margin: 0.2em 2.3em 0.2em 0em;
     display: block;
-    color: rgb(95, 78, 78);
+    color: var(--nav_color);
     transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out;
     cursor: pointer;
 }
 
-
-
 .nav-link:hover {
     font-weight: var(--bs-nav-link-font-weight);
-    color: #f00909;
+    color: #ef2020;
 }
 /* .My-profile:hover{
     background-color: pink;
@@ -88,6 +85,7 @@ button {
 
 .ham-menu {
     display: none;
+    color: var(--nav_color);
 }
 
 /* media query  */
@@ -119,7 +117,7 @@ button {
     }
 
     .menu-mobile {
-        background-color: #f6d7a3;
+        background-color: var(--nav_background);
         /* border: 1px solid; */
         display: flex;
         margin-bottom: 8em;
@@ -146,4 +144,8 @@ button {
     }
 
 
+}
+
+.bi-moon{
+    color: var(--nav_color);
 }
