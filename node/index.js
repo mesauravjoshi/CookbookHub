@@ -22,11 +22,13 @@ const authRoutes = require('./routes/auth');
 const recipeRoutes = require('./routes/recipe');
 const recipe_category = require('./routes/recipe_category');
 const bookmarkRoutes = require('./routes/bookmark');
+const search = require('./routes/search');
 
 app.use('/auth', authRoutes);
 app.use('/recipes', recipeRoutes);
 app.use('/recipe_category', recipe_category);
 app.use('/bookmark', bookmarkRoutes);
+app.use('/search', search);
 
 // ***********************************************************************
 

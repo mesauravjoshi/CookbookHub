@@ -1,8 +1,6 @@
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    transition: all 0.3s ease-in-out;
+    
+    transition: all 0.2s ease-in-out;;
 }
 
 :root{
@@ -21,10 +19,13 @@
 h2{
     color: var(--body_color);
 }
-html, body {
-    /* background: linear-gradient(90deg, rgb(254 225 178) 8%, rgb(254 225 178) 71%);   */
+
+body {
+    margin: 0;
+    /* display: flex; */
+    /* place-items: center; */
+    /* min-width: 320px; */
+    min-height: 100vh;
     background-color: var(--body_background);
-    /* height: 100%; */
     font-family: Arial, sans-serif; /* Default font */
-    line-height: 1.5; /* Default line height */
-}
+  }

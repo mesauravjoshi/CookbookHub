@@ -116,7 +116,7 @@ h1 {
   column-gap: 2em;
   font-size: 1.2em;
   font-size: 1em;
-  margin: 1.5% 13%;
+  margin: 0% 13%;
 }
 
 .card {
@@ -142,7 +142,7 @@ h1 {
     border: none;
     bottom: 0.2em;
     left: 50%;
-    box-shadow: 0 0 9px 0 rgb(78 44 23), 0px 4px 20px 20px rgb(215 188 173);
+    /* box-shadow: 0 0 9px 0 rgb(78 44 23), 0px 4px 20px 20px rgb(215 188 173); */
   }
 
   /* Add style when button is focused or hovered */

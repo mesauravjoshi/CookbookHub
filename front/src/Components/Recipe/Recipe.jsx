@@ -10,12 +10,13 @@ function Recipe() {
   const { user, setUser } = useUser();
   const [isLoggedIn, setIsLoggedIn] = useState(true); // state for login status
 
-
   return (
     <>
       <Nav isLoggedIn={isLoggedIn} user={user} />
       <center>
         <h2>.................... Recipes ....................</h2>
+        <input type="text" />
+ 
       </center>
       <RecipeNewest isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}/>
       <RecipeCat/>

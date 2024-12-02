@@ -17,6 +17,7 @@ function Nav({ isLoggedIn, user }) {
     const handleMouseLeave = () => {
         setHideDropDown(true)
     }
+
     const handleLogOut = () => {
         localStorage.removeItem('token')
         localStorage.removeItem('name')
@@ -36,10 +37,12 @@ function Nav({ isLoggedIn, user }) {
 
     const setDarkMode = () => {
         document.querySelector('body').setAttribute('data-theme', 'dark');
+        localStorage.setItem('theme', 'dark'); // Save theme in localStorage
     };
 
     const setLightMode = () => {
         document.querySelector('body').setAttribute('data-theme', 'light');
+        localStorage.setItem('theme', 'light'); // Save theme in localStorage
     };
 
     const handleToggleTheme = (e) => {
@@ -50,6 +53,16 @@ function Nav({ isLoggedIn, user }) {
             setDarkMode(); // Set dark mode if it was light before
         }
     }
+    useEffect(() => {
+        const storedMode = localStorage.getItem('theme');
+        if (storedMode === 'dark') {
+            setDarkMode();
+            setIsModeDark(true);
+        } else {
+            setLightMode();
+            setIsModeDark(false);
+        }
+    }, []);
 
     return (
         <nav className="navbar navbar-dark bg-Dark">
@@ -103,8 +116,8 @@ function Nav({ isLoggedIn, user }) {
                             <div className='dark-mode-icon' onClick={handleToggleTheme}>
                                 {
                                     isModeDark ?
-                                        <i class="bi bi-moon"></i> :
-                                        <i class="bi bi-sun"></i>
+                                        <i className="bi bi-moon"></i> :
+                                        <i className="bi bi-sun"></i>
                                 }
                             </div>
                             <Link to={`/`}>
@@ -130,8 +143,8 @@ function Nav({ isLoggedIn, user }) {
                             <div className='dark-mode-icon' onClick={handleToggleTheme}>
                                 {
                                     isModeDark ?
-                                        <i class="bi bi-moon"></i> :
-                                        <i class="bi bi-sun"></i>
+                                        <i className="bi bi-moon"></i> :
+                                        <i className="bi bi-sun"></i>
                                 }
                             </div>
                             <Link to='/login'>

@@ -12,6 +12,7 @@ import Recipe from './Components/Recipe/Recipe';
 import RecipeNewest from './Components/Recipe/RecipeNewest';
 import RecipeCat from './Components/Recipe/RecipeCat';
 import RecipeCuisine from './Components/Recipe/RecipeCuisine';
+import Search from './Components/Search';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
 
@@ -31,6 +32,7 @@ function App() {
                   <Route path="/RecipeNewest" element={<RecipeNewest />} />
                   <Route path="/RecipeCat" element={<RecipeCat />} />
                   <Route path="/RecipeCuisine" element={<RecipeCuisine />} />
+                  <Route path="/Search" element={<Search />} />
                   
                   {/* Profile Route with Nested MyRecipes */}
                   <Route path="/profile" >
