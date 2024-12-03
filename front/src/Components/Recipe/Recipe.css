@@ -1,128 +1,13 @@
-@import url("https://fonts.googleapis.com/css2?family=Raleway:wght@500;600&display=swap");
-
-.welcome-title {
-  margin: 1em .5em;
-}
-
-.welcome_login {
-  color: #ff194b;
-  text-decoration: none;
-  font-weight: 800;
-}
-
-.welcome_login:hover {
-  color: #ff194b;
-  text-decoration: none;
-  font-weight: 800;
-}
-
-h1 {
-  margin: 0 0;
-  color: var(--body_color);
-  font-weight: 700;
-}
-
-#Recipe-container {
-  display: grid;
-  font-size: 1.2em;
-  margin: 1% 13%;
-  margin-top: 60px;
-  /* Ensure this value is enough to clear the navbar */
-}
-
-.Recipe-card {
-  background-color: white;
-  border: 1px solid #bacdd8;
-  padding: 0.3em 0.3em 2em 0.3em;
-  border-radius: 12px;
-  margin-bottom: 3em;
-
-  img {
-    border-radius: 12px;
-    height: 15em;
-    object-fit: cover;
-    width: 100%;
-  }
-
-  button {
-    position: absolute;
-    padding: 0.2em 0.7em;
-    border-radius: 10px;
-    transform: translateX(-50%);
-    font-weight: 700;
-    color: #ffffff;
-    background-color: #ff5715;
-    border: none;
-    bottom: 0.2em;
-    left: 50%;
-    box-shadow: 0 0 9px 0 rgb(78 44 23), 0px 4px 20px 20px rgb(215 188 173);
-  }
-
-  /* Add style when button is focused or hovered */
-  button:focus,
-  button:hover {
-    height: 2em;
-    background-color: #a13408;
-    color: white;
-    bottom: 0.2em;
-    transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out;
-  }
-}
-
-.Recipe-psot-line {
+.suggestion-list {
+  background-color: rgb(63, 32, 32);
+  color:black;
+  position: absolute;
+  /* right: 50%; */
+  left: 35%;
   display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  flex-direction: row;
-  flex-wrap: wrap;
-}
-
-.Recipe-tag {
-  padding: 4px 8px;
-  border: 1px solid #e5eaed;
-  border-radius: 50px;
-  /* font-size: 12px; */
-  font-weight: 600;
-  color: #788697;
-}
-
-/* Style div elements that have class equal to name */
-.Recipe-name {
-  /* font-size: 24px; */
-  font-weight: 600;
-  margin-top: 16px;
-}
-
-/* Style p element */
-p {
-  /* font-size: 14px; */
-  color: #7f8c9b;
-  line-height: 150%;
-}
-
-/* Style button element */
-.Recipe-card {
-  .Recipe-card__details {
-    padding: 16px 8px 8px 8px;
-
-    svg {
-      cursor: pointer;
-    }
-  }
-}
-
-/* Media query for mobile devices */
-@media (max-width: 768px) {
-  #container {
-    grid-template-columns: 1fr;
-    /* Switch to a single column layout */
-  }
-}
-
-@media (max-width: 1000px) {
-  #container {
-    background: #000;
-    /* grid-template-columns: 1fr; */
-    /* Switch to a single column layout */
-  }
+  border: 1px solid white;
+  overflow-y: auto;
+  height: 7.5em;
+  width: 19em;
+  flex-direction: column;
 }

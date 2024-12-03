@@ -3,6 +3,7 @@
 }
 
 .bg-Dark {
+    transition: all 0.2s ease-in-out;;
     background-color: var(--nav_background) ;
 }
 

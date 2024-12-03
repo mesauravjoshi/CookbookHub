@@ -24,17 +24,12 @@ function Nav({ isLoggedIn, user }) {
         // setIsLoggedIn(false); // Update login status
         navigate('/')
         window.location.reload();
-
     }
+
     const handleToggle = () => {
         setShowMenu(!showMenu)
         setIsToggle(prev => !prev)
     }
-    // console.log('is Toggle ',isToggle);
-
-    // console.log('nav.jsx line 8',isLoggedIn);
-    // console.log('nav.jsx line 9',user);
-
     const setDarkMode = () => {
         document.querySelector('body').setAttribute('data-theme', 'dark');
         localStorage.setItem('theme', 'dark'); // Save theme in localStorage
@@ -73,17 +68,21 @@ function Nav({ isLoggedIn, user }) {
                     <>
                         <div className={showMenu ? 'center-nav menu-mobile' : 'center-nav'}  >
                             <Link className="nav-link" to='/recipe'>Explore Recipe</Link>
-                            <div className='search-icon'>
-                                <div className="nav-link">
 
-                                    {/* <input type="text" placeholder=' Search recipes...' /> */}
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" className="bi bi-search"
-                                        viewBox="0 0 16 16">
-                                        <path
-                                            d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
-                                    </svg>
-                                </div>
-                            </div>
+                            {/* search  */}
+                            {/* <div className="nav-link" >
+                                search
+                            </div> */}
+                            <Link className="nav-link" to='/search:searchRecipe'>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" className="bi bi-search"
+                                    viewBox="0 0 16 16">
+                                    <path
+                                        d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
+                                </svg>
+                                search
+                            </Link>
+                            {/* search  */}
+
                             <Link className="nav-link" to='/bookmark'>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" className="bi bi-bookmarks" viewBox="0 0 16 16">
                                     <path d="M2 4a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v11.5a.5.5 0 0 1-.777.416L7 13.101l-4.223 2.815A.5.5 0 0 1 2 15.5zm2-1a1 1 0 0 0-1 1v10.566l3.723-2.482a.5.5 0 0 1 .554 0L11 14.566V4a1 1 0 0 0-1-1z" />

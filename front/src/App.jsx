@@ -32,7 +32,7 @@ function App() {
                   <Route path="/RecipeNewest" element={<RecipeNewest />} />
                   <Route path="/RecipeCat" element={<RecipeCat />} />
                   <Route path="/RecipeCuisine" element={<RecipeCuisine />} />
-                  <Route path="/Search" element={<Search />} />
+                  <Route path="/Search/:searchRecipe" element={<Search />} />
                   
                   {/* Profile Route with Nested MyRecipes */}
                   <Route path="/profile" >

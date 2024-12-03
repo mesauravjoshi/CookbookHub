@@ -1,7 +1,3 @@
-* {
-    
-    transition: all 0.2s ease-in-out;;
-}
 
 :root{
     --body_background: #fee1b2;
@@ -28,4 +24,5 @@ body {
     min-height: 100vh;
     background-color: var(--body_background);
     font-family: Arial, sans-serif; /* Default font */
+    transition: all 0.2s ease-in-out;;
   }
