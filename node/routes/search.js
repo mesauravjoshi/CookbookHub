@@ -22,6 +22,7 @@ router.get('/search', async (req, res) => {
                 { Category: searchPattern },
                 { Cuisine: searchPattern },
                 { Recipes: searchPattern },
+                { Instructions: searchPattern },
                 { Tags: { $in: [searchPattern] } }
             ]
         });

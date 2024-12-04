@@ -7,32 +7,48 @@ import RecipeCuisine from './RecipeCuisine';
 import { useNavigate } from 'react-router-dom';
 import './Recipe.css'
 
-
 function Recipe() {
   const navigate = useNavigate();
   const { user } = useUser();
   const [searchQuery, setSearchQuery] = useState("");
   const [suggest, setSuggest] = useState([]);
-  const [onURL, setOnURL] = useState("");
+  const [filteredSuggest, setFilteredSuggest] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(true); // state for login status
 
   const handleSearchChange = (e) => {
     const value = e.target.value
     setSearchQuery(value);
-    setOnURL(value);
+
+    if (value.length > 0) {
+      const filteredSuggestion = suggest.filter(item =>
+        item.toLowerCase().startsWith(value.toLowerCase())
+      )
+      // Limit the filtered suggestions to 3 or fewer items
+      const limitedFilteredSuggestion = filteredSuggestion.slice(0, 3);
+
+      // Update the state with the limited suggestions
+      setFilteredSuggest(limitedFilteredSuggestion);
+    } else {
+      setFilteredSuggest([])
+    }
   };
 
   const handleQuerySearch = async (e) => {
     e.preventDefault()
-    if (onURL.length > 0) navigate(`/search/${onURL}`)
+    if (searchQuery.length > 0) navigate(`/search/${searchQuery}`)
   }
 
   useEffect(() => {
-    const searchSuggestion = [
-      "Asian", "Bacon", "Barbecue", "Baked", "Beef Wellington", "Biryani", "Curry", "Caesar Salad", "Cheese", "Chicken", "Chicken Parmesan", "Chicken Tikka Masala", "Chocolate", "Chocolate Mousse", "Chinese", "Comfort", "Comfort Food", "Crispy", "Creamy", "Dessert", "Drink", "Eggplant Parmesan", "Grilled", "Grilled Salmon", "Healthy", "Indian", "Italian", "Italian", "Lamb Chops with Mint Sauce", "Light", "Lassi", "Lobster Bisque", "Main", "Main Course", "Mango", "Manchurian", "Mushroom Risotto", "Pasta", "Pasta", "Pulled Pork Sandwiches", "Refreshing", "Rice", "Roast", "Salad", "Saucy", "Seafood", "Shrimp Scampi", "Spaghetti", "Spaghetti Carbonara", "Soup", "Spicy", "Sweet", "Tiramisu", "Vegetable", "Vegetable Stir-Fry", "Vegan", "Vegetarian"
-    ];
+    const searchSuggestion = ["Asian", "Bacon", "Barbecue", "Baked", "Beef Wellington", "Biryani", "Caesar Salad", "Cheese", "Chocolate", "Chocolate Mousse", "Chinese", "Comfort", "Comfort Food", "Crispy", "Creamy", "Dessert", "Drink", "Eggplant Parmesan", "Grilled", "Grilled Salmon", "Healthy", "Indian", "Italian", "Lamb Chops with Mint Sauce", "Light", "Lassi", "Lobster Bisque", "Main", "Main Course", "Mango", "Manchurian", "Mushroom Risotto", "Pasta", "Pulled Pork Sandwiches", "Refreshing", "Rice", "Roast", "Salad", "Saucy", "Seafood", "Shrimp Scampi", "Spaghetti", "Spaghetti Carbonara", "Soup", "Spicy", "Sweet", "Vegetable", "Vegan", "Vegetarian"];
     setSuggest(searchSuggestion)
   }, []);
+
+  const handleCLickSuggestion = (item) => {
+    // console.log(e.target.getAttribute('data-id'));
+    setSearchQuery(item);
+    setFilteredSuggest([]);
+    if (searchQuery.length > 0) navigate(`/search/${item}`)
+  }
 
   return (
     <>
@@ -43,26 +59,29 @@ function Recipe() {
             type="text"
             value={searchQuery}
             onChange={handleSearchChange}
-          />
+          /> 
+          {/* <button>search</button> */}
           <br />
           {
-            searchQuery.length > 1 &&
-            <div className='suggestion-list'>
+            filteredSuggest.length > 0 &&
+            <div className='suggestion-list' >
               {
-                suggest.map((item) => {
+                filteredSuggest.map((item,index) => {
                   return (
-                    <p>{item} </p>
+                    <div key={index} onClick={() => handleCLickSuggestion(item)} >
+                      {/* <p >{item} </p> */}
+                      <h5 >{item} </h5>
+                    </div>
                   )
                 })
               }
             </div>
           }
-          <button>submit</button>
+          
         </form>
         <div>
         </div>
         <h2>.................... Recipes ....................</h2>
-
 
       </center>
       <RecipeNewest isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />

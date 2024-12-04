@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import DropDown from './DropDown';
 import './Nav.css'
+import SearchBox from './SearchBox';
 
 function Nav({ isLoggedIn, user }) {
     const navigate = useNavigate();
@@ -9,6 +10,15 @@ function Nav({ isLoggedIn, user }) {
     const [isToggle, setIsToggle] = useState(false)
     const [hideDropDown, setHideDropDown] = useState(true)
     const [isModeDark, setIsModeDark] = useState(false)
+    const [isSearchOpen, setIsSearchOpen] = useState(false); // Add state to track if search is open
+
+    const handleSearchClick = () => {
+        setIsSearchOpen(!isSearchOpen); // Toggle search box visibility
+    };
+
+    const handleCross = () => {
+        setIsSearchOpen(false); // Toggle search box visibility
+    }
 
     const handleMouseEnter = () => {
         setHideDropDown(false)
@@ -70,10 +80,7 @@ function Nav({ isLoggedIn, user }) {
                             <Link className="nav-link" to='/recipe'>Explore Recipe</Link>
 
                             {/* search  */}
-                            {/* <div className="nav-link" >
-                                search
-                            </div> */}
-                            <Link className="nav-link" to='/search:searchRecipe'>
+                            <Link onClick={handleSearchClick} className="nav-link fix-search" >
                                 <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" className="bi bi-search"
                                     viewBox="0 0 16 16">
                                     <path
@@ -81,6 +88,8 @@ function Nav({ isLoggedIn, user }) {
                                 </svg>
                                 search
                             </Link>
+
+                            {/* <SearchBox/> */}
                             {/* search  */}
 
                             <Link className="nav-link" to='/bookmark'>
@@ -111,14 +120,6 @@ function Nav({ isLoggedIn, user }) {
                             </Link>
                         </div>
                         <div className={showMenu ? 'nav-but-right menu-mobile-logout' : 'nav-but-right'} >
-                            {/* dark mode  */}
-                            <div className='dark-mode-icon' onClick={handleToggleTheme}>
-                                {
-                                    isModeDark ?
-                                        <i className="bi bi-moon"></i> :
-                                        <i className="bi bi-sun"></i>
-                                }
-                            </div>
                             <Link to={`/`}>
                                 <button onClick={handleLogOut} className='nav-but'><i className="bi bi-power"></i> Logout</button>
                             </Link>
@@ -126,26 +127,21 @@ function Nav({ isLoggedIn, user }) {
                     </>
 
                     :
+
                     <>
                         <div className={showMenu ? 'center-nav menu-mobile' : 'center-nav menu-web'} >
                             <Link className="nav-link" to='/recipe'>Explore Recipe</Link>
-                            <div className='search-icon'>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-search"
+                            {/* search  */}
+                            <Link className="nav-link fix-search">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" className="bi bi-search"
                                     viewBox="0 0 16 16">
                                     <path
                                         d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
                                 </svg>
-                            </div>
+                                search
+                            </Link>
                         </div>
                         <div className={showMenu ? 'nav-but-right menu-mobile-logout' : 'nav-but-right'}>
-                            {/* dark mode  */}
-                            <div className='dark-mode-icon' onClick={handleToggleTheme}>
-                                {
-                                    isModeDark ?
-                                        <i className="bi bi-moon"></i> :
-                                        <i className="bi bi-sun"></i>
-                                }
-                            </div>
                             <Link to='/login'>
                                 <button className='nav-but'><i className="bi bi-person-circle"></i> Login</button>
                             </Link>
@@ -167,6 +163,32 @@ function Nav({ isLoggedIn, user }) {
                         </svg>
                 }
             </div>
+            {/* dark mode  */}
+            <div className='dark-mode-icon' onClick={handleToggleTheme}>
+                {
+                    isModeDark ?
+                        <i className="bi bi-moon"></i> :
+                        <i className="bi bi-sun"></i>
+                }
+            </div>
+            <div onClick={handleSearchClick} className='search-box'>
+                <Link className="nav-link" >
+                    <center>
+
+                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" className="bi bi-search"
+                            viewBox="0 0 16 16">
+                            <path
+                                d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
+                        </svg>
+                        Search
+                    </center>
+                </Link>
+            </div>
+
+            {isSearchOpen && (
+                <SearchBox/>
+            )}
+
         </nav>
     )
 }
