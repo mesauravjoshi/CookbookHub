@@ -1,16 +1,54 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useUser } from '../UserContext';
-import './RecipeCat.css'
 import MarkCode from '../MarkCode';
+import './RecipeCat.css'
+// slider 
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 function RecipeCat() {
+  const settings = {
+    dots: true,
+    infinite: false,
+    speed: 500,
+    slidesToShow: 8,
+    slidesToScroll: 4,
+    initialSlide: 0,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 5,
+          slidesToScroll: 4,
+          infinite: false,
+          dots: true
+        }
+      },
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 4,
+          initialSlide: 2
+        }
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 2.5,
+          slidesToScroll: 1
+        }
+      }
+    ]
+  };
   const { user } = useUser();
   const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [showSaveIcon, setShowSaveIcon] = useState(false);
   const [recipes, setRecipes] = useState([]);
   const [bookmarkedItems, setBookmarkedItems] = useState([]);
-  const [category, setCategory] = useState('Beverage');
+  const [category, setCategory] = useState('Dinner');
 
   const handleCategory = (e) => {
     setCategory(e.target.textContent)
@@ -70,26 +108,32 @@ function RecipeCat() {
 
       fetchData();
     }
-  }, [category,user]);
+  }, [category, user]);
+
+  const listCategory = [
+    'Dinner', 'Lunch', 'Breakfast', 'Beverage', 'Main Course', 'Dessert', 'Snack', 'Salad'
+  ]
 
   return (
     <>
-
       <center>
         <h2>CATEGORY</h2>
       </center>
 
-      <div className="category-wrapper">
-        <div className="category">
-          <p onClick={handleCategory}>Dinner</p>
-          <p onClick={handleCategory}>Lunch</p>
-          <p onClick={handleCategory}>Breakfast</p>
-          <p onClick={handleCategory}>Beverage</p>
-          <p onClick={handleCategory}>Main Course</p>
-          <p onClick={handleCategory}>Dessert</p>
-          <p onClick={handleCategory}>Snack</p>
-          <p onClick={handleCategory}>Salad</p>
-        </div>
+      <div className="category">
+        <Slider {...settings}>
+          {
+            listCategory.map((item, index) => {
+              return (
+                <div>
+                  <center>
+                    <p key={index} onClick={handleCategory}>{item}</p>
+                  </center>
+                </div>
+              )
+            })
+          }
+        </Slider>
       </div>
 
       {

@@ -64,7 +64,7 @@ h3 {
     flex-wrap: nowrap;
     position: sticky;
     top: 0;
-    padding: .6em 2em 0.3em 2em;
+    padding: 0.6em 2em 0.3em 1.1em;
     z-index: 1000;
     color: black;
 
@@ -106,7 +106,7 @@ button {
         flex-wrap: nowrap;
         position: sticky;
         top: 0;
-        padding: .6em 2.9em;
+        padding: 0.6em 2em 0.3em 1.1em;
         z-index: 1000;
         color: black;
         justify-content: space-between;
@@ -163,7 +163,7 @@ button {
     .dark-mode-icon {
         /* border: 1px solid white; */
         position: absolute;
-        right: 6em;
+        right: 5.5em;
     }
 
     .fix-search {
@@ -173,26 +173,8 @@ button {
     .search-box {
         display: inline-block;
         position: absolute;
-        left: 50%;
+        left: 47%;
     }
-
-    .search-box-input {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 3.3em;
-        margin: 0vw 21vw;
-        /* background-color: rgba(255, 255, 255, 0.9); */
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 1000;
-    }
-
-    /* .search-box-input input{
-        width: 2vw;
-    } */
 }
 
 .bi-moon {
@@ -201,36 +183,4 @@ button {
 
 .dark-mode-icon {
     cursor: pointer;
-}
-
-.search-box-input {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 3.3em;
-    margin: 0vw 21vw;
-    /* background-color: rgba(255, 255, 255, 0.9); */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-}
-
-.search-box-input input {
-    padding: 0.3em 0.6em;
-    /* box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); */
-    color: var(--nav_color);
-    width: 91%;
-    height: 2.3em;
-    background: var(--body_background);
-    background-blend-mode: hue;
-    font-size: 1.2em;
-    border: 2px solid #ccc;
-    border-radius: 15px;
-}
-
-/* Hide search box when not in use */
-.search-box-input input:focus {
-    outline: none;
 }

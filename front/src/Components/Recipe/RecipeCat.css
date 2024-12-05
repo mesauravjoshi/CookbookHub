@@ -1,18 +1,46 @@
+
 .category {
-    border-radius: 62px;
-    border: 0.1em solid red;
-    display: flex;
-    margin: 0.3em 2em;
-    padding: 0em 2em;
-    justify-content: space-around;
-    flex-wrap: wrap;
-    flex-direction: row;
-    cursor: pointer;
-    align-items: center;
-    align-content: center;
+  height: 5em;
+  overflow-x: auto; 
+  -webkit-overflow-scrolling: touch; 
+  white-space: nowrap;
+  padding: 0em 2em;
+  justify-content: space-between;
 }
 
-.category p{
-    margin: 0.61em 0em;
-    color: red;
+.category-item {
+  border: 1px solid yellow;
+}
+
+.category::-webkit-scrollbar {
+  height: 8px;  /* Set scrollbar height */
+}
+
+.category::-webkit-scrollbar-thumb {
+  background-color: #f1423a;  /* Customize scrollbar color */
+  border-radius: 5px;
+}
+
+.category::-webkit-scrollbar {
+  display: none;
+}
+
+.category p {
+  padding: 0.3em 0.9em;
+  cursor: pointer;
+  border-radius: 54px;
+  border: 0.1em solid #f1423a;
+  white-space: nowrap;
+  color: #f1423a;
+  transition: background-color 0.3s;
+}
+
+.category p:hover {
+  background-color: #f13b16;
+  color: white;
+}
+
+.slick-slide > div {
+  margin: 0 0px;
+  width: 7em;
 }
