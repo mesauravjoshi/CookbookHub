@@ -127,11 +127,11 @@ function Upload() {
 
       <div className='upload'>
         {
-          user &&
+          // user &&
           <Form onSubmit={handleSubmit}>
             <Form.Control size="lg" onChange={handleForm} value={image_URL} type="text" name='Image_URL' placeholder='Image URL' required autoFocus />
             <br />
-            <Form.Control size="lg" onChange={handleForm} value={recipesName} type="text" name='Recipes' placeholder='Recipes name' required autoFocus />
+            <Form.Control size="lg" onChange={handleForm} value={recipesName} type="text" name='Recipes' placeholder='Recipes name' required  />
             <br />
             <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
               <Form.Control size="lg" onChange={handleForm} value={ingredients} name='Ingredients' placeholder='Ingredients' required as="textarea" rows={3} />
@@ -167,11 +167,15 @@ function Upload() {
               <option value="Western">Western</option>
             </Form.Select>
             <br />
+            <div className='Optional'>
+              <p>(Optional)</p>
+            </div>
 
             <div className='multiple-select'>
               <Form.Control size="lg"
-                placeholder={isDisable ? 'All items added successfully' : 'Multiple select search (Optional)'} value={tags} onChange={handleTagChange}
+                placeholder={isDisable ? 'All items added successfully' : 'Add Tags (e.g., Quick, Vegan, Party, Summer)'} value={tags} onChange={handleTagChange}
                 disabled={isDisable}
+                autoFocus
               />
               <button onClick={handleAddTags} disabled={isDisable}
                 style={{ cursor: isDisable ? 'not-allowed' : 'pointer' }} > Add</button>

@@ -119,6 +119,11 @@ option {
   /* background-color: green; */
 }
 
+.Optional p{
+  color: var(--form_color);
+  margin: 0px 0px 6px 0px;
+}
+
 .multiple-select {
   height: 5em;
   /* border: 1px solid green; */
