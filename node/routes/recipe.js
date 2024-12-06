@@ -25,12 +25,13 @@ router.get('/data',jwtAuthMiddleware, async (req, res) => {
 
 // Upload recipies 
 router.post('/recipie_data', jwtAuthMiddleware, async (req, res) => {
-    const { Category ,Cuisine,Image_URL, Recipes, Ingredients, Instructions, PostedBy } = req.body; // Ensure you destructure UploadedBy
+    const { Category ,Cuisine,Image_URL, Recipes, Ingredients, Instructions, PostedBy, Tags } = req.body; // Ensure you destructure UploadedBy
+    
     if (!Category || !Cuisine || !Image_URL || !Recipes || !Ingredients || !Instructions || !PostedBy) {
         return res.status(400).json({ message: 'All fields are required' });
     }
     // Create a new recipe document
-    const recipe = new Recipe({ Category ,Cuisine ,Image_URL, Recipes, Ingredients, Instructions, PostedBy: PostedBy }); // Save UploadedBy as PostedBy
+    const recipe = new Recipe({ Category ,Cuisine ,Image_URL, Recipes, Ingredients, Instructions, PostedBy: PostedBy, Tags }); // Save UploadedBy as PostedBy
     try {
         const savedRecipe = await recipe.save();
         console.log('New recipe created:', savedRecipe);
@@ -81,7 +82,6 @@ router.get('/edit_recipe/:_id', async (req, res) => {
     }
   });
 
-
 // Update recipe endpoint (PUT)
 router.put('/edit_recipe/:_id', async (req, res) => {
     const { _id } = req.params;
@@ -110,7 +110,6 @@ router.put('/edit_recipe/:_id', async (req, res) => {
     }
   });
   
-  
 // DELETE request: Delete the recipe by ID
 router.delete('/edit_recipe/:_id', async (req, res) => {
     const { _id } = req.params;  // Get the recipe ID from the request parameters
@@ -128,5 +127,4 @@ router.delete('/edit_recipe/:_id', async (req, res) => {
     }
   });
   
-
 module.exports = router;

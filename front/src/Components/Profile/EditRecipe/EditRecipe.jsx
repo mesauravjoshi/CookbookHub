@@ -21,51 +21,51 @@ function EditRecipe() {
 
   // Fetch recipe details when component mounts
   useEffect(() => {
-    const fetchRecipe = async () => {
-      try {
-        const token = localStorage.getItem('token');  // Get token from localStorage
-        if (!token) {
-          throw new Error('No authentication token found');
-        }
-
-        const response = await fetch(`http://localhost:3000/recipes/edit_recipe/${_id}`, {
-          method: 'GET',
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
+    if (user && user.username) {
+      const fetchRecipe = async () => {
+        try {
+          const token = localStorage.getItem('token');  // Get token from localStorage
+          if (!token) {
+            throw new Error('No authentication token found');
           }
-        });
-
-        if (response.status === 401) {
-          setIsLoggedIn(false);
-          return;
-        }
-
-        if (!response.ok) {
-          throw new Error('Failed to fetch recipe');
-        }
-
-        const data = await response.json();
-
-        console.log('inside IF ELSE', data.Image_URL);
-        if (data) {
-          setRecipe({
-            Image_URL: data.Image_URL,
-            Recipes: data.Recipes,
-            Ingredients: data.Ingredients,
-            Instructions: data.Instructions,
-            Category: data.Category,
-            Cuisine: data.Cuisine
+  
+          const response = await fetch(`http://localhost:3000/recipes/edit_recipe/${_id}`, {
+            method: 'GET',
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json'
+            }
           });
-        }
-      } catch (error) {
-        console.error('Error fetching recipe:', error);
-        setIsLoggedIn(false); // If error, user is logged out
-      }
-    };
+  
+          if (response.status === 401) {
+            setIsLoggedIn(false);
+            return;
+          }
+  
+          if (!response.ok) {
+            throw new Error('Failed to fetch recipe');
+          }
+  
+          const data = await response.json();
 
-    fetchRecipe();
-  }, [_id]);
+          if (data.PostedBy.username === user.username) {
+            setRecipe({
+              Image_URL: data.Image_URL,
+              Recipes: data.Recipes,
+              Ingredients: data.Ingredients,
+              Instructions: data.Instructions,
+              Category: data.Category,
+              Cuisine: data.Cuisine
+            });
+          }
+        } catch (error) {
+          console.error('Error fetching recipe:', error);
+          setIsLoggedIn(false); // If error, user is logged out
+        }
+      };
+      fetchRecipe();
+    }
+  }, [user,_id]);
 
 
   // Handle form input changes
@@ -82,7 +82,7 @@ function EditRecipe() {
     e.preventDefault();
     try {
       const token = localStorage.getItem('token');
-      console.log('sending', recipe);
+      // console.log('sending', recipe);
 
       const response = await fetch(`http://localhost:3000/recipes/edit_recipe/${_id}`, {
         method: 'PUT',
@@ -98,7 +98,7 @@ function EditRecipe() {
       }
 
       const updatedRecipe = await response.json();
-      console.log('Updated recipe:', updatedRecipe);
+      // console.log('Updated recipe:', updatedRecipe);
 
       // Redirect after successful update using navigate()
       navigate(`/recipe/${_id}`); // Redirect to the updated recipe's detail page

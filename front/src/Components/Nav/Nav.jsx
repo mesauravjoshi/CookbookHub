@@ -71,7 +71,7 @@ function Nav({ isLoggedIn, user }) {
 
     return (
         <nav className="navbar navbar-dark bg-Dark">
-            <a className="navbar-brand" href="/">C<span>oo</span>kb<span>oo</span>kHub </a>
+            <Link className="navbar-brand" to='/'>C<span>oo</span>kb<span>oo</span>kHub</Link>
 
             {
                 user && isLoggedIn ?

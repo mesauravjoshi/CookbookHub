@@ -41,6 +41,8 @@ function Home() {
           }
 
           const recipesData = await recipesResponse.json();
+          // console.log(recipesData);
+          
           setRecipes((prev) => [...prev, ...recipesData]);
 
           const bookmarksResponse = await fetch(`http://localhost:3000/bookmark/bookmarks/${user.username}`, {
@@ -67,6 +69,7 @@ function Home() {
       fetchData();
     }
   }, [page]);
+console.log(recipes.length);
 
   const handleScroll = () => {
     if (window.innerHeight + document.documentElement.scrollTop + 1 >= document.documentElement.scrollHeight) {

@@ -20,7 +20,7 @@ function Search() {
   useEffect(() => {
     const fetchQuery = async () => {
       const token = localStorage.getItem('token');
-      console.log(searchQuery);
+      // console.log(searchQuery);
       if (!token) {
         console.log('Token is missing or expired');
         return;
@@ -40,7 +40,7 @@ function Search() {
         }
 
         const data = await res.json();
-        console.log(data);
+        // console.log(data);
         setRecipes(data)
         return data;
       } catch (err) {
@@ -48,7 +48,7 @@ function Search() {
       }
     }
     fetchQuery()
-  }, [searchQuery]);
+  }, [searchQuery,searchRecipe]);
 
   return (
     <div>

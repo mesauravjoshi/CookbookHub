@@ -72,7 +72,7 @@ function MyRecipes() {
             ...item, // spread the existing properties of the object
             isThreeDotShow: false // add isShow: true
           }));
-          console.log(updatedData);
+          // console.log(updatedData);
           setRecipes(updatedData);
 
           // Fetch bookmarks for the user-----------------------------------------
@@ -90,7 +90,7 @@ function MyRecipes() {
           if (bookmarksResponse.ok) {
             const bookmarksData = await bookmarksResponse.json();
             const bookmarkIds = bookmarksData.map(item => item.Post_id); // Assuming Post_id is the identifier
-            console.log(bookmarksData);
+            // console.log(bookmarksData);
             setBookmarkedItems(bookmarkIds);
           } else {
             console.log('Failed to fetch bookmarks');
@@ -107,7 +107,7 @@ function MyRecipes() {
       console.log('User is not logged in or no username found');
     }
 
-  }, [user]);
+  }, [user,recipes]);
 
   const handleDelete = async (_id) => {
     const isConfirmed = window.confirm('Do you want to delete this post?');

@@ -78,6 +78,7 @@ function RecipeCat() {
           }
 
           const recipesData = await recipesResponse.json();
+          console.log(recipesData);
           setRecipes(recipesData);
           // Fetch bookmarks for the user
           const bookmarksResponse = await fetch(`http://localhost:3000/bookmark/bookmarks/${user.username}`, {
@@ -125,9 +126,9 @@ function RecipeCat() {
           {
             listCategory.map((item, index) => {
               return (
-                <div>
+                <div key={index}>
                   <center>
-                    <p key={index} onClick={handleCategory}>{item}</p>
+                    <p  onClick={handleCategory}>{item}</p>
                   </center>
                 </div>
               )
@@ -147,6 +148,7 @@ function RecipeCat() {
                 </div>
                 <div className="card__details">
                   <div className='psot-line'>
+                    <span className="tag">{recipe._id}</span>
                     <span className="tag">Category: {(recipe.Category).substring(0, 10)}</span>
                     <span className="tag">Cuisine: {(recipe.Cuisine).substring(0, 10)}</span>
                     {/* <span className="tag">{(recipe.Created_At).substring(0, 10)}</span>

@@ -125,7 +125,7 @@ function RecipeCuisine() {
       {
             listCuisine.map((item, index) => {
               return (
-                <div>
+                <div key={index}>
                   <center>
                     <p key={index} onClick={handleCategory}>{item}</p>
                   </center>

@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import Form from 'react-bootstrap/Form';
-import './Upload.css';
 import { useUser } from './UserContext'; // Import the context
 import PageNotFound from './PageNotFound/PageNotFound';
 import Nav from './Nav/Nav';
+import './Upload.css';
 
 function Upload() {
   const { user, setUser } = useUser(); // Get the user from context 
@@ -13,8 +13,43 @@ function Upload() {
   const [instructions, setInstructions] = useState('');
   const [category, setCategory] = useState('');
   const [cuisine, setCuisine] = useState('');
-
   const [isLoggedIn, setIsLoggedIn] = useState(true); // New state for login status
+  // tags 
+  const [tags, setTags] = useState('');
+  const [multiSel, setMultiSel] = useState([]);
+  const [isDisable, setIsDisable] = useState(false);
+
+  const handleTagChange = (e) => {
+    // console.log(e.target.value);
+    setTags(e.target.value)
+  }
+
+  const handleAddTags = (e) => {
+    e.preventDefault();
+    if (tags && !multiSel.includes(tags)) {
+      if (multiSel.length < 4) {
+        // Append new tag to multiSel array and update state
+        setMultiSel((prevTags) => [...prevTags, tags]);
+        setTags(''); // Clear input after adding tag
+      }
+
+      // Disable input and button once 4 tags are added
+      if (multiSel.length + 1 >= 4) {
+        setIsDisable(true);
+      }
+    }
+  }
+
+  const handleRemoveTag = (item) => {
+    const udatedMultiSel = multiSel.filter((prevTag) => prevTag != item)
+    setMultiSel(udatedMultiSel)
+    setIsDisable(true);
+    console.log(udatedMultiSel);
+
+    if (udatedMultiSel.length < 4) {
+      setIsDisable(false);
+    }
+  }
 
   const handleForm = (e) => {
     const { name, value } = e.target;
@@ -31,17 +66,12 @@ function Upload() {
   };
 
   const handleSubmit = async (e) => {
-    // console.log('clicked');
-    // console.log(category);
-
     e.preventDefault();
     const token = localStorage.getItem('token');
     const name = localStorage.getItem('name');
-    console.log(name);
+    // console.log(name);
 
     const userData = JSON.parse(atob(token.split('.')[1])); // Decode token to get user data
-    // console.log(userData.username);
-    // console.log(userData.name);
 
     const form = {
       Recipes: recipesName,
@@ -53,32 +83,33 @@ function Upload() {
       PostedBy: {
         name: name,
         username: userData.username,
-        _id: userData.id // Use userData.id or userData._id depending on your token structure
-      }
+        _id: userData.id
+      },
+      Tags: multiSel
     };
     console.log(form);
+    const isConfirmed = window.confirm('Do you want to delete this post?');
+    if (isConfirmed) {
+      const response = await fetch('http://localhost:3000/recipes/recipie_data', {
+        method: 'POST',
+        body: JSON.stringify(form),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}` // Include token in the header
+        }
+      });
 
-    const response = await fetch('http://localhost:3000/recipes/recipie_data', {
-      method: 'POST',
-      body: JSON.stringify(form),
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}` // Include token in the header
+      if (response.ok) {
+        setImage_URL('');
+        setRecipesName('');
+        setIngredients('');
+        setInstructions('');
+        setCategory('');
+        setCuisine('');
+        setMultiSel([]);
+      } else {
+        console.log('Error saving recipe');
       }
-    });
-
-    if (response.ok) {
-      alert('Recipe saved');
-      const data = await response.json();
-      console.log(data);
-      setImage_URL('');
-      setRecipesName('');
-      setIngredients('');
-      setInstructions('');
-      setCategory('');
-      setCuisine('');
-    } else {
-      console.log('Error saving recipe');
     }
   };
 
@@ -98,9 +129,9 @@ function Upload() {
         {
           user &&
           <Form onSubmit={handleSubmit}>
-            <Form.Control size="lg" onChange={handleForm} value={image_URL} type="text" name='Image_URL' placeholder='Image URL' required />
+            <Form.Control size="lg" onChange={handleForm} value={image_URL} type="text" name='Image_URL' placeholder='Image URL' required autoFocus />
             <br />
-            <Form.Control size="lg" onChange={handleForm} value={recipesName} type="text" name='Recipes' placeholder='Recipes name' required />
+            <Form.Control size="lg" onChange={handleForm} value={recipesName} type="text" name='Recipes' placeholder='Recipes name' required autoFocus />
             <br />
             <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
               <Form.Control size="lg" onChange={handleForm} value={ingredients} name='Ingredients' placeholder='Ingredients' required as="textarea" rows={3} />
@@ -132,14 +163,38 @@ function Upload() {
               <option value="Asian">Asian</option>
               <option value="Indian">Indian</option>
               <option value="Italian">Italian</option>
-              <option value="Korean">Korean</option> 
-              <option value="Western">Western</option> 
+              <option value="Korean">Korean</option>
+              <option value="Western">Western</option>
             </Form.Select>
+            <br />
+
+            <div className='multiple-select'>
+              <Form.Control size="lg"
+                placeholder={isDisable ? 'All items added successfully' : 'Multiple select search (Optional)'} value={tags} onChange={handleTagChange}
+                disabled={isDisable}
+              />
+              <button onClick={handleAddTags} disabled={isDisable}
+                style={{ cursor: isDisable ? 'not-allowed' : 'pointer' }} > Add</button>
+              <div className="tag-list">
+                {
+                  multiSel.map((item, index) => {
+                    return (
+                      <div className='tag-list-item' key={index}>
+                        <p> {item}</p>
+                        <svg onClick={() => handleRemoveTag(item)} xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" className="bi bi-x" viewBox="0 0 16 16">
+                          <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
+                        </svg>
+                      </div>
+                    )
+                  })
+                }
+              </div>
+            </div>
+
             <div className="upload-button">
-              <button>Upload</button>
+              <button  > Upload</button>
             </div>
           </Form>
-
         }
 
         {/* if not login  */}

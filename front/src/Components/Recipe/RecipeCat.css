@@ -44,3 +44,31 @@
   margin: 0 0px;
   width: 7em;
 }
+
+
+.slick-dots li button:before {
+  border: 1px solid wheat;
+  font-family: 'slick';
+  font-size: 9px;
+  line-height: 20px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 20px;
+  height: 37px;
+  content: '•';
+  text-align: center;
+  opacity: .25;
+  color: var(--body_color);
+  -webkit-font-smoothing: antialiased;
+}
+
+slick-prev:before, .slick-next:before {
+  font-family: 'slick';
+  font-size: 28px;
+  line-height: 1;
+  opacity: .75;
+  color: white;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+import './ChangePassword..css'
 function ChangePassword() {
     const [isOldPasswordCoreect, setIsOldPasswordCoreect] = useState(true);
     const [isNewAndConfirmMatch, setIsNewAndConfirmMatch] = useState(true);

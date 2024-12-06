@@ -35,7 +35,7 @@ function Bookmark() {
 
       fetchData();
     }
-  }, [user]);
+  }, [user,recipes]);
 
   const toggleBookmark = async (item) => {
     // console.log(item.Post_id);
@@ -69,10 +69,8 @@ function Bookmark() {
     });
 
     if (response.ok) {
-      const data = await response.json();
+      // const data = await response.json();
       // console.log('Removed bookmark:', data);
-      // Refresh the page after successful removal
-      window.location.reload();
     } else {
       console.log('Failed to remove bookmark');
     }

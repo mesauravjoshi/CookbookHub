@@ -18,7 +18,8 @@ const recipeSchema = new mongoose.Schema({
     Recipes: { type: String, required: true },
     Ingredients: { type: String, required: true },
     Instructions: { type: String, required: true },
-    PostedBy: { type: userSchema, required: true }
+    PostedBy: { type: userSchema, required: true },
+    Tags: { type: Array, required: false},
 });
 
 const Recipe = mongoose.model('Recipe', recipeSchema);
