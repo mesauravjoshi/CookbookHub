@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { url } from '../../ApiUrl/Url';
+
 import './ChangePassword..css'
 function ChangePassword() {
     const [isOldPasswordCoreect, setIsOldPasswordCoreect] = useState(true);
@@ -15,7 +17,7 @@ function ChangePassword() {
 
     const checkPasswordCorrect = async (token) => {
  
-        const response = await fetch('http://localhost:3000/auth/checkPasswordCorrect', {
+        const response = await fetch(`${url}/auth/checkPasswordCorrect`, {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -61,7 +63,7 @@ function ChangePassword() {
         setIsNewAndConfirmMatch(true)
         // Qwerty@123
         try {
-            const response = await fetch('http://localhost:3000/auth/changePassword', {
+            const response = await fetch(`${url}/auth/changePassword`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`,

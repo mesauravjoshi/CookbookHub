@@ -34,7 +34,7 @@ router.post('/recipie_data', jwtAuthMiddleware, async (req, res) => {
     const recipe = new Recipe({ Category ,Cuisine ,Image_URL, Recipes, Ingredients, Instructions, PostedBy: PostedBy, Tags }); // Save UploadedBy as PostedBy
     try {
         const savedRecipe = await recipe.save();
-        console.log('New recipe created:', savedRecipe);
+        // console.log('New recipe created:', savedRecipe);
         res.status(201).json(savedRecipe); // Respond with the created recipe
     } catch (error) {
         console.error('Error saving recipe:', error);
@@ -87,7 +87,6 @@ router.put('/edit_recipe/:_id', async (req, res) => {
     const { _id } = req.params;
     
     const { Image_URL, Recipes, Ingredients, Instructions, Category, Cuisine } = req.body;
-    console.log('line 74: ',Image_URL);
   
     try {
       const updatedRecipe = await Recipe.findByIdAndUpdate(_id, {

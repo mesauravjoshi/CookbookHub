@@ -1,5 +1,6 @@
 // BookmarkIcon.jsx
 import React, { useState } from 'react';
+import { url } from './ApiUrl/Url';
 import { useUser } from './UserContext';
 
 function MarkCode({ recipe, bookmarkedItems, setBookmarkedItems }) {
@@ -33,7 +34,7 @@ function MarkCode({ recipe, bookmarkedItems, setBookmarkedItems }) {
         }
       };
 
-      const response = await fetch('http://localhost:3000/bookmark/bookmark_remove', {
+      const response = await fetch(`${url}/bookmark/bookmark_remove`, {
         method: 'POST',
         body: JSON.stringify(saving_post),
         headers: {
@@ -74,7 +75,7 @@ function MarkCode({ recipe, bookmarkedItems, setBookmarkedItems }) {
       };
       // console.log(saving_post);
 
-      const response = await fetch('http://localhost:3000/bookmark/bookmark_add', {
+      const response = await fetch(`${url}/bookmark/bookmark_add`, {
         method: 'POST',
         body: JSON.stringify(saving_post),
         headers: {

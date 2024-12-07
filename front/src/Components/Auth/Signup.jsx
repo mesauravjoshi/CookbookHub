@@ -1,9 +1,11 @@
 import React from 'react'
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { url } from '../ApiUrl/Url';
 import './Signup.css'
 
 function Signup() {
+  console.log(url);
   const [form, setForm] = useState({});
   const [alreadyEmail, setAlreadyEmail] = useState(false);
   const [isPasswordValid, setIsPasswordValid] = useState(false);
@@ -43,7 +45,7 @@ function Signup() {
     }
 
     // Proceed with user registration since both username and password are valid
-    const response = await fetch('http://localhost:3000/auth/signup', {
+    const response = await fetch(`${url}/auth/signup`, {
       method: 'POST',
       body: JSON.stringify(form),
       headers: {
@@ -62,7 +64,7 @@ function Signup() {
 
   // Function to check if the username already exists in the database
   const checkUsernameExists = async (username) => {
-    const response = await fetch(`http://localhost:3000/auth/usernameExists/${username}`);
+    const response = await fetch(`${url}/auth/usernameExists/${username}`);
     const data = await response.json();
     console.log(data);
     return data.exists; // Assume backend returns { exists: true/false }

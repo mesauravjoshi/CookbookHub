@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../UserContext';
+import { url } from '../ApiUrl/Url';
 import './Login.css';
 
 function Login() {
@@ -21,7 +22,7 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:3000/auth/login', {
+      const response = await fetch(`${url}/auth/login`, {
         method: 'POST',
         body: JSON.stringify(form),
         headers: {

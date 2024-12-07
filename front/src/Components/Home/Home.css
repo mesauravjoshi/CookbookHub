@@ -56,10 +56,6 @@
   margin: -0.1em 2.4em;
 }
 
-/* .svg-cook{
-  
-} */
-
 /* END:  Discover and Share Amazing Recipes!  ---------------------- */
 
 img {
@@ -142,7 +138,7 @@ h1 {
     border: none;
     bottom: 0.2em;
     left: 50%;
-    /* box-shadow: 0 0 9px 0 rgb(78 44 23), 0px 4px 20px 20px rgb(215 188 173); */
+    box-shadow: 0 0 9px 0 rgb(78 44 23), 0px 4px 20px 20px rgb(215 188 173);
   }
 
   /* Add style when button is focused or hovered */
@@ -237,12 +233,14 @@ p {
     justify-content: flex;
     flex-direction: row;
   }
-  .tagline{
+
+  .tagline {
     justify-content: center;
   }
+
   .tagline button {
     margin: 0 0 1.2em 0.3em;
-}
+  }
 
   #custom-h1 {
     font-size: 5.7em;
@@ -254,7 +252,7 @@ p {
 @media (max-width: 983px) {
   #container {
     /* background: #000; */
-  grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     /* grid-template-columns: 2fr; */
     /* Switch to a single column layout */
   }

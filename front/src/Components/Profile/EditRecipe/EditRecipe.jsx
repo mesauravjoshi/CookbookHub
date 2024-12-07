@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom'; // Use useNavigate instead of useHistory
 import Form from 'react-bootstrap/Form';
+import { url } from '../../ApiUrl/Url';
 import { useUser } from '../../UserContext';
 import PageNotFound from '../../PageNotFound/PageNotFound';
 import Nav from '../../Nav/Nav';
@@ -29,7 +30,7 @@ function EditRecipe() {
             throw new Error('No authentication token found');
           }
   
-          const response = await fetch(`http://localhost:3000/recipes/edit_recipe/${_id}`, {
+          const response = await fetch(`${url}/recipes/edit_recipe/${_id}`, {
             method: 'GET',
             headers: {
               'Authorization': `Bearer ${token}`,
@@ -84,7 +85,7 @@ function EditRecipe() {
       const token = localStorage.getItem('token');
       // console.log('sending', recipe);
 
-      const response = await fetch(`http://localhost:3000/recipes/edit_recipe/${_id}`, {
+      const response = await fetch(`${url}/recipes/edit_recipe/${_id}`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`,

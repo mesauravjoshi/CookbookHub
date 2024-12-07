@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useUser } from '../UserContext';
+import { url } from '../ApiUrl/Url';
 import './Home.css';
 import Nav from '../Nav/Nav';
 import Hero from './Hero';
@@ -23,7 +24,7 @@ function Home() {
           setUser(userData);
         }
         try {
-          const recipesResponse = await fetch(`http://localhost:3000/recipes/data/?_limit=4&_page=${page}`, {
+          const recipesResponse = await fetch(`${url}/recipes/data/?_limit=4&_page=${page}`, {
             method: 'GET',
             headers: {
               'Authorization': `Bearer ${token}`,
@@ -45,7 +46,7 @@ function Home() {
           
           setRecipes((prev) => [...prev, ...recipesData]);
 
-          const bookmarksResponse = await fetch(`http://localhost:3000/bookmark/bookmarks/${user.username}`, {
+          const bookmarksResponse = await fetch(`${url}/bookmark/bookmarks/${user.username}`, {
             method: 'GET',
             headers: {
               'Authorization': `Bearer ${token}`,
@@ -69,7 +70,7 @@ function Home() {
       fetchData();
     }
   }, [page]);
-console.log(recipes.length);
+// console.log(recipes.length);
 
   const handleScroll = () => {
     if (window.innerHeight + document.documentElement.scrollTop + 1 >= document.documentElement.scrollHeight) {

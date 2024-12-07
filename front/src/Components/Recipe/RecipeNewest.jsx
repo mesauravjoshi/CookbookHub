@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { url } from '../ApiUrl/Url';
 import { useUser } from '../UserContext';
 import MarkCode from '../MarkCode';
 
@@ -15,7 +16,7 @@ function RecipeNewest({ isLoggedIn, setIsLoggedIn }) {
         const token = localStorage.getItem('token');  // Get the token from localStorage
         try {
           // Fetch recipes
-          const recipesResponse = await fetch(`http://localhost:3000/recipe_category/recipe_by_date`, {
+          const recipesResponse = await fetch(`${url}/recipe_category/recipe_by_date`, {
             method: 'GET',
             headers: {
               'Authorization': `Bearer ${token}`,
@@ -38,7 +39,7 @@ function RecipeNewest({ isLoggedIn, setIsLoggedIn }) {
           // console.log(recipesData);
           setRecipes(recipesData);
           // Fetch bookmarks for the user
-          const bookmarksResponse = await fetch(`http://localhost:3000/bookmark/bookmarks/${user.username}`, {
+          const bookmarksResponse = await fetch(`${url}/bookmark/bookmarks/${user.username}`, {
             method: 'GET',
             headers: {
               'Authorization': `Bearer ${token}`,

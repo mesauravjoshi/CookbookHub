@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import { url } from '../ApiUrl/Url';
 import Nav from '../Nav/Nav';
 import './RecipeID.css';
 import { useUser } from '../UserContext';
@@ -18,7 +19,7 @@ function RecipeID() {
         }
         const fetchData = async () => {
             try {
-                const response = await fetch(`http://localhost:3000/recipes/recipe/${_id}`, {
+                const response = await fetch(`${url}/recipes/recipe/${_id}`, {
                     method: 'GET',
                     headers: {
                         'Authorization': `Bearer ${token}`,

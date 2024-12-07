@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useUser } from './UserContext';
+import { url } from './ApiUrl/Url';
 import Nav from './Nav/Nav';
 
 function Bookmark() {
@@ -13,7 +14,7 @@ function Bookmark() {
       const fetchData = async () => {
         try {
           const token = localStorage.getItem('token');  // Get the token from localStorage
-          const bookmarksResponse = await fetch(`http://localhost:3000/bookmark/bookmarks/${user.username}`, {
+          const bookmarksResponse = await fetch(`${url}/bookmark/bookmarks/${user.username}`, {
             method: 'GET',
             headers: {
               'Authorization': `Bearer ${token}`,
@@ -59,7 +60,7 @@ function Bookmark() {
       }
     };
 
-    const response = await fetch('http://localhost:3000/bookmark/bookmark_remove', {
+    const response = await fetch(`${url}/bookmark/bookmark_remove`, {
       method: 'POST',
       body: JSON.stringify(saving_post),
       headers: {

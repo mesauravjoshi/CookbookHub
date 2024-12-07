@@ -74,12 +74,12 @@ router.post('/login', async (req, res) => {
 
 router.post('/changePassword', jwtAuthMiddleware, async (req, res) => {
     const { oldPassword, newPassword } = req.body;
-    console.log(oldPassword, newPassword);
+    // console.log(oldPassword, newPassword);
 
     try {
         // Find the user by ID from the token payload
         const user = await User.findById(req.user.id); // req.user is set by verifyToken middleware
-        console.log(user);
+        // console.log(user);
 
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
@@ -87,17 +87,10 @@ router.post('/changePassword', jwtAuthMiddleware, async (req, res) => {
 
         // Compare the old password with the stored password
         const isOldPasswordCorrect = await user.comparePassword(oldPassword);
-        console.log('isOldPasswordCorrect: ', isOldPasswordCorrect);
+        // console.log('isOldPasswordCorrect: ', isOldPasswordCorrect);
         if (!isOldPasswordCorrect) {
             return res.status(400).json({ message: 'Old password is incorrect' });
         }
-
-        // Hash the new password
-        // const hashedNewPassword = await bcrypt.hash(newPassword, 10);
-
-        // Update the user's password
-        // user.password = hashedNewPassword;
-        // await user.save();
 
         // Set the new password (this will trigger the pre-save hook)
         user.password = newPassword;
@@ -115,7 +108,7 @@ router.post('/changePassword', jwtAuthMiddleware, async (req, res) => {
 
 router.post('/checkPasswordCorrect', jwtAuthMiddleware, async (req, res) => {
     const { oldPassword } = req.body;
-    console.log('inside checkPasswordCorrect',oldPassword);
+    // console.log('inside checkPasswordCorrect',oldPassword);
 
     try {
         // Find the user by ID from the token payload
@@ -127,7 +120,7 @@ router.post('/checkPasswordCorrect', jwtAuthMiddleware, async (req, res) => {
 
         // Compare the old password with the stored password
         const isOldPasswordCorrect = await user.comparePassword(oldPassword);
-        console.log('isOldPasswordCorrect: ', isOldPasswordCorrect);
+        // console.log('isOldPasswordCorrect: ', isOldPasswordCorrect);
         if (!isOldPasswordCorrect) {
             // return res.status(400).json({ message: 'Old password is incorrect' });
             return res.status(400).json({ message: false });

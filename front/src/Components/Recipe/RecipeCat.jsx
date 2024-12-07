@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { url } from '../ApiUrl/Url';
 import { useUser } from '../UserContext';
 import MarkCode from '../MarkCode';
 import './RecipeCat.css'
@@ -60,7 +61,7 @@ function RecipeCat() {
       const fetchData = async () => {
         try {
           // Fetch recipes
-          const recipesResponse = await fetch(`http://localhost:3000/recipe_category/recipe_category?category=${category}`, {
+          const recipesResponse = await fetch(`${url}/recipe_category/recipe_category?category=${category}`, {
             method: 'GET',
             headers: {
               'Authorization': `Bearer ${token}`,
@@ -78,10 +79,10 @@ function RecipeCat() {
           }
 
           const recipesData = await recipesResponse.json();
-          console.log(recipesData);
+          // console.log(recipesData);
           setRecipes(recipesData);
           // Fetch bookmarks for the user
-          const bookmarksResponse = await fetch(`http://localhost:3000/bookmark/bookmarks/${user.username}`, {
+          const bookmarksResponse = await fetch(`${url}/bookmark/bookmarks/${user.username}`, {
             method: 'GET',
             headers: {
               'Authorization': `Bearer ${token}`,

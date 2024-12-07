@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useUser } from '../UserContext';
+import { url } from '../ApiUrl/Url';
 import MarkCode from '../MarkCode';
 import './RecipeCuisine.css'
 // slider 
@@ -63,7 +64,7 @@ function RecipeCuisine() {
       const fetchData = async () => {
         try {
           // Fetch recipes
-          const recipesResponse = await fetch(`http://localhost:3000/recipe_category/recipe_cuisine?cuisine=${cuisine}`, {
+          const recipesResponse = await fetch(`${url}/recipe_category/recipe_cuisine?cuisine=${cuisine}`, {
             method: 'GET',
             headers: {
               'Authorization': `Bearer ${token}`,
@@ -83,7 +84,7 @@ function RecipeCuisine() {
           // console.log(recipesData);
           setRecipes(recipesData);
           // Fetch bookmarks for the user
-          const bookmarksResponse = await fetch(`http://localhost:3000/bookmark/bookmarks/${user.username}`, {
+          const bookmarksResponse = await fetch(`${url}/bookmark/bookmarks/${user.username}`, {
             method: 'GET',
             headers: {
               'Authorization': `Bearer ${token}`,

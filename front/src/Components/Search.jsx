@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Link, useParams, } from 'react-router-dom';
 import Nav from './Nav/Nav';
+import { url } from './ApiUrl/Url';
 import { useUser } from './UserContext';
 
 function Search() {
@@ -11,7 +12,6 @@ function Search() {
   const [showSaveIcon, setShowSaveIcon] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(true); // New state for login status
   const [bookmarkedItems, setBookmarkedItems] = useState([]);
-  const [activeRecipeId, setActiveRecipeId] = useState(null); // State to track which recipe's dropdown is active
 
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
@@ -27,7 +27,7 @@ function Search() {
       }
 
       try {
-        const res = await fetch(`http://localhost:3000/search/search?query=${searchRecipe}`, {
+        const res = await fetch(`${url}/search/search?query=${searchRecipe}`, {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`,

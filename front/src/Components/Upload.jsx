@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Form from 'react-bootstrap/Form';
+import { url } from './ApiUrl/Url';
 import { useUser } from './UserContext'; // Import the context
 import PageNotFound from './PageNotFound/PageNotFound';
 import Nav from './Nav/Nav';
@@ -88,9 +89,9 @@ function Upload() {
       Tags: multiSel
     };
     console.log(form);
-    const isConfirmed = window.confirm('Do you want to delete this post?');
+    const isConfirmed = window.confirm('Do you want to upload this post?');
     if (isConfirmed) {
-      const response = await fetch('http://localhost:3000/recipes/recipie_data', {
+      const response = await fetch(`${url}/recipes/recipie_data`, {
         method: 'POST',
         body: JSON.stringify(form),
         headers: {
