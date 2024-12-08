@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
+require('dotenv').config();
 
-const mongoURL = 'mongodb+srv://<username>:<password>@cluster0.jv3io.mongodb.net/';
+// const mongoURL = process.env.MONGO_URL
+const mongoURL = process.env.MONGO_LOCAL_URL
 // const mongoURL = 'mongodb://127.0.0.1:27017/CookbookHub';
 
 async function connectDB() {
