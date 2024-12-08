@@ -20,7 +20,7 @@ router.post('/signup', async (req, res) => {
     // Check if user already exists
     const existingUser = await User.findOne({ username });
     if (existingUser) {
-        console.log('User already exists:', username);
+        // console.log('User already exists:', username);
         return res.status(400).json({ message: 'User already exists' });
     }
 
@@ -30,7 +30,7 @@ router.post('/signup', async (req, res) => {
     user.password = password;
 
     const doc = await user.save();
-    console.log('New user created:', doc);
+    // console.log('New user created:', doc);
 
     const payload = {
         id: doc.id,
@@ -40,7 +40,7 @@ router.post('/signup', async (req, res) => {
     // const token = generateToken(doc.username);
     console.log(JSON.stringify((payload)));
     const token = generateToken(payload);
-    console.log('Token is : ', token);
+    // console.log('Token is : ', token);
 
     res.json({ doc: doc, token: token });
 })

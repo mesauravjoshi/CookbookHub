@@ -5,7 +5,6 @@ import { url } from '../ApiUrl/Url';
 import './Signup.css'
 
 function Signup() {
-  console.log(url);
   const [form, setForm] = useState({});
   const [alreadyEmail, setAlreadyEmail] = useState(false);
   const [isPasswordValid, setIsPasswordValid] = useState(false);
