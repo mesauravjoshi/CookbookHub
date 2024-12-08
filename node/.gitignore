@@ -1,5 +1,5 @@
 # Ignore node module directory
 node_modules/
-.env
-try
+
 # Other entries
+.env
