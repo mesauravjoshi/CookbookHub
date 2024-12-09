@@ -24,10 +24,11 @@ function Home() {
           setUser(userData);
         }
         try {
-          const recipesResponse = await fetch(`${url}/recipes/data/?_limit=4&_page=${page}`, {
+          // const recipesResponse = await fetch(`${url}/recipes/data/?_limit=4&_page=${page}`, {
+          const recipesResponse = await fetch(`${url}/recipes/data/`, {
             method: 'GET',
             headers: {
-              'Authorization': `Bearer ${token}`,
+              // 'Authorization': `Bearer ${token}`,
               'Content-Type': 'application/json',
             },
           });

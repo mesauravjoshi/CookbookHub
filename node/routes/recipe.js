@@ -4,16 +4,17 @@ const Recipe = require('../models/Recipe');
 const { jwtAuthMiddleware } = require('../jwt');
 
 // Get all recipes with pagination
-router.get('/data',jwtAuthMiddleware, async (req, res) => {
-    const limit = parseInt(req.query._limit) || 4;  // Default to 4 if no limit is provided
-    const page = parseInt(req.query._page) || 1;    // Default to page 1 if no page is provided
-    const skip = (page - 1) * limit;  // Calculate skip for pagination
+router.get('/data', async (req, res) => {
+    // const limit = parseInt(req.query._limit) || 4;  // Default to 4 if no limit is provided
+    // const page = parseInt(req.query._page) || 1;    // Default to page 1 if no page is provided
+    // const skip = (page - 1) * limit;  // Calculate skip for pagination
 
     try {
         // Fetch recipes from the database with pagination
         const recipes = await Recipe.find()
-            .skip(skip)   // Skip the records based on page number
-            .limit(limit); // Apply the limit to restrict the number of records
+            // .skip(skip)   // Skip the records based on page number
+            // .limit(limit); // Apply the limit to restrict the number of records
+        console.log('fetched');
         
         // Send the response as JSON
         res.json(recipes);
