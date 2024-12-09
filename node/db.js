@@ -3,7 +3,6 @@ require('dotenv').config();
 
 const mongoURL = process.env.MONGO_URL
 // const mongoURL = process.env.MONGO_LOCAL_URL
-// const mongoURL = 'mongodb://127.0.0.1:27017/CookbookHub';
 
 async function connectDB() {
     try {
