@@ -3,12 +3,49 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { url } from '../ApiUrl/Url';
 import './Signup.css'
+import toast, { Toaster } from 'react-hot-toast';
 
 function Signup() {
   const [form, setForm] = useState({});
   const [alreadyEmail, setAlreadyEmail] = useState(false);
   const [isPasswordValid, setIsPasswordValid] = useState(false);
+  const [showPassword, setShowPassword] = useState(false); // State for password visibility
   const navigate = useNavigate();
+
+  const notify = () => {
+    toast.success('Successfully Signup!', {
+      duration: 2000,
+      position: "top-right",
+      style: {
+        border: '1px solid #713200',
+        padding: '10px',
+        color: '#713200',
+        fontSize: '0.9rem',
+      },
+    });
+  };
+
+  const notifyFail = () => {
+    toast.error('Username already exists', {
+      duration: 2000,
+      position: "top-right",
+      style: {
+        padding: '10px',
+        fontSize: '0.9rem',
+      },
+    });
+  };
+
+  const notifyPasswordValid = () => {
+    toast.error('Password must be at least 8 characters long, include an uppercase letter, a lowercase letter, a number, and a special character', {
+      duration: 2500,
+      position: "top-right",
+      style: {
+        padding: '10px',
+        fontSize: '0.9rem',
+      },
+    });
+  };
 
   const handleForm = (e) => {
     setForm({
@@ -27,19 +64,19 @@ function Signup() {
 
     // Check if username is already taken
     const usernameExists = await checkUsernameExists(form.username);
-    console.log(usernameExists)
+    // console.log(usernameExists)
     if (usernameExists) {
-      console.log('user pda hai bhai');
       setAlreadyEmail(true); // Display email already registered error
+      notifyFail()
       setIsPasswordValid(false); // Ensure password error is cleared if username check fails
       return;
     }
-    setAlreadyEmail(false); // Display email already registered error
-    console.log('nahi pdaa');
+    setAlreadyEmail(false);
 
     // Now that we know the username is valid, validate password
     if (!validatePassword(form.password)) {
       setIsPasswordValid(true); // Set password validation error
+      notifyPasswordValid();
       return;
     }
 
@@ -54,9 +91,13 @@ function Signup() {
 
     const data = await response.json();
     if (response.ok) {
-      navigate('/login'); // Redirect to /login
+      notify()
+      setTimeout(() => {
+        navigate(`/login`); // Redirect to login
+      }, 2000); // 10000 milliseconds = 10 seconds
     } else {
       setAlreadyEmail(true); // Show error if the backend response indicates username exists
+      notifyFail();
       console.log('Error: User already exists.');
     }
   };
@@ -65,10 +106,13 @@ function Signup() {
   const checkUsernameExists = async (username) => {
     const response = await fetch(`${url}/auth/usernameExists/${username}`);
     const data = await response.json();
-    console.log(data);
+    // console.log(data);
     return data.exists; // Assume backend returns { exists: true/false }
   };
 
+  const togglePasswordVisibility = () => {
+    setShowPassword((prev) => !prev);
+  };
 
   return (
     <>
@@ -78,8 +122,18 @@ function Signup() {
           <form className="login-form" onSubmit={handleSubmit}>
             <input onChange={handleForm} name="name" type="text" placeholder="Name" required />
             <input onChange={handleForm} name="username" type="text" placeholder="Username" required />
-            <input onChange={handleForm} name="password" type="text" placeholder="Password" required />
-
+            <div className="password-container">
+              <input
+                onChange={handleForm}
+                name="password"
+                type={showPassword ? 'text' : 'password'} // Toggle password visibility
+                placeholder="Password"
+                required
+              />
+              <span onClick={togglePasswordVisibility} className="eye-icon">
+                {showPassword ? '👁️' : '👁️‍🗨️'} {/* Change icons based on visibility */}
+              </span>
+            </div>
             {alreadyEmail && (
               <small id="emailHelp" className="form-text text-muted">
                 This email is already registered
@@ -97,6 +151,7 @@ function Signup() {
           </form>
         </div>
       </div>
+      <Toaster />
     </>
   )
 }

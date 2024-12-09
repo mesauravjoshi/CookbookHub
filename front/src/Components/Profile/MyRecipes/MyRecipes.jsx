@@ -6,9 +6,9 @@ import Nav from '../../Nav/Nav';
 import MarkCode from '../../MarkCode';
 import PageNotFound from '../../PageNotFound/PageNotFound';
 import './MyRecipes.css'
+import toast, { Toaster } from 'react-hot-toast';
 
 function MyRecipes() {
-  // const { _id } = useParams(); // Get username from URL
   const navigate = useNavigate(); // Use useNavigate hook
   const [showSaveIcon, setShowSaveIcon] = useState(false);
   const { user } = useUser();
@@ -16,6 +16,19 @@ function MyRecipes() {
   const [recipes, setRecipes] = useState([]);
   const [bookmarkedItems, setBookmarkedItems] = useState([]);
   const [activeRecipeId, setActiveRecipeId] = useState(null); // State to track which recipe's dropdown is active
+
+  const notify = () => {
+    toast.success('Recipe Deleted Successfully!', {
+      duration: 2000,
+      position: "top-right",
+      style: {
+        border: '1px solid #713200',
+        padding: '10px',
+        color: '#713200',
+        fontSize: '0.9rem',
+      },
+    });
+  };
 
   const handleThreeDot = (recipeId) => {
     setActiveRecipeId(prevId => (prevId === recipeId ? null : recipeId));
@@ -129,7 +142,8 @@ function MyRecipes() {
   
         const result = await response.json();
         console.log('Post deleted');
-        navigate('/profile/MyRecipes'); // Redirect after deletion
+        notify();
+        // navigate('/profile/MyRecipes'); // Redirect after deletion
       } catch (error) {
         console.error('Error deleting recipe:', error);
       }
@@ -219,7 +233,7 @@ function MyRecipes() {
           }
         </div>
       }
-
+      <Toaster />
     </>
   );
 }

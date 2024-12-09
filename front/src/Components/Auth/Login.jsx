@@ -4,13 +4,40 @@ import { useNavigate } from 'react-router-dom';
 import { useUser } from '../UserContext';
 import { url } from '../ApiUrl/Url';
 import './Login.css';
+import toast, { Toaster } from 'react-hot-toast';
 
 function Login() {
   const [form, setForm] = useState({});
   const [failLoginMess, setFailLoginMess] = useState(false);
   const [showPassword, setShowPassword] = useState(false); // State for password visibility
   const navigate = useNavigate();
-  const { setUser  } = useUser (); // Get setUser  from context
+  const { setUser } = useUser(); // Get setUser  from context
+
+  const notify = () => {
+    toast.success('Successfully Login!', {
+      duration: 2000,
+      position: "top-right",
+      style: {
+        border: '1px solid #713200',
+        padding: '10px',
+        color: '#713200',
+        fontSize: '0.9rem',
+      },
+    });
+  };
+
+  const notifyFail = () => {
+    toast.error('Incorrect Username or Password', {
+      duration: 1500,
+      position: "top-right",
+      style: {
+        border: '1px solid #713200',
+        padding: '10px',
+        color: '#713200',
+        fontSize: '0.9rem',
+      },
+    });
+  };
 
   const handleForm = (e) => {
     setForm({
@@ -37,11 +64,14 @@ function Login() {
       // Store token in local storage
       localStorage.setItem('token', data.token);
       localStorage.setItem('name', data.user.name);
-
-      setUser (data.user); // Set the user data in context
-      navigate(`/`); // Redirect to profile
+      setUser(data.user); // Set the user data in context
+      notify()
+      setTimeout(() => {
+        navigate(`/`); // Redirect to profile
+      }, 2000); // 10000 milliseconds = 10 seconds
     } catch (error) {
       console.error('Login failed', error.message);
+      notifyFail();
       setFailLoginMess(true);
     }
   };
@@ -87,6 +117,7 @@ function Login() {
           </form>
         </div>
       </div>
+      <Toaster />
     </>
   );
 }

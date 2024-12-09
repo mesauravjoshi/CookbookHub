@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { url } from '../../ApiUrl/Url';
+import toast, { Toaster } from 'react-hot-toast';
 
 import './ChangePassword..css'
 function ChangePassword() {
@@ -9,14 +10,77 @@ function ChangePassword() {
     const [oldPassword, setOldPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false); // State for password visibility
 
     const validatePassword = (password) => {
         const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
         return passwordRegex.test(password);
     };
 
+    const notify = () => {
+        toast.success('Password Changed Successfully!', {
+            duration: 3000,
+            position: "top-right",
+            style: {
+                border: '1px solid #713200',
+                padding: '10px',
+                color: '#713200',
+                fontSize: '0.9rem',
+            },
+        });
+    };
+
+    const notifyIncoreectPass = () => {
+        toast.error('Incorrect passowrd', {
+            duration: 2000,
+            position: "top-right",
+            style: {
+                padding: '10px',
+                fontSize: '0.9rem',
+            },
+        });
+    };
+
+    const notifyConfirnNotMatch = () => {
+        toast.error(`New Password and Confirm Password does't match`, {
+            duration: 2000,
+            position: "top-right",
+            style: {
+                padding: '10px',
+                fontSize: '0.9rem',
+            },
+        });
+    };
+
+    const notifyValid = () => {
+        toast.error( `Password must be at least 8 characters long, include an uppercase letter, a lowercase letter, a number, and a special character!`, {
+            duration: 4000,
+            position: "top-right",
+            style: {
+                border: '1px solid #713200',
+                padding: '10px',
+                color: '#713200',
+                fontSize: '0.9rem',
+            },
+        });
+    };
+
+    const notifyError = (error) => {
+        toast.error( `${error}!`, {
+            duration: 4000,
+            position: "top-right",
+            style: {
+                border: '1px solid #713200',
+                padding: '10px',
+                color: '#713200',
+                fontSize: '0.9rem',
+            },
+        });
+    };
+
+
     const checkPasswordCorrect = async (token) => {
- 
+
         const response = await fetch(`${url}/auth/checkPasswordCorrect`, {
             method: 'POST',
             headers: {
@@ -26,7 +90,7 @@ function ChangePassword() {
             body: JSON.stringify({ oldPassword }),
         });
         const data = await response.json();
-        console.log(data);
+        // console.log(data);
         return data.message; // Assume backend returns { exists: true/false }
     }
 
@@ -35,15 +99,15 @@ function ChangePassword() {
 
         const token = localStorage.getItem('token');
         if (!token) {
-            alert('No token found. Please log in again.');
+            // alert('No token found. Please log in again.');
             return;
         }
 
         const passwordCorrect = await checkPasswordCorrect(token);
-        console.log(passwordCorrect)
+        // console.log(passwordCorrect)
         if (!passwordCorrect) {
-            console.log('password galat hai bhai');
             setIsOldPasswordCoreect(false); // Display email already registered error
+            notifyIncoreectPass();
             setIsPasswordValid(false); // Ensure password error is cleared if username check fails
             return;
         }
@@ -51,17 +115,19 @@ function ChangePassword() {
 
         if (!validatePassword(newPassword)) {
             setIsPasswordValid(true); // Set password validation error
+            notifyValid();
             return;
         }
         setIsPasswordValid(false)
 
         if (newPassword !== confirmPassword) {
             setIsNewAndConfirmMatch(false)
+            notifyConfirnNotMatch();
             // alert("New passwords don't match");
             return;
         }
         setIsNewAndConfirmMatch(true)
-        // Qwerty@123
+
         try {
             const response = await fetch(`${url}/auth/changePassword`, {
                 method: 'POST',
@@ -74,15 +140,14 @@ function ChangePassword() {
 
             const data = await response.json();
             if (response.ok) {
-                alert(data.message); // Success message
+                notify()
             } else {
-                alert('yyyyyyyyyyyy', data.message); // Error message
-                console.log('line 37 ');
-
+                notifyError(data)
+                // console.log('line 37 ');
             }
         } catch (error) {
             console.error('Error changing password:', error);
-            alert('An error occurred. Please try again.');
+            notifyError(error)
         }
         setOldPassword('')
         setNewPassword('')
@@ -90,32 +155,57 @@ function ChangePassword() {
 
     };
 
+    const togglePasswordVisibility = () => {
+        setShowPassword((prev) => !prev);
+    };
+
     return (
         <div className="login-page">
             <center><h3>Change Password</h3></center>
             <div className="form">
                 <form onSubmit={handleChangePass} className="login-form">
-                    <input
-                        type="text"
-                        placeholder="Old Password"
-                        value={oldPassword}
-                        onChange={(e) => setOldPassword(e.target.value)}
-                        required
-                    />
-                    <input
-                        type="text"
-                        placeholder="New Password"
-                        value={newPassword}
-                        onChange={(e) => setNewPassword(e.target.value)}
-                        required
-                    />
-                    <input
-                        type="text"
-                        placeholder="Confirm Password"
-                        value={confirmPassword}
-                        onChange={(e) => setConfirmPassword(e.target.value)}
-                        required
-                    />
+                    {/* old  */}
+                    <div className="password-container">
+                        <input
+                            placeholder="Old Password"
+                            value={oldPassword}
+                            onChange={(e) => setOldPassword(e.target.value)}
+                            name="password"
+                            type={showPassword ? 'text' : 'password'} // Toggle password visibility
+                            required
+                        />
+                        <span onClick={togglePasswordVisibility} className="eye-icon">
+                            {showPassword ? '👁️' : '👁️‍🗨️'} {/* Change icons based on visibility */}
+                        </span>
+                    </div>
+                    {/* new  */}
+                    <div className="password-container">
+                        <input
+                            placeholder="New Password"
+                            value={newPassword}
+                            onChange={(e) => setNewPassword(e.target.value)}
+                            name="password"
+                            type={showPassword ? 'text' : 'password'} // Toggle password visibility
+                            required
+                        />
+                        <span onClick={togglePasswordVisibility} className="eye-icon">
+                            {showPassword ? '👁️' : '👁️‍🗨️'} {/* Change icons based on visibility */}
+                        </span>
+                    </div>
+                    {/* confirn */}
+                    <div className="password-container">
+                        <input
+                            name="password"
+                            type={showPassword ? 'text' : 'password'} // Toggle password visibility
+                            placeholder="Confirm Password"
+                            value={confirmPassword}
+                            onChange={(e) => setConfirmPassword(e.target.value)}
+                            required
+                        />
+                        <span onClick={togglePasswordVisibility} className="eye-icon">
+                            {showPassword ? '👁️' : '👁️‍🗨️'} {/* Change icons based on visibility */}
+                        </span>
+                    </div>
                     {!isOldPasswordCoreect && (
                         <small id="emailHelp" className="form-text text-muted">
                             Incorrect passowrd
@@ -134,6 +224,7 @@ function ChangePassword() {
                     <button type="submit">Change Password</button>
                 </form>
             </div>
+            <Toaster />
         </div>
     );
 }

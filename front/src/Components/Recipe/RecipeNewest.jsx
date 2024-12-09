@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { url } from '../ApiUrl/Url';
 import { useUser } from '../UserContext';
 import MarkCode from '../MarkCode';
+import { Toaster } from 'react-hot-toast';
 
 function RecipeNewest({ isLoggedIn, setIsLoggedIn }) {
   const { user } = useUser();
@@ -10,7 +11,7 @@ function RecipeNewest({ isLoggedIn, setIsLoggedIn }) {
   const [bookmarkedItems, setBookmarkedItems] = useState([]);
 
   useEffect(() => {
-    if (user && user.username) {
+    // if (user && user.username) {
       const fetchData = async () => {
         const token = localStorage.getItem('token');  // Get the token from localStorage
         try {
@@ -59,19 +60,18 @@ function RecipeNewest({ isLoggedIn, setIsLoggedIn }) {
           }
         } catch (error) {
           console.error('Error fetching data:', error);
-          setIsLoggedIn(false);
         }
       };
 
       fetchData();
-    }
+    // }
   }, [user]);
 
   return (
     <>
       <h2>Newest</h2>
       {
-        isLoggedIn &&
+        // isLoggedIn &&
         <div id="container">
           {
             recipes.map((recipe, index) => (
@@ -112,7 +112,7 @@ function RecipeNewest({ isLoggedIn, setIsLoggedIn }) {
           }
         </div>
       }
-      {/* <Footer/> */}
+      <Toaster />
 
     </>
   );

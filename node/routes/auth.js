@@ -38,7 +38,7 @@ router.post('/signup', async (req, res) => {
     }
 
     // const token = generateToken(doc.username);
-    console.log(JSON.stringify((payload)));
+    // console.log(JSON.stringify((payload)));
     const token = generateToken(payload);
     // console.log('Token is : ', token);
 

@@ -5,6 +5,7 @@ import { url } from '../../ApiUrl/Url';
 import { useUser } from '../../UserContext';
 import PageNotFound from '../../PageNotFound/PageNotFound';
 import Nav from '../../Nav/Nav';
+import toast, { Toaster } from 'react-hot-toast';
 
 function EditRecipe() {
   const { user } = useUser(); // Get the user from context 
@@ -19,6 +20,19 @@ function EditRecipe() {
   const { _id } = useParams(); // Get recipe id from URL
   const [isLoggedIn, setIsLoggedIn] = useState(true);
   const navigate = useNavigate(); // Use useNavigate hook
+
+  const notify = () => {
+    toast.success('Recipe Updated Successfully!', {
+      duration: 2000,
+      position: "top-right",
+      style: {
+        border: '1px solid #713200',
+        padding: '10px',
+        color: '#713200',
+        fontSize: '0.9rem',
+      },
+    });
+  };
 
   // Fetch recipe details when component mounts
   useEffect(() => {
@@ -68,7 +82,6 @@ function EditRecipe() {
     }
   }, [user,_id]);
 
-
   // Handle form input changes
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -102,13 +115,19 @@ function EditRecipe() {
       // console.log('Updated recipe:', updatedRecipe);
 
       // Redirect after successful update using navigate()
-      navigate(`/recipe/${_id}`); // Redirect to the updated recipe's detail page
+      notify()
+      setTimeout(() => {
+        navigate(`/recipe/${_id}`); // Redirect to the updated recipe's detail page
+      }, 2000); // 10000 milliseconds = 10 seconds
     } catch (error) {
       console.error('Error updating recipe:', error);
     }
   };
   // console.log('line 110',recipe);
 
+  const handleCancel = () => {
+    navigate(`/profile/MyRecipes`);
+  }
 
   return (
     <>
@@ -196,13 +215,14 @@ function EditRecipe() {
                   <button type="submit">Save Changes</button>
                 </div>
                 <div className="upload-button">
-                  <button type="">Cancel</button>
+                  <button onClick={handleCancel} type="">Cancel</button>
                 </div>
               </div>
             </Form>
             : <PageNotFound />
         }
       </div>
+      <Toaster />
     </>
   );
 }

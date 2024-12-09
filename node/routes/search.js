@@ -6,7 +6,6 @@ const { jwtAuthMiddleware } = require('../jwt');
 // search
 router.get('/search', async (req, res) => {
     const { query } = req.query;
-    // console.log(query);
 
     try {
         // const query = req.query.q; // Get search term from query string

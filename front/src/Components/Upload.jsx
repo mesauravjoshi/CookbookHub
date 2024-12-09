@@ -5,6 +5,7 @@ import { useUser } from './UserContext'; // Import the context
 import PageNotFound from './PageNotFound/PageNotFound';
 import Nav from './Nav/Nav';
 import './Upload.css';
+import toast, { Toaster } from 'react-hot-toast';
 
 function Upload() {
   const { user, setUser } = useUser(); // Get the user from context 
@@ -19,6 +20,33 @@ function Upload() {
   const [tags, setTags] = useState('');
   const [multiSel, setMultiSel] = useState([]);
   const [isDisable, setIsDisable] = useState(false);
+
+  // Function to show toast
+  const notify = () => {
+    toast.success('Recipe Uploaded Successfully!', {
+      duration: 2000,
+      position: "top-right",
+      style: {
+        border: '1px solid #713200',
+        padding: '10px',
+        color: '#713200',
+        fontSize: '0.9rem',
+      },
+    });
+  };
+
+  const notifyFail = () => {
+    toast.error('Error saving recipe', {
+      duration: 2000,
+      position: "top-right",
+      style: {
+        border: '1px solid #713200',
+        padding: '10px',
+        color: '#713200',
+        fontSize: '0.9rem',
+      },
+    });
+  };
 
   const handleTagChange = (e) => {
     // console.log(e.target.value);
@@ -45,7 +73,7 @@ function Upload() {
     const udatedMultiSel = multiSel.filter((prevTag) => prevTag != item)
     setMultiSel(udatedMultiSel)
     setIsDisable(true);
-    console.log(udatedMultiSel);
+    // console.log(udatedMultiSel);
 
     if (udatedMultiSel.length < 4) {
       setIsDisable(false);
@@ -88,29 +116,28 @@ function Upload() {
       },
       Tags: multiSel
     };
-    console.log(form);
-    const isConfirmed = window.confirm('Do you want to upload this post?');
-    if (isConfirmed) {
-      const response = await fetch(`${url}/recipes/recipie_data`, {
-        method: 'POST',
-        body: JSON.stringify(form),
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}` // Include token in the header
-        }
-      });
-
-      if (response.ok) {
-        setImage_URL('');
-        setRecipesName('');
-        setIngredients('');
-        setInstructions('');
-        setCategory('');
-        setCuisine('');
-        setMultiSel([]);
-      } else {
-        console.log('Error saving recipe');
+    // console.log(form);
+    const response = await fetch(`${url}/recipes/recipie_data`, {
+      method: 'POST',
+      body: JSON.stringify(form),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}` // Include token in the header
       }
+    });
+
+    if (response.ok) {
+      setImage_URL('');
+      setRecipesName('');
+      setIngredients('');
+      setInstructions('');
+      setCategory('');
+      setCuisine('');
+      setMultiSel([]);
+      notify()
+    } else {
+      // console.log('Error saving recipe');
+      notifyFail();
     }
   };
 
@@ -132,7 +159,7 @@ function Upload() {
           <Form onSubmit={handleSubmit}>
             <Form.Control size="lg" onChange={handleForm} value={image_URL} type="text" name='Image_URL' placeholder='Image URL' required autoFocus />
             <br />
-            <Form.Control size="lg" onChange={handleForm} value={recipesName} type="text" name='Recipes' placeholder='Recipes name' required  />
+            <Form.Control size="lg" onChange={handleForm} value={recipesName} type="text" name='Recipes' placeholder='Recipes name' required />
             <br />
             <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
               <Form.Control size="lg" onChange={handleForm} value={ingredients} name='Ingredients' placeholder='Ingredients' required as="textarea" rows={3} />
@@ -176,7 +203,6 @@ function Upload() {
               <Form.Control size="lg"
                 placeholder={isDisable ? 'All items added successfully' : 'Add Tags (e.g., Quick, Vegan, Party, Summer)'} value={tags} onChange={handleTagChange}
                 disabled={isDisable}
-                autoFocus
               />
               <button onClick={handleAddTags} disabled={isDisable}
                 style={{ cursor: isDisable ? 'not-allowed' : 'pointer' }} > Add</button>
@@ -207,6 +233,7 @@ function Upload() {
           <PageNotFound />
         }
       </div>
+      <Toaster />
     </>
   );
 }

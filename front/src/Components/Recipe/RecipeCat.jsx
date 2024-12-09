@@ -8,42 +8,44 @@ import './RecipeCat.css'
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import toast, { Toaster } from 'react-hot-toast';
+
+const settings = {
+  dots: true,
+  infinite: false,
+  speed: 500,
+  slidesToShow: 8,
+  slidesToScroll: 4,
+  initialSlide: 0,
+  responsive: [
+    {
+      breakpoint: 1024,
+      settings: {
+        slidesToShow: 5,
+        slidesToScroll: 4,
+        infinite: false,
+        dots: true
+      }
+    },
+    {
+      breakpoint: 600,
+      settings: {
+        slidesToShow: 3,
+        slidesToScroll: 4,
+        initialSlide: 2
+      }
+    },
+    {
+      breakpoint: 480,
+      settings: {
+        slidesToShow: 2.5,
+        slidesToScroll: 2.5
+      }
+    }
+  ]
+};
 
 function RecipeCat() {
-  const settings = {
-    dots: true,
-    infinite: false,
-    speed: 500,
-    slidesToShow: 8,
-    slidesToScroll: 4,
-    initialSlide: 0,
-    responsive: [
-      {
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: 5,
-          slidesToScroll: 4,
-          infinite: false,
-          dots: true
-        }
-      },
-      {
-        breakpoint: 600,
-        settings: {
-          slidesToShow: 3,
-          slidesToScroll: 4,
-          initialSlide: 2
-        }
-      },
-      {
-        breakpoint: 480,
-        settings: {
-          slidesToShow: 2.5,
-          slidesToScroll: 2.5
-        }
-      }
-    ]
-  };
   const { user } = useUser();
   const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [recipes, setRecipes] = useState([]);
@@ -55,59 +57,68 @@ function RecipeCat() {
   }
 
   useEffect(() => {
-    if (user && user.username) {
-      const token = localStorage.getItem('token');
-      const fetchData = async () => {
-        try {
-          // Fetch recipes
-          const recipesResponse = await fetch(`${url}/recipe_category/recipe_category?category=${category}`, {
-            method: 'GET',
-            headers: {
-              'Authorization': `Bearer ${token}`,
-              'Content-Type': 'application/json',
-            },
-          });
-          if (recipesResponse.status === 401) {
-            setIsLoggedIn(false);
-            return; // Exit the function
-          }
+    // if (user && user.username) {
+    const token = localStorage.getItem('token');
 
-          if (!recipesResponse.ok) {
-            throw new Error('Network response was not ok');
-          }
-
-          const recipesData = await recipesResponse.json();
-          // console.log(recipesData);
-          setRecipes(recipesData);
-          // Fetch bookmarks for the user
-          const bookmarksResponse = await fetch(`${url}/bookmark/bookmarks/${user.username}`, {
-            method: 'GET',
-            headers: {
-              'Authorization': `Bearer ${token}`,
-              'Content-Type': 'application/json',
-            },
-          });
-          if (!bookmarksResponse.ok) {
-            throw new Error('Network response was not ok');
-          }
-
-          if (bookmarksResponse.ok) {
-            const bookmarksData = await bookmarksResponse.json();
-            // console.log(bookmarksData);
-
-            const bookmarkIds = bookmarksData.map(item => item.Post_id); // Assuming Post_id is the identifier
-            // console.log(bookmarkIds);
-            setBookmarkedItems(bookmarkIds);
-          } else {
-            console.log('Failed to fetch bookmarks');
-          }
-        } catch (error) {
-          console.error('Error fetching data:', error);
+    // for category recipe endpoint
+    const fetchData = async () => {
+      try {
+        // Fetch recipes
+        const recipesResponse = await fetch(`${url}/recipe_category/recipe_category?category=${category}`, {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        });
+        if (recipesResponse.status === 401) {
+          setIsLoggedIn(false);
+          return; // Exit the function
         }
-      };
 
-      fetchData();
-    }
+        if (!recipesResponse.ok) {
+          throw new Error('Network response was not ok');
+        }
+
+        const recipesData = await recipesResponse.json();
+        // console.log(recipesData);
+        setRecipes(recipesData);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+
+      // for bookmark endpoint
+      try {
+        // Fetch bookmarks for the user
+        const bookmarksResponse = await fetch(`${url}/bookmark/bookmarks/${user.username}`, {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        });
+        if (!bookmarksResponse.ok) {
+          throw new Error('Network response was not ok');
+        }
+
+        if (bookmarksResponse.ok) {
+          const bookmarksData = await bookmarksResponse.json();
+          // console.log(bookmarksData);
+
+          const bookmarkIds = bookmarksData.map(item => item.Post_id); // Assuming Post_id is the identifier
+          // console.log(bookmarkIds);
+          setBookmarkedItems(bookmarkIds);
+        } else {
+          console.log('Failed to fetch bookmarks');
+
+        }
+      } catch (error) {
+        console.error('Error fetching bookamrk:', error);
+      }
+    };
+
+    fetchData();
+    // }
   }, [category, user]);
 
   const listCategory = [
@@ -127,7 +138,7 @@ function RecipeCat() {
               return (
                 <div key={index}>
                   <center>
-                    <p  onClick={handleCategory}>{item}</p>
+                    <p onClick={handleCategory}>{item}</p>
                   </center>
                 </div>
               )
@@ -154,7 +165,6 @@ function RecipeCat() {
                     <span className="tag">Posted By: {recipe.PostedBy.name}</span>
                     <span className="tag">Username: {recipe.PostedBy.username}</span> */}
                     {
-                      // showSaveIcon &&
                       <MarkCode
                         recipe={recipe}
                         bookmarkedItems={bookmarkedItems}
@@ -182,7 +192,7 @@ function RecipeCat() {
           }
         </div>
       }
-
+      <Toaster />
     </>
   );
 }

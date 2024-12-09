@@ -8,6 +8,7 @@ import './RecipeCuisine.css'
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import toast, { Toaster } from 'react-hot-toast';
 
 function RecipeCuisine() {
   const settings = {
@@ -57,7 +58,7 @@ function RecipeCuisine() {
   }
 
   useEffect(() => {
-    if (user && user.username) {
+    // if (user && user.username) {
       const token = localStorage.getItem('token');
 
       const fetchData = async () => {
@@ -109,7 +110,7 @@ function RecipeCuisine() {
       };
 
       fetchData();
-    }
+    // }
   }, [cuisine, user]);
 
   const listCuisine = [
@@ -176,7 +177,7 @@ function RecipeCuisine() {
           }
         </div>
       }
-
+      <Toaster />
     </>
   );
 }
