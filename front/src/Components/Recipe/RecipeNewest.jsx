@@ -6,7 +6,6 @@ import MarkCode from '../MarkCode';
 
 function RecipeNewest({ isLoggedIn, setIsLoggedIn }) {
   const { user } = useUser();
-  const [showSaveIcon, setShowSaveIcon] = useState(false);
   const [recipes, setRecipes] = useState([]);
   const [bookmarkedItems, setBookmarkedItems] = useState([]);
 
@@ -24,7 +23,6 @@ function RecipeNewest({ isLoggedIn, setIsLoggedIn }) {
             },
           });
           if (recipesResponse.status === 401) {
-            setShowSaveIcon(false)
             setIsLoggedIn(false);
             return; // Exit the function
           }
@@ -73,7 +71,7 @@ function RecipeNewest({ isLoggedIn, setIsLoggedIn }) {
     <>
       <h2>Newest</h2>
       {
-        // isLoggedIn &&
+        isLoggedIn &&
         <div id="container">
           {
             recipes.map((recipe, index) => (
@@ -87,7 +85,6 @@ function RecipeNewest({ isLoggedIn, setIsLoggedIn }) {
                     <span className="tag">Posted By: {recipe.PostedBy.name}</span>
                     <span className="tag">Username: {recipe.PostedBy.username}</span>
                     {
-                      showSaveIcon &&
                       <MarkCode
                         recipe={recipe}
                         bookmarkedItems={bookmarkedItems}

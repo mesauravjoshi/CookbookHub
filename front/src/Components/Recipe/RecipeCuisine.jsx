@@ -39,14 +39,13 @@ function RecipeCuisine() {
         breakpoint: 480,
         settings: {
           slidesToShow: 2.5,
-          slidesToScroll: 1
+          slidesToScroll: 2.5
         }
       }
     ]
   };
   const { user } = useUser();
   const [isLoggedIn, setIsLoggedIn] = useState(true);
-  const [showSaveIcon, setShowSaveIcon] = useState(false);
   const [recipes, setRecipes] = useState([]);
   const [bookmarkedItems, setBookmarkedItems] = useState([]);
   const [cuisine, setCuisine] = useState('Indian');
@@ -137,7 +136,7 @@ function RecipeCuisine() {
         </Slider>
       </div>
       {
-        // isLoggedIn &&
+        isLoggedIn &&
         <div id="container">
           {
             recipes.map((recipe, index) => (
@@ -150,7 +149,6 @@ function RecipeCuisine() {
                     <span className="tag">Category: {(recipe.Category).substring(0, 10)}</span>
                     <span className="tag">Cuisine: {(recipe.Cuisine).substring(0, 10)}</span>
                     {
-                      showSaveIcon &&
                       <MarkCode
                         recipe={recipe}
                         bookmarkedItems={bookmarkedItems}

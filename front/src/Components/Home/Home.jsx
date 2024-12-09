@@ -87,7 +87,8 @@ function Home() {
     <>
       <Nav isLoggedIn={isLoggedIn} user={user} />
       <Hero />
-      {isLoggedIn && (
+      {
+      isLoggedIn && (
         <div id="container">
           {recipes.map((recipe, index) => (
             <div className="card" key={index}>

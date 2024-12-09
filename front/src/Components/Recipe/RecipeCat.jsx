@@ -39,14 +39,13 @@ function RecipeCat() {
         breakpoint: 480,
         settings: {
           slidesToShow: 2.5,
-          slidesToScroll: 1
+          slidesToScroll: 2.5
         }
       }
     ]
   };
   const { user } = useUser();
   const [isLoggedIn, setIsLoggedIn] = useState(true);
-  const [showSaveIcon, setShowSaveIcon] = useState(false);
   const [recipes, setRecipes] = useState([]);
   const [bookmarkedItems, setBookmarkedItems] = useState([]);
   const [category, setCategory] = useState('Dinner');
@@ -70,7 +69,6 @@ function RecipeCat() {
           });
           if (recipesResponse.status === 401) {
             setIsLoggedIn(false);
-            setShowSaveIcon(false)
             return; // Exit the function
           }
 
@@ -156,7 +154,7 @@ function RecipeCat() {
                     <span className="tag">Posted By: {recipe.PostedBy.name}</span>
                     <span className="tag">Username: {recipe.PostedBy.username}</span> */}
                     {
-                      showSaveIcon &&
+                      // showSaveIcon &&
                       <MarkCode
                         recipe={recipe}
                         bookmarkedItems={bookmarkedItems}
