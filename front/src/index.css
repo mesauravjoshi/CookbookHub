@@ -1,18 +1,18 @@
 
 :root{
-    --body_background: #fee1b2;
-    --body_color: #494e50;
-    --nav_background: #f6d7a3;
-    --nav_color: #5f4e4e;
-    --form_color: #f1423a;
-}
-
-[data-theme='dark']{
     --body_background: #262b33;
     --body_color: #e8ebee;
     --nav_background: #1c232c;
     --nav_color: #e7dddd;
     --form_color: #daa520;
+}
+
+[data-theme='dark']{
+    --body_background: #fee1b2;
+    --body_color: #494e50;
+    --nav_background: #f6d7a3;
+    --nav_color: #5f4e4e;
+    --form_color: #f1423a;
 }
 h2{
     color: var(--body_color);
