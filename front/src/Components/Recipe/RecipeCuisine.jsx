@@ -9,6 +9,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import toast, { Toaster } from 'react-hot-toast';
+import LoadingCard from '../LoadingCard';
 
 function RecipeCuisine() {
   const settings = {
@@ -50,6 +51,7 @@ function RecipeCuisine() {
   const [recipes, setRecipes] = useState([]);
   const [bookmarkedItems, setBookmarkedItems] = useState([]);
   const [cuisine, setCuisine] = useState('Indian');
+  const [laoding, setLoading] = useState(false)
 
   const handleCategory = (e) => {
     // console.log("clicked");
@@ -59,71 +61,79 @@ function RecipeCuisine() {
 
   useEffect(() => {
     // if (user && user.username) {
+    setLoading(true)
+    const fetchData = async () => {
       const token = localStorage.getItem('token');
-
-      const fetchData = async () => {
-        try {
-          // Fetch recipes
-          const recipesResponse = await fetch(`${url}/recipe_category/recipe_cuisine?cuisine=${cuisine}`, {
-            method: 'GET',
-            headers: {
-              'Authorization': `Bearer ${token}`,
-              'Content-Type': 'application/json',
-            },
-          });
-          if (recipesResponse.status === 401) {
-            setIsLoggedIn(false);
-            return; // Exit the function
-          }
-
-          if (!recipesResponse.ok) {
-            throw new Error('Network response was not ok');
-          }
-
-          const recipesData = await recipesResponse.json();
-          // console.log(recipesData);
-          setRecipes(recipesData);
-          // Fetch bookmarks for the user
-          const bookmarksResponse = await fetch(`${url}/bookmark/bookmarks/${user.username}`, {
-            method: 'GET',
-            headers: {
-              'Authorization': `Bearer ${token}`,
-              'Content-Type': 'application/json',
-            },
-          });
-          if (!bookmarksResponse.ok) {
-            throw new Error('Network response was not ok');
-          }
-
-          if (bookmarksResponse.ok) {
-            // console.log('inside if else line 55');
-            const bookmarksData = await bookmarksResponse.json();
-            const bookmarkIds = bookmarksData.map(item => item.Post_id); // Assuming Post_id is the identifier
-            // console.log(bookmarkIds);
-            setBookmarkedItems(bookmarkIds);
-          } else {
-            console.log('Failed to fetch bookmarks');
-          }
-        } catch (error) {
-          console.error('Error fetching data:', error);
+      try {
+        // Fetch recipes
+        const recipesResponse = await fetch(`${url}/recipe_category/recipe_cuisine?cuisine=${cuisine}`, {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        });
+        if (recipesResponse.status === 401) {
+          setIsLoggedIn(false);
+          return; // Exit the function
         }
-      };
 
-      fetchData();
+        if (!recipesResponse.ok) {
+          throw new Error('Network response was not ok');
+        }
+
+        setLoading(false)
+        const recipesData = await recipesResponse.json();
+        // console.log(recipesData);
+        setRecipes(recipesData);
+
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        setLoading(true);
+      }
+
+      try {
+        // Fetch bookmarks for the user
+        const bookmarksResponse = await fetch(`${url}/bookmark/bookmarks/${user.username}`, {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        });
+        if (!bookmarksResponse.ok) {
+          throw new Error('Network response was not ok');
+        }
+
+        if (bookmarksResponse.ok) {
+          // console.log('inside if else line 55');
+          const bookmarksData = await bookmarksResponse.json();
+          const bookmarkIds = bookmarksData.map(item => item.Post_id); // Assuming Post_id is the identifier
+          // console.log(bookmarkIds);
+          setBookmarkedItems(bookmarkIds);
+        } else {
+          console.log('Failed to fetch bookmarks');
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
     // }
   }, [cuisine, user]);
 
   const listCuisine = [
     'Indian', 'American', 'Italian', 'Asian', 'Korean'
-]
+  ]
   return (
     <>
       <center>
         <h2>CUISINE</h2>
       </center>
       <div className="cuisine">
-      <Slider {...settings}>
-      {
+        <Slider {...settings}>
+          {
             listCuisine.map((item, index) => {
               return (
                 <div key={index}>
@@ -147,8 +157,7 @@ function RecipeCuisine() {
                 </div>
                 <div className="card__details">
                   <div className='psot-line'>
-                    <span className="tag">Category: {(recipe.Category).substring(0, 10)}</span>
-                    <span className="tag">Cuisine: {(recipe.Cuisine).substring(0, 10)}</span>
+                    <span className="tag">Posted By: {(recipe.PostedBy.name)}</span>
                     {
                       <MarkCode
                         recipe={recipe}
@@ -176,6 +185,10 @@ function RecipeCuisine() {
             ))
           }
         </div>
+      }
+            {
+        laoding &&
+        <LoadingCard/>
       }
       <Toaster />
     </>

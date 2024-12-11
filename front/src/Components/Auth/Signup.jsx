@@ -2,6 +2,7 @@ import React from 'react'
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { url } from '../ApiUrl/Url';
+import Nav from '../Nav/Nav';
 import './Signup.css'
 import toast, { Toaster } from 'react-hot-toast';
 
@@ -11,6 +12,7 @@ function Signup() {
   const [isPasswordValid, setIsPasswordValid] = useState(false);
   const [showPassword, setShowPassword] = useState(false); // State for password visibility
   const navigate = useNavigate();
+  const [isLoggedIn, setIsLoggedIn] = useState(true); // state for login status
 
   const notify = () => {
     toast.success('Successfully Signup!', {
@@ -116,6 +118,8 @@ function Signup() {
 
   return (
     <>
+      <Nav isLoggedIn={isLoggedIn} />
+
       <div className="login-page">
         <center><h3>SIGN IN</h3></center>
         <div className="form">

@@ -9,6 +9,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import toast, { Toaster } from 'react-hot-toast';
+import LoadingCard from '../LoadingCard';
 
 const settings = {
   dots: true,
@@ -51,6 +52,7 @@ function RecipeCat() {
   const [recipes, setRecipes] = useState([]);
   const [bookmarkedItems, setBookmarkedItems] = useState([]);
   const [category, setCategory] = useState('Dinner');
+  const [laoding, setLoading] = useState(false)
 
   const handleCategory = (e) => {
     setCategory(e.target.textContent)
@@ -58,10 +60,10 @@ function RecipeCat() {
 
   useEffect(() => {
     // if (user && user.username) {
-    const token = localStorage.getItem('token');
-
+    setLoading(true)
     // for category recipe endpoint
     const fetchData = async () => {
+      const token = localStorage.getItem('token');
       try {
         // Fetch recipes
         const recipesResponse = await fetch(`${url}/recipe_category/recipe_category?category=${category}`, {
@@ -79,11 +81,12 @@ function RecipeCat() {
         if (!recipesResponse.ok) {
           throw new Error('Network response was not ok');
         }
-
         const recipesData = await recipesResponse.json();
         // console.log(recipesData);
+        setLoading(false)
         setRecipes(recipesData);
       } catch (error) {
+        setLoading(true)
         console.error('Error fetching data:', error);
       }
 
@@ -158,9 +161,7 @@ function RecipeCat() {
                 </div>
                 <div className="card__details">
                   <div className='psot-line'>
-                    <span className="tag">{recipe._id}</span>
-                    <span className="tag">Category: {(recipe.Category).substring(0, 10)}</span>
-                    <span className="tag">Cuisine: {(recipe.Cuisine).substring(0, 10)}</span>
+                    <span className="tag">Posted By: {(recipe.PostedBy.name)}</span>
                     {/* <span className="tag">{(recipe.Created_At).substring(0, 10)}</span>
                     <span className="tag">Posted By: {recipe.PostedBy.name}</span>
                     <span className="tag">Username: {recipe.PostedBy.username}</span> */}
@@ -191,6 +192,10 @@ function RecipeCat() {
             ))
           }
         </div>
+      }
+      {
+        laoding &&
+        <LoadingCard/>
       }
       <Toaster />
     </>

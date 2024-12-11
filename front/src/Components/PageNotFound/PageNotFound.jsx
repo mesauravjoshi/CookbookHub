@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom';
 
 function PageNotFound() {
     return (
@@ -15,7 +16,11 @@ function PageNotFound() {
                                 </h2>
                                 <h3 className="h2 mb-2">Oops! You're lost.</h3>
                                 <h4>Please login first.. </h4>
-                                <a className="btn bsb-btn-5xl btn-dark rounded-pill px-5 fs-6 m-0" href="/" role="button">Back to Home</a>
+                                <Link to={`/recipe`}
+                                    className="btn bsb-btn-5xl btn-dark rounded-pill px-5 fs-6 m-0" role="button"
+                                >
+                                    Back to Home
+                                </Link>
                             </div>
                         </div>
                     </div>

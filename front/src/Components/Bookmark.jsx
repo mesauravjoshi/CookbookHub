@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { useUser } from './UserContext';
 import { url } from './ApiUrl/Url';
 import Nav from './Nav/Nav';
@@ -96,7 +97,11 @@ function Bookmark() {
                   <div className="text-center">
                     <h3 className="h2 mb-2">No bookmarks saved.</h3>
                     <h4> </h4>
-                    <a className="btn bsb-btn-5xl btn-dark rounded-pill px-5 fs-6 m-0" href="/home" role="button">Add to bookmarks <i className="bi bi-bookmark-plus"></i> </a>
+                    <Link to={`/recipe`}
+                    className="btn bsb-btn-5xl btn-dark rounded-pill px-5 fs-6 m-0" role="button"
+                    >
+                      Add to bookmarks <i className="bi bi-bookmark-plus"></i>
+                    </Link>
                   </div>
                 </div>
               </div>

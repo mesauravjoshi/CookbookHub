@@ -12,23 +12,31 @@
   justify-content: flex-start;
 }
 
+.heading {
+  margin: 0;
+}
+
 .tagline-but {
+  margin-top: 5em;
+  margin-bottom: 4em;
+  width: 100%;
+  /* border: 2px solid yellow; */
   bottom: 6em;
-  position: relative;
+  /* position: relative; */
   display: flex;
   /* border: 1px solid; */
   /* margin: -5em 3em; */
   flex-wrap: wrap;
   align-content: center;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: space-evenly;
 }
 
 .tagline button {
   background: #f1423a;
   border-radius: 12px;
   padding: 0.7em 0.8em;
-  margin: 0 0 1.2em 3em;
+  /* margin: 0 0 1.2em 3em; */
   color: #ffffff;
   /* display: inline-block; */
   font: normal bold 27px / 1 "Calibri", sans-serif;
@@ -38,22 +46,14 @@
 
 
 #custom-h1 {
-  display: flex;
+  /* display: flex; */
   color: #f1423a;
-  font-size: 7em;
+  font-size: 8.2em;
   font-family: "Delius", cursive;
   font-weight: 400;
   font-style: normal;
   flex-direction: column;
   align-items: flex-end;
-}
-
-#custom-h1 svg {
-  /* height: 1em;
-  width: 1em; */
-  /* margin-bottom: 0em;
-  border: 1px solid; */
-  margin: -0.1em 2.4em;
 }
 
 /* END:  Discover and Share Amazing Recipes!  ---------------------- */
@@ -66,7 +66,8 @@ img {
 }
 
 .welcome-title {
-  margin: 3.5em .5em;
+  /* border: 1px solid wheat; */
+  margin: 1em .5em 3em 0.5em;
 }
 
 .welcome_login {
@@ -210,42 +211,38 @@ p {
   }
 }
 
-@media (max-width: 1206px) {
-  #custom-h1 svg {
-    margin: 0em 1.2em;
-  }
-}
+@media (max-width: 1206px) {}
 
-@media (max-width: 918px) {
-  #custom-h1 svg {
-    margin: 0em 0.3em;
-  }
-
-}
+@media (max-width: 918px) {}
 
 @media (max-width: 890px) {
   .tagline-but {
-    position: static;
+    margin: 2em 3em 3em 2em;
+    height: 9.5em;
+    /* position: static; */
     display: flex;
     flex-wrap: wrap;
-    align-content: center;
+    align-content: flex-start;
     align-items: flex-start;
-    justify-content: flex;
-    flex-direction: row;
+    justify-content: space-between;
+    flex-direction: column;
   }
 
   .tagline {
+    margin: 0;
     justify-content: center;
   }
 
   .tagline button {
-    margin: 0 0 1.2em 0.3em;
+    /* margin: 0 0 1.2em 0.3em; */
   }
 
   #custom-h1 {
-    font-size: 5.7em;
-    display: flex;
-    align-items: center;
+    font-size: 4em;
+  }
+  .heading svg {
+    /* background: #000; */
+    height: 65px;
   }
 }
 
@@ -256,4 +253,40 @@ p {
     /* grid-template-columns: 2fr; */
     /* Switch to a single column layout */
   }
+}
+
+.heading svg {
+  /* background: #000; */
+  height: 165px;
+}
+
+
+
+
+/* loading   */
+
+.loader {
+  width: 48px;
+  height: 48px;
+  border: 5px dotted #f1423a;
+  border-radius: 50%;
+  display: inline-block;
+  position: relative;
+  box-sizing: border-box;
+  animation: rotation 2s linear infinite;
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+} 
+
+.loading{
+  display: flex;
+  justify-content: center;
+  margin: -0.5em 1em 3em 1em;
 }

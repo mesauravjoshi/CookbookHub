@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../UserContext';
 import { url } from '../ApiUrl/Url';
 import './Login.css';
+import Nav from '../Nav/Nav';
 import toast, { Toaster } from 'react-hot-toast';
 
 function Login() {
@@ -12,6 +13,7 @@ function Login() {
   const [showPassword, setShowPassword] = useState(false); // State for password visibility
   const navigate = useNavigate();
   const { setUser } = useUser(); // Get setUser  from context
+  const [isLoggedIn, setIsLoggedIn] = useState(true); // state for login status
 
   const notify = () => {
     toast.success('Successfully Login!', {
@@ -82,6 +84,8 @@ function Login() {
 
   return (
     <>
+      <Nav isLoggedIn={isLoggedIn} />
+
       <div className="login-page">
         <center>
           <h3>Log In</h3>

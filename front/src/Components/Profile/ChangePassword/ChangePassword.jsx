@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { url } from '../../ApiUrl/Url';
 import toast, { Toaster } from 'react-hot-toast';
 
-import './ChangePassword..css'
+import './ChangePassword..css';
+
 function ChangePassword() {
     const [isOldPasswordCoreect, setIsOldPasswordCoreect] = useState(true);
     const [isNewAndConfirmMatch, setIsNewAndConfirmMatch] = useState(true);
@@ -10,7 +11,11 @@ function ChangePassword() {
     const [oldPassword, setOldPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
-    const [showPassword, setShowPassword] = useState(false); // State for password visibility
+    
+    // Separate state for password visibility of each input
+    const [showOldPassword, setShowOldPassword] = useState(false);
+    const [showNewPassword, setShowNewPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
     const validatePassword = (password) => {
         const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
@@ -31,7 +36,7 @@ function ChangePassword() {
     };
 
     const notifyIncoreectPass = () => {
-        toast.error('Incorrect passowrd', {
+        toast.error('Incorrect password', {
             duration: 2000,
             position: "top-right",
             style: {
@@ -42,7 +47,7 @@ function ChangePassword() {
     };
 
     const notifyConfirnNotMatch = () => {
-        toast.error(`New Password and Confirm Password does't match`, {
+        toast.error(`New Password and Confirm Password doesn't match`, {
             duration: 2000,
             position: "top-right",
             style: {
@@ -78,9 +83,7 @@ function ChangePassword() {
         });
     };
 
-
     const checkPasswordCorrect = async (token) => {
-
         const response = await fetch(`${url}/auth/checkPasswordCorrect`, {
             method: 'POST',
             headers: {
@@ -90,43 +93,39 @@ function ChangePassword() {
             body: JSON.stringify({ oldPassword }),
         });
         const data = await response.json();
-        // console.log(data);
         return data.message; // Assume backend returns { exists: true/false }
-    }
+    };
 
     const handleChangePass = async (e) => {
         e.preventDefault();
 
         const token = localStorage.getItem('token');
         if (!token) {
-            // alert('No token found. Please log in again.');
             return;
         }
 
         const passwordCorrect = await checkPasswordCorrect(token);
-        // console.log(passwordCorrect)
         if (!passwordCorrect) {
             setIsOldPasswordCoreect(false); // Display email already registered error
             notifyIncoreectPass();
             setIsPasswordValid(false); // Ensure password error is cleared if username check fails
             return;
         }
-        setIsOldPasswordCoreect(true)
+        setIsOldPasswordCoreect(true);
 
         if (!validatePassword(newPassword)) {
             setIsPasswordValid(true); // Set password validation error
             notifyValid();
             return;
         }
-        setIsPasswordValid(false)
+        setIsPasswordValid(false);
 
         if (newPassword !== confirmPassword) {
-            setIsNewAndConfirmMatch(false)
+            setIsNewAndConfirmMatch(false);
             notifyConfirnNotMatch();
-            // alert("New passwords don't match");
             return;
         }
-        setIsNewAndConfirmMatch(true)
+        setIsNewAndConfirmMatch(true);
 
         try {
             const response = await fetch(`${url}/auth/changePassword`, {
@@ -140,23 +139,28 @@ function ChangePassword() {
 
             const data = await response.json();
             if (response.ok) {
-                notify()
+                notify();
             } else {
-                notifyError(data)
-                // console.log('line 37 ');
+                notifyError(data);
             }
         } catch (error) {
             console.error('Error changing password:', error);
-            notifyError(error)
+            notifyError(error);
         }
-        setOldPassword('')
-        setNewPassword('')
-        setConfirmPassword('')
 
+        setOldPassword('');
+        setNewPassword('');
+        setConfirmPassword('');
     };
 
-    const togglePasswordVisibility = () => {
-        setShowPassword((prev) => !prev);
+    const togglePasswordVisibility = (field) => {
+        if (field === 'old') {
+            setShowOldPassword((prev) => !prev);
+        } else if (field === 'new') {
+            setShowNewPassword((prev) => !prev);
+        } else if (field === 'confirm') {
+            setShowConfirmPassword((prev) => !prev);
+        }
     };
 
     return (
@@ -164,56 +168,57 @@ function ChangePassword() {
             <center><h3>Change Password</h3></center>
             <div className="form">
                 <form onSubmit={handleChangePass} className="login-form">
-                    {/* old  */}
+                    {/* old password */}
                     <div className="password-container">
                         <input
                             placeholder="Old Password"
                             value={oldPassword}
                             onChange={(e) => setOldPassword(e.target.value)}
                             name="password"
-                            type={showPassword ? 'text' : 'password'} // Toggle password visibility
+                            type={showOldPassword ? 'text' : 'password'}
                             required
                         />
-                        <span onClick={togglePasswordVisibility} className="eye-icon">
-                            {showPassword ? '👁️' : '👁️‍🗨️'} {/* Change icons based on visibility */}
+                        <span onClick={() => togglePasswordVisibility('old')} className="eye-icon">
+                            {showOldPassword ? '👁️' : '👁️‍🗨️'}
                         </span>
                     </div>
-                    {/* new  */}
+                    {/* new password */}
                     <div className="password-container">
                         <input
                             placeholder="New Password"
                             value={newPassword}
                             onChange={(e) => setNewPassword(e.target.value)}
                             name="password"
-                            type={showPassword ? 'text' : 'password'} // Toggle password visibility
+                            type={showNewPassword ? 'text' : 'password'}
                             required
                         />
-                        <span onClick={togglePasswordVisibility} className="eye-icon">
-                            {showPassword ? '👁️' : '👁️‍🗨️'} {/* Change icons based on visibility */}
+                        <span onClick={() => togglePasswordVisibility('new')} className="eye-icon">
+                            {showNewPassword ? '👁️' : '👁️‍🗨️'}
                         </span>
                     </div>
-                    {/* confirn */}
+                    {/* confirm password */}
                     <div className="password-container">
                         <input
                             name="password"
-                            type={showPassword ? 'text' : 'password'} // Toggle password visibility
+                            type={showConfirmPassword ? 'text' : 'password'}
                             placeholder="Confirm Password"
                             value={confirmPassword}
                             onChange={(e) => setConfirmPassword(e.target.value)}
                             required
                         />
-                        <span onClick={togglePasswordVisibility} className="eye-icon">
-                            {showPassword ? '👁️' : '👁️‍🗨️'} {/* Change icons based on visibility */}
+                        <span onClick={() => togglePasswordVisibility('confirm')} className="eye-icon">
+                            {showConfirmPassword ? '👁️' : '👁️‍🗨️'}
                         </span>
                     </div>
+
                     {!isOldPasswordCoreect && (
                         <small id="emailHelp" className="form-text text-muted">
-                            Incorrect passowrd
+                            Incorrect password
                         </small>
                     )}
                     {!isNewAndConfirmMatch && (
                         <small id="emailHelp" className="form-text text-muted">
-                            New and Confirm pass does't match
+                            New and Confirm passwords don't match
                         </small>
                     )}
                     {isPasswordValid && (

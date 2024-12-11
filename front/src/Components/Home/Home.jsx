@@ -14,17 +14,19 @@ function Home() {
   const [recipes, setRecipes] = useState([]);
   const [bookmarkedItems, setBookmarkedItems] = useState([]);
   const [page, setPage] = useState(1);
+  const [laoding, setLoading] = useState(false)
 
   useEffect(() => {
     if (user && user.username) {
       const fetchData = async () => {
+        setLoading(true)
         const token = localStorage.getItem('token');
         if (token) {
           const userData = JSON.parse(atob(token.split('.')[1]));
           setUser(userData);
         }
         try {
-          const recipesResponse = await fetch(`${url}/recipes/data/?_limit=4&_page=${page}`, {
+          const recipesResponse = await fetch(`${url}/recipes/data/?_limit=3&_page=${page}`, {
             method: 'GET',
             headers: {
               'Authorization': `Bearer ${token}`,
@@ -40,10 +42,10 @@ function Home() {
           if (!recipesResponse.ok) {
             throw new Error('Network response was not ok');
           }
+          setLoading(false)
 
           const recipesData = await recipesResponse.json();
           // console.log(recipesData);
-          
           setRecipes((prev) => [...prev, ...recipesData]);
 
           const bookmarksResponse = await fetch(`${url}/bookmark/bookmarks/${user.username}`, {
@@ -62,6 +64,7 @@ function Home() {
           const bookmarkIds = bookmarksData.map((item) => item.Post_id);
           setBookmarkedItems(bookmarkIds);
         } catch (error) {
+          // setLoading(true)
           console.error('Error fetching data:', error);
           setIsLoggedIn(false);
         }
@@ -70,7 +73,7 @@ function Home() {
       fetchData();
     }
   }, [page]);
-// console.log(recipes.length);
+  // console.log(recipes.length);
 
   const handleScroll = () => {
     if (window.innerHeight + document.documentElement.scrollTop + 1 >= document.documentElement.scrollHeight) {
@@ -88,36 +91,42 @@ function Home() {
       <Nav isLoggedIn={isLoggedIn} user={user} />
       <Hero />
       {
-      isLoggedIn && (
-        <div id="container">
-          {recipes.map((recipe, index) => (
-            <div className="card" key={index}>
-              <div className="car-iamge">
-                <img src={recipe.Image_URL} alt="Recipe" />
-              </div>
-              <div className="card__details">
-                <div className="psot-line">
-                  <span className="tag">Posted By: {recipe.PostedBy.name}</span>
-                  <span className="tag">{recipe.PostedBy.username}</span>
-                  <MarkCode
-                    recipe={recipe}
-                    bookmarkedItems={bookmarkedItems}
-                    setBookmarkedItems={setBookmarkedItems} // Pass the state setter here
-                  />
+        laoding &&
+        <dir className="loading" >
+          <span className="loader"></span>
+        </dir>
+      }
+      {
+        (isLoggedIn) && (
+          <div id="container">
+            {recipes.map((recipe, index) => (
+              <div className="card" key={index}>
+                <div className="car-iamge">
+                  <img src={recipe.Image_URL} alt="Recipe" />
                 </div>
+                <div className="card__details">
+                  <div className="psot-line">
+                    <span className="tag">Posted By: {recipe.PostedBy.name}</span>
+                    <span className="tag">{recipe.PostedBy.username}</span>
+                    <MarkCode
+                      recipe={recipe}
+                      bookmarkedItems={bookmarkedItems}
+                      setBookmarkedItems={setBookmarkedItems} // Pass the state setter here
+                    />
+                  </div>
 
-                <div className="name">Recipe Name: <p>{recipe.Recipes}</p></div>
-                <div className="name">Ingredients: <p>{recipe.Ingredients}</p></div>
-                <div className="name">Instructions: <p>{recipe.Instructions}</p></div>
+                  <div className="name">Recipe Name: <p>{recipe.Recipes}</p></div>
+                  <div className="name">Ingredients: <p>{recipe.Ingredients}</p></div>
+                  <div className="name">Instructions: <p>{recipe.Instructions}</p></div>
 
-                <Link to={`/recipe/${recipe._id}`}>
-                  <button className="read-more">Read more</button>
-                </Link>
+                  <Link to={`/recipe/${recipe._id}`}>
+                    <button className="read-more">Read more</button>
+                  </Link>
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
-      )}
+            ))}
+          </div>
+        )}
     </>
   );
 }
