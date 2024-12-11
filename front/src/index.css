@@ -7,7 +7,7 @@
     --form_color: #daa520;
 }
 
-[data-theme='dark']{
+[data-theme='light']{
     --body_background: #fee1b2;
     --body_color: #494e50;
     --nav_background: #f6d7a3;
