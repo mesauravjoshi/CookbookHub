@@ -4,7 +4,7 @@ import MyRecipes from './Components/Profile/MyRecipes/MyRecipes';
 import EditProfile from './Components/Profile/EditProfile/EditProfile';
 import EditRecipe from './Components/Profile/EditRecipe/EditRecipe';
 import ChangePassword from './Components/Profile/ChangePassword/ChangePassword';
-import Upload from './Components/Upload';
+import Upload from './Components/Upload/Upload';
 import Home from './Components/Home/Home';
 import Bookmark from './Components/Bookmark';
 import RecipeID from './Components/Recipe/RecipeID';
@@ -16,6 +16,7 @@ import Search from './Components/Search';
 import SearchBox from './Components/Nav/SearchBox';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
+// import ImageUploader from './Components/ImageUploader';
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
                   <Route path="/RecipeCuisine" element={<RecipeCuisine />} />
                   <Route path="/Search/:searchRecipe" element={<Search />} />
                   <Route path="/SearchBox" element={<SearchBox />} />
+                  {/* <Route path="/ImageUploader" element={<ImageUploader />} /> */}
                   
                   {/* Profile Route with Nested MyRecipes */}
                   <Route path="/profile" >

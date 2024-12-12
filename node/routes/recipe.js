@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Recipe = require('../models/Recipe');
 const { jwtAuthMiddleware } = require('../jwt');
+const multer = require('multer');
 
 // Get all recipes with pagination
 router.get('/data',jwtAuthMiddleware, async (req, res) => {
@@ -23,9 +24,18 @@ router.get('/data',jwtAuthMiddleware, async (req, res) => {
     }
 });
 
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => cb(null, 'uploads/'),
+  filename: (req, file, cb) => cb(null, `${Date.now()}-${file.originalname}`)
+});
+
+const upload = multer({ storage });
+
 // Upload recipies 
-router.post('/recipie_data', jwtAuthMiddleware, async (req, res) => {
+router.post('/recipie_data', jwtAuthMiddleware, upload.single('Image_URL'), async (req, res) => {
     const { Category ,Cuisine,Image_URL, Recipes, Ingredients, Instructions, PostedBy, Tags } = req.body; // Ensure you destructure UploadedBy
+    const imagePath = req.file ? req.file.path : null; // File is accessible via req.file
+    console.log(imagePath);
     
     if (!Category || !Cuisine || !Image_URL || !Recipes || !Ingredients || !Instructions || !PostedBy) {
         return res.status(400).json({ message: 'All fields are required' });

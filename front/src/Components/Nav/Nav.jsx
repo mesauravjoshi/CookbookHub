@@ -60,7 +60,6 @@ function Nav({ isLoggedIn, user }) {
     }
     useEffect(() => {
         const storedMode = localStorage.getItem('theme');
-        console.log(storedMode);
         
         if (storedMode === 'light') {
             setLightMode();

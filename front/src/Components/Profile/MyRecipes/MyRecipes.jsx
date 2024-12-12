@@ -7,7 +7,7 @@ import MarkCode from '../../MarkCode';
 import PageNotFound from '../../PageNotFound/PageNotFound';
 import './MyRecipes.css'
 import toast, { Toaster } from 'react-hot-toast';
-import LoadingCard from '../../LoadingCard';
+import LoadingCard from '../../Loading/LoadingCard';
 import NoRecipe from './NoRecipe';
 
 function MyRecipes() {

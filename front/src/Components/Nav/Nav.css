@@ -178,12 +178,12 @@ button {
 }
 
 .bi-moon {
-    color: var(--nav_color);
+    color: white;
 }
 
 .dark-mode-icon {
     cursor: pointer;
 }
 .bi-sun{
-    color: white;
+    color: black;
 }

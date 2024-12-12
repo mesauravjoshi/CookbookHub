@@ -1,0 +1,52 @@
+.dragBox{
+  border: 1px dashed var(--form_color);
+  margin: 1em 0em;
+  padding: 1em 1em;
+}
+
+.dragText p{
+  color: var(--form_color);
+  display: flex;
+  justify-content: center;
+  margin: 0;
+}
+.bi-cloud-arrow-up-fill {
+    margin-bottom: 12px;
+    color: var(--form_color);
+    font-size: 2.5em;
+}
+
+.uplaod_image{
+    display: flex;
+    justify-content: center;
+}
+.uplaod_image img{
+    border-radius: 12px;
+    /* height: 73%; */
+    object-fit: cover;
+    width: 30%;
+}
+
+.selected-file {
+    border: 1px solid var(--form_color);
+    display: flex;
+    justify-content: center;
+    margin: 0;
+    width: 12em;
+}
+
+.selected-file p{
+    color: var(--form_color);;
+}
+
+.selected-file svg{
+    cursor: pointer;
+    color: var(--form_color);;
+}
+
+@media (max-width: 863px) {
+    .uplaod_image img {
+        width: 72%;
+    }
+
+}

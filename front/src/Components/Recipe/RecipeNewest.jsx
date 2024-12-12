@@ -4,7 +4,7 @@ import { url } from '../ApiUrl/Url';
 import { useUser } from '../UserContext';
 import MarkCode from '../MarkCode';
 import { Toaster } from 'react-hot-toast';
-import LoadingCard from '../LoadingCard';
+import LoadingCard from '../Loading/LoadingCard';
 
 function RecipeNewest({ isLoggedIn, setIsLoggedIn }) {
   const { user } = useUser();

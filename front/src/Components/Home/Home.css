@@ -44,16 +44,14 @@
   font-size: 1.7em;
 }
 
-
-#custom-h1 {
-  /* display: flex; */
+/* Example for unique class 'bold' with font weight 600 */
+.mulish-bold {
   color: #f1423a;
-  font-size: 8.2em;
-  font-family: "Delius", cursive;
-  font-weight: 400;
+  font-family: "Mulish", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 700;
   font-style: normal;
-  flex-direction: column;
-  align-items: flex-end;
+  font-size: 7.8em;
 }
 
 /* END:  Discover and Share Amazing Recipes!  ---------------------- */
@@ -211,10 +209,6 @@ p {
   }
 }
 
-@media (max-width: 1206px) {}
-
-@media (max-width: 918px) {}
-
 @media (max-width: 890px) {
   .tagline-but {
     margin: 2em 3em 3em 2em;
@@ -237,9 +231,11 @@ p {
     /* margin: 0 0 1.2em 0.3em; */
   }
 
-  #custom-h1 {
-    font-size: 4em;
+  .mulish-bold {
+    line-height: 1.4;
+    font-size: 4.7em;
   }
+
   .heading svg {
     /* background: #000; */
     height: 65px;
@@ -259,9 +255,6 @@ p {
   /* background: #000; */
   height: 165px;
 }
-
-
-
 
 /* loading   */
 

@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import Form from 'react-bootstrap/Form';
-import { url } from './ApiUrl/Url';
-import { useUser } from './UserContext'; // Import the context
-import PageNotFound from './PageNotFound/PageNotFound';
-import Nav from './Nav/Nav';
+import { url } from '../ApiUrl/Url';
+import { useUser } from '../UserContext'; // Import the context
+import PageNotFound from '../PageNotFound/PageNotFound';
+import Nav from '../Nav/Nav';
 import './Upload.css';
 import toast, { Toaster } from 'react-hot-toast';
+import ImageUploader from './ImageUploader';
 
 function Upload() {
   const { user, setUser } = useUser(); // Get the user from context 
-  const [image_URL, setImage_URL] = useState('');
   const [recipesName, setRecipesName] = useState('');
   const [ingredients, setIngredients] = useState('');
   const [instructions, setInstructions] = useState('');
@@ -20,6 +20,13 @@ function Upload() {
   const [tags, setTags] = useState('');
   const [multiSel, setMultiSel] = useState([]);
   const [isDisable, setIsDisable] = useState(false);
+
+  // iamge 
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [error, setError] = useState(null);
+  const [fIleSelected, setFIleSelected] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
 
   // Function to show toast
   const notify = () => {
@@ -89,7 +96,6 @@ function Upload() {
     }
     if (name === 'Ingredients') setIngredients(value);
     if (name === 'Instructions') setInstructions(value);
-    if (name === 'Image_URL') setImage_URL(value);
     if (name === 'Category') setCategory(value);
     if (name === 'Cuisine') setCuisine(value);
   };
@@ -98,48 +104,64 @@ function Upload() {
     e.preventDefault();
     const token = localStorage.getItem('token');
     const name = localStorage.getItem('name');
-    // console.log(name);
-
+  
+    if (!selectedImage) {
+      setError('Please select an image');
+      console.log('No image selected');
+      return;
+    }
+  
     const userData = JSON.parse(atob(token.split('.')[1])); // Decode token to get user data
+  
+    // Use FormData to send the image file and other data
+    const formData = new FormData();
+    formData.append('Image_URL', selectedImage); // 'image' is the field name expected by the backend
+    formData.append('Recipes', recipesName);
+    formData.append('Ingredients', ingredients);
+    formData.append('Instructions', instructions);
+    formData.append('Category', category);
+    formData.append('Cuisine', cuisine);
+    formData.append('Tags', JSON.stringify(multiSel)); // Send tags as a JSON string
+    formData.append('PostedBy', JSON.stringify({
+      name: name,
+      username: userData.username,
+      _id: userData.id,
+    }));
+    console.log(selectedImage);
+    console.log(...formData.entries());
 
-    const form = {
-      Recipes: recipesName,
-      Ingredients: ingredients,
-      Instructions: instructions,
-      Image_URL: image_URL,
-      Category: category,
-      Cuisine: cuisine,
-      PostedBy: {
-        name: name,
-        username: userData.username,
-        _id: userData.id
-      },
-      Tags: multiSel
-    };
-    // console.log(form);
-    const response = await fetch(`${url}/recipes/recipie_data`, {
-      method: 'POST',
-      body: JSON.stringify(form),
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}` // Include token in the header
+    setLoading(true);
+    try {
+      const response = await fetch(`${url}/recipes/recipie_data`, {
+        method: 'POST',
+        body: formData,
+        headers: {
+          'Authorization': `Bearer ${token}` // Token for authentication
+        },
+      });
+  
+      if (response.ok) {
+        setRecipesName('');
+        setIngredients('');
+        setInstructions('');
+        setCategory('');
+        setCuisine('');
+        setMultiSel([]);
+        setSelectedImage(null); // Clear selected image
+        notify();
+      } else {
+        const errorResponse = await response.json();
+        console.error('Error saving recipe:', errorResponse.message);
+        notifyFail();
       }
-    });
-
-    if (response.ok) {
-      setImage_URL('');
-      setRecipesName('');
-      setIngredients('');
-      setInstructions('');
-      setCategory('');
-      setCuisine('');
-      setMultiSel([]);
-      notify()
-    } else {
-      // console.log('Error saving recipe');
+    } catch (error) {
+      console.error('Error:', error);
       notifyFail();
+    } finally {
+      setLoading(false);
     }
   };
+  
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -157,8 +179,17 @@ function Upload() {
         {
           // user &&
           <Form onSubmit={handleSubmit}>
-            <Form.Control size="lg" onChange={handleForm} value={image_URL} type="text" name='Image_URL' placeholder='Image URL' required autoFocus />
+
+            <ImageUploader
+            error={error}
+            setError={setError}
+            selectedImage={selectedImage}
+            setSelectedImage={setSelectedImage}
+            />
+
+            {/* <Form.Control size="lg" onChange={handleForm} value={image_URL} type="text" name='Image_URL' placeholder='Image URL' required autoFocus /> */}
             <br />
+
             <Form.Control size="lg" onChange={handleForm} value={recipesName} type="text" name='Recipes' placeholder='Recipes name' required />
             <br />
             <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
