@@ -21,7 +21,7 @@ const ImageUploader = ({ error, setError, setSelectedImage, selectedImage }) => 
       }
 
       if (file.size < 100 * 1024 || file.size > 2000 * 1024) {
-        setError('Image size must be between 100KB and 500MB');
+        setError('Image size must be between 100KB and 2MB');
         return;
       }
 
@@ -52,22 +52,6 @@ const ImageUploader = ({ error, setError, setSelectedImage, selectedImage }) => 
     const formData = new FormData();
     formData.append('image', selectedImage);
     console.log(selectedImage);
-
-    fetch('/api/upload-image', {
-      method: 'POST',
-      body: formData,
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        // setLoading(false);
-        // setSuccess(true);
-        console.log(data);
-      })
-      .catch((error) => {
-        // setLoading(false);
-        setError('Error uploading image');
-        console.error(error);
-      });
   };
 
   return (

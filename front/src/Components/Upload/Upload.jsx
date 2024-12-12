@@ -141,13 +141,13 @@ function Upload() {
       });
   
       if (response.ok) {
-        setRecipesName('');
-        setIngredients('');
-        setInstructions('');
-        setCategory('');
-        setCuisine('');
-        setMultiSel([]);
-        setSelectedImage(null); // Clear selected image
+        // setRecipesName('');
+        // setIngredients('');
+        // setInstructions('');
+        // setCategory('');
+        // setCuisine('');
+        // setMultiSel([]);
+        // setSelectedImage(null); // Clear selected image
         notify();
       } else {
         const errorResponse = await response.json();

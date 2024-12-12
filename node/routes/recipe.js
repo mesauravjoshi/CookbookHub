@@ -33,15 +33,15 @@ const upload = multer({ storage });
 
 // Upload recipies 
 router.post('/recipie_data', jwtAuthMiddleware, upload.single('Image_URL'), async (req, res) => {
-    const { Category ,Cuisine,Image_URL, Recipes, Ingredients, Instructions, PostedBy, Tags } = req.body; // Ensure you destructure UploadedBy
-    const imagePath = req.file ? req.file.path : null; // File is accessible via req.file
-    console.log(imagePath);
+    const { Category ,Cuisine, Recipes, Ingredients, Instructions, PostedBy, Tags } = req.body; // Ensure you destructure UploadedBy
+    const Image_URL = req.file ? req.file.path : null; // File is accessible via req.file
+    console.log(JSON.parse(PostedBy));
     
     if (!Category || !Cuisine || !Image_URL || !Recipes || !Ingredients || !Instructions || !PostedBy) {
         return res.status(400).json({ message: 'All fields are required' });
     }
     // Create a new recipe document
-    const recipe = new Recipe({ Category ,Cuisine ,Image_URL, Recipes, Ingredients, Instructions, PostedBy: PostedBy, Tags }); // Save UploadedBy as PostedBy
+    const recipe = new Recipe({ Category ,Cuisine ,Image_URL, Recipes, Ingredients, Instructions, PostedBy: JSON.parse(PostedBy), Tags }); // Save UploadedBy as PostedBy
     try {
         const savedRecipe = await recipe.save();
         // console.log('New recipe created:', savedRecipe);
