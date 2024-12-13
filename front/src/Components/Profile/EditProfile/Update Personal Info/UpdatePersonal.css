@@ -1,0 +1,13 @@
+.update-name-button {
+    display: flex;
+    justify-content: center;
+}
+
+/* .update-name-button{
+
+    button {
+        border: 1px solid yellow;
+        color: green;
+        background-color: green;
+    }
+} */

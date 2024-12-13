@@ -1,12 +1,51 @@
 .edit-profile{
-    margin: 3vw;
+    border-top: 1px solid gray;
+    display: flex;
+    margin: 0.6vw;
 }
 
-.edit-profile h3 {
-    margin-bottom: 1.5em;
-    font-size: 17px;
+.left-slide {
+    border-right: 1px solid gray;
+    width: 16rem;
+    /* height: 34rem; */
+}
+
+.selected{
+    cursor: pointer;
+    background-color: #3e4249;
+    margin: 1em 0.8em 1.5em 0.8em;
+    font-size: 14px;
+    font-weight: 600;
     color: var(--body_color);
-    border: 1px solid white;
-    border-radius: 3em;
-    padding: 1em 0.8em;
+    /* border: 1px solid white; */
+    border-radius: 10px;
+    padding: 0.5em 0.8em;
+}
+
+.notSelected{
+    cursor: pointer;
+    background-color: #31343b;
+    margin: 1em 0.8em 1.5em 0.8em;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--body_color);
+    /* border: 1px solid white; */
+    border-radius: 10px;
+    padding: 0.5em 0.8em;
+}
+
+.right-box{
+    /* border: 1px dashed yellow; */
+    margin: 0em 0.8em 1.5em 0.8em;
+    padding: 0.3em 0.8em 0.5em 0.8em;
+    width: 100%;
+}
+
+.right-box p {
+    margin: 1em 0.8em 1.5em 0.8em;
+    font-size: 14px;
+    color: var(--body_color);
+    /* border: 1px solid white; */
+    border-radius: 10px;
+    padding: 0.5em 0.8em;
 }

@@ -17,7 +17,7 @@ function Login() {
 
   const notify = () => {
     toast.success('Successfully Login!', {
-      duration: 2000,
+      duration: 4000,
       position: "top-right",
       style: {
         border: '1px solid #713200',
@@ -30,7 +30,7 @@ function Login() {
 
   const notifyFail = () => {
     toast.error('Incorrect Username or Password', {
-      duration: 1500,
+      duration: 3000,
       position: "top-right",
       style: {
         border: '1px solid #713200',

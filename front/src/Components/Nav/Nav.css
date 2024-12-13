@@ -80,7 +80,7 @@ h3 {
     font-weight: 900;
 }
 
-button {
+.nav-but {
     display: flex;
     padding: 5px 9px;
     border-radius: 10px;
