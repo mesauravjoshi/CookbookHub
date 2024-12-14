@@ -21,14 +21,23 @@ router.put('/name', jwtAuthMiddleware, async (req, res) => {
         if (!updatedUser) {
             return res.status(404).json({ message: 'User not found' });
         }
+        const updatedName = updatedUser.name;
+        // console.log(updatedName);
+        const payload = {
+            id: updatedUser.id,
+            name: updatedUser.name,
+            username: updatedUser.username
+        }
+        const token = generateToken(payload)
+        console.log(`${updatedUser.username}'s Account name updated to ${updatedUser.name}`);
+        res.json({ message: 'Login successful', updatedName, token });
 
-        res.json(updatedUser);
+        // res.json(updatedUser);
     } catch (error) {
         console.error('Error updating name:', error);
         res.status(500).json({ message: 'Error updating name' });
     }
 });
-
 
 
 module.exports = router;

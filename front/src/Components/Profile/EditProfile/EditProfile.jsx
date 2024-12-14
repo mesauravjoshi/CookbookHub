@@ -6,6 +6,8 @@ import './EditProfile.css'
 import DeleteAccount from './DeleteAccount/DeleteAccount';
 import UpdatePersonal from './Update Personal Info/UpdatePersonal';
 import PageNotFound from '../../PageNotFound/PageNotFound';
+import ChangePreferences from './ChangePreferences';
+import PrivacySettings from './PrivacySettings';
 
 function EditProfile() {
   const { user } = useUser();
@@ -22,9 +24,9 @@ function EditProfile() {
     switch (index) {
       case 0: return <UpdatePersonal />
         break;
-      case 1: return <UpdatePersonal />
+      case 1: return <ChangePreferences/>
         break;
-      case 2: return <UpdatePersonal />
+      case 2: return <PrivacySettings/>
         break;
       case 3: return <DeleteAccount />
         break;
@@ -39,8 +41,10 @@ function EditProfile() {
       user ?
       <> 
       <h2>My Profile</h2>
+      <p>{user.username}</p>
       <div className='edit-profile'>
         <div className="left-slide">
+
           {
             accountSettingList.map((item, index) => {
               return (

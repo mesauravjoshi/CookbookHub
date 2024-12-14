@@ -18,7 +18,7 @@ router.post('/delete', jwtAuthMiddleware,async (req, res) => {
         if (userResult .deletedCount === 0) {
             return res.status(404).json({ message: 'Username not found' });
         }
-        console.log(`removed ${username}'s data from users`);
+        console.log(`${username}'s Account deleted permanently`);
 
         // if userdata removed then data from bookmark removing
         const bookmarkResult  = await Bookmark.deleteMany({"BookmarkBy.username": `${username}`});

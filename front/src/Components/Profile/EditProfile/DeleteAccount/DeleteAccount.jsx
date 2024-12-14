@@ -43,6 +43,8 @@ function DeleteAccount() {
 
     const handleDeleteAccount = async (e) => {
         e.preventDefault();
+        console.log('clicked');
+        
         const token = localStorage.getItem('token');
 
         const formData = { 'username': username }
@@ -88,9 +90,7 @@ function DeleteAccount() {
                 </span>
                 <Form.Control size="lg" type="text" name='Username' onChange={handleForm} value={username} placeholder='Username' required />
                 <p>Once you delete your account, there is no going back. Please be certain.</p>
-                <div className="upload-button">
-                    <button>Delete Your Account</button>
-                </div>
+                <button className="btn btn-danger">Delete Your Account</button>
             </Form>
 
             {/* Render Toaster only after the account is deleted */}
