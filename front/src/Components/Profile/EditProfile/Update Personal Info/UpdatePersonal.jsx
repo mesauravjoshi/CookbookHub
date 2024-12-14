@@ -5,11 +5,24 @@ import './UpdatePersonal.css'
 import { url } from '../../../ApiUrl/Url';
 import toast, { Toaster } from 'react-hot-toast';
 
-function UpdatePersonal() {
+function UpdatePersonal({joshi, user, setUser}) {
     const [name, setName] = useState('')
     const navigate = useNavigate();
     const token = localStorage.getItem('token');  // Get token from localStorage
     const userData = JSON.parse(atob(token.split('.')[1]));
+    
+    const notifyNameChange = () => {
+        toast.success('Your Name Successfully changed!', {
+            duration: 5000,
+            position: "top-right",
+            style: {
+                border: '1px solid #713200',
+                padding: '10px',
+                color: '#713200',
+                fontSize: '0.9rem',
+            },
+        });
+    };
 
     const notify = () => {
         toast.error('Service not available!', {
@@ -30,7 +43,6 @@ function UpdatePersonal() {
     }, [token]);
 
     const handleSaveName = async (e) => {
-        console.log('handleSaveName');
         
         e.preventDefault();
         // console.log('Updated Name:', name);
@@ -49,7 +61,7 @@ function UpdatePersonal() {
             }
 
             const data = await response.json();
-            // console.log('Updated user:', data.updatedName);
+            // console.log('Updated data:', data);
 
             // remove previous data from local storage 
             localStorage.removeItem('token')
@@ -58,8 +70,14 @@ function UpdatePersonal() {
             // updating new data to local storage 
             localStorage.setItem('token', data.token);
             localStorage.setItem('name', data.updatedName);
-            // notify()
-            // navigate('/profile/MyRecipes');  // Example: navigate to the profile page
+            setUser(prevObj => ({
+                ...prevObj,      
+                name: data.updatedName
+              }))
+
+            setTimeout(() => {
+                notifyNameChange();
+            }, 500);
         } catch (error) {
             console.error('Error updating name:', error);
             // alert("Failed to update name");
@@ -70,8 +88,8 @@ function UpdatePersonal() {
         setName(e.target.value)
     }
 
-    const handleSaveUsername = () => {
-        // console.log('clicked');
+    const handleSaveUsername = (e) => {
+        e.preventDefault();
         notify()
     }
 
@@ -97,11 +115,15 @@ function UpdatePersonal() {
                 <span className='confirn-username'>
                     Username should be unique
                 </span>
-                <Form.Control size="lg" type="text" name='Username' placeholder='Username' required disabled={true} />
-            </Form>
+                <Form.Control size="lg" type="text" name='Username' placeholder='Username' required 
+                disabled={true} 
+                />
                 <div className="update-name-button">
-                    <button onClick={handleSaveUsername} className="btn btn-outline-success" disabled={true}>Update Username</button>
+                    <button type='submit' className="btn btn-outline-success" 
+                    disabled={true}
+                    >Update Username</button>
                 </div>
+            </Form>
             <Toaster />
         </div>
     )

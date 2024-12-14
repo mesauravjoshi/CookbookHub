@@ -10,7 +10,7 @@ import ChangePreferences from './ChangePreferences';
 import PrivacySettings from './PrivacySettings';
 
 function EditProfile() {
-  const { user } = useUser();
+  const { user,setUser } = useUser();
   const [isSelected, setIsSelected] = useState(0);
 
   const accountSettingList = [
@@ -19,10 +19,11 @@ function EditProfile() {
     'Privacy Settings:',
     'Delete Account:'
   ];
-
+  // console.log(user);
+  
   const ShowSetting = ({ index }) => {
     switch (index) {
-      case 0: return <UpdatePersonal />
+      case 0: return <UpdatePersonal user={user} setUser={setUser} />
         break;
       case 1: return <ChangePreferences/>
         break;
@@ -41,7 +42,7 @@ function EditProfile() {
       user ?
       <> 
       <h2>My Profile</h2>
-      <p>{user.username}</p>
+      <p>{user.name}</p>
       <div className='edit-profile'>
         <div className="left-slide">
 
