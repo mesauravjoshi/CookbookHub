@@ -47,7 +47,6 @@ function Login() {
       [e.target.name]: e.target.value,
     });
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -66,7 +65,12 @@ function Login() {
       // Store token in local storage
       localStorage.setItem('token', data.token);
       localStorage.setItem('name', data.user.name);
-      setUser(data.user); // Set the user data in context
+
+      const token = localStorage.getItem('token');
+      if (token) {
+        const userData = JSON.parse(atob(token.split('.')[1]));
+        setUser(userData);
+      }
       notify()
       setTimeout(() => {
         navigate(`/`); // Redirect to profile
