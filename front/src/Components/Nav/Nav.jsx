@@ -40,6 +40,7 @@ function Nav({ isLoggedIn, user }) {
         setShowMenu(!showMenu)
         setIsToggle(prev => !prev)
     }
+
     const setDarkMode = () => {
         document.querySelector('body').setAttribute('data-theme', 'dark');
         localStorage.setItem('theme', 'dark'); // Save theme in localStorage
@@ -58,6 +59,7 @@ function Nav({ isLoggedIn, user }) {
             setDarkMode(); // Set dark mode if it was light before
         }
     }
+    
     useEffect(() => {
         const storedMode = localStorage.getItem('theme');
         

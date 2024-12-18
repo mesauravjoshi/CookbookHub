@@ -1,0 +1,29 @@
+.change-theme {
+    color: yellow;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    border: 1px solid grey;
+}
+
+.change-theme p{    
+    margin: 0;
+    font-size: 1.1em;
+}
+
+.selectBox-theme {
+    margin: 2px 0;
+    width: 8.5em;
+    /* border: 1px solid yellow; */
+}
+
+select {
+    background-color: var(--nav_background);
+    color: var(--nav_color);
+    padding: 6px;
+    font-size: 15px;
+    border: 1px solid grey;
+    border-radius: 6px;
+    transition: background-color 0.3s, color 0.3s;
+}

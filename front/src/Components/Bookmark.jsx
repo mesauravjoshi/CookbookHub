@@ -15,20 +15,21 @@ function Bookmark() {
       const fetchData = async () => {
         try {
           const token = localStorage.getItem('token');  // Get the token from localStorage
-          const bookmarksResponse = await fetch(`${url}/bookmark/bookmarks/${user.username}`, {
+          const IDresponse = await fetch(`${url}/bookmark/bookmarks/${user.username}`, {
             method: 'GET',
             headers: {
               'Authorization': `Bearer ${token}`,
               'Content-Type': 'application/json',
             },
           });
-          if (!bookmarksResponse.ok) {
+          if (!IDresponse.ok) {
             throw new Error('Network response was not ok');
           }
-          const bookmarksData = await bookmarksResponse.json();
-          setRecipes(bookmarksData);
+          const IDresponseData = await IDresponse.json();
+          // setRecipes(IDresponseData);
 
-          setBookmarkedItems(bookmarksData.map(item => item.Post_id)); // Populate bookmarked items
+          setBookmarkedItems(IDresponseData.map(item => item.Post_id)); // Populate bookmarked items
+
           // console.log(recipes);
         } catch (error) {
           console.error('Error fetching data:', error);
@@ -37,33 +38,70 @@ function Bookmark() {
 
       fetchData();
     }
-  }, [user,recipes]);
+  }, [user]);
+  // console.log(bookmarkedItems);
+
+  useEffect(() => {
+    const fetchBookmark = async () => {
+      if (bookmarkedItems.length === 0) {
+        // console.log('lenght is   0');
+        return; // Avoid sending an empty array
+      }
+      else {
+
+        try {
+          const token = localStorage.getItem('token');  // Get the token from localStorage
+          const bookmarksResponse = await fetch(`${url}/bookmark/bookmarks/`, {
+            method: 'POST',
+            body: JSON.stringify({ ids: bookmarkedItems }), // Send the bookmarked items' IDs
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
+          });
+
+          if (!bookmarksResponse.ok) {
+            throw new Error('Network response was not ok');
+          }
+          const bookmarksData = await bookmarksResponse.json();
+          // console.log(bookmarksData);
+          setRecipes(bookmarksData);  // Set the response data to `recipes`
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
+      }
+
+    };
+
+    fetchBookmark()
+  }, [bookmarkedItems])
 
   const toggleBookmark = async (item) => {
-    // console.log(item.Post_id);
+    // console.log(item._id);
 
-    const saving_post = {
+    const removing_post = {
       BookmarkBy: {
         username: user.username,
         _id: user.id
       },
-      Category: item.Category,
-      Cuisine: item.Cuisine,
-      Post_id: item.Post_id,
-      Image_URL: item.Image_URL,
-      Recipes: item.Recipes,
-      Ingredients: item.Ingredients,
-      Instructions: item.Instructions,
-      PostedBy: {
-        name: item.PostedBy.name,
-        username: item.PostedBy.username,
-        _id: item.PostedBy._id
-      }
+      // Category: item.Category,
+      // Cuisine: item.Cuisine,
+      Post_id: item._id,
+      // Image_URL: item.Image_URL,
+      // Recipes: item.Recipes,
+      // Ingredients: item.Ingredients,
+      // Instructions: item.Instructions,
+      // PostedBy: {
+      //   name: item.PostedBy.name,
+      //   username: item.PostedBy.username,
+      //   _id: item.PostedBy._id
+      // }
     };
+    console.log(removing_post);
 
     const response = await fetch(`${url}/bookmark/bookmark_remove`, {
       method: 'POST',
-      body: JSON.stringify(saving_post),
+      body: JSON.stringify(removing_post),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -73,10 +111,14 @@ function Bookmark() {
     if (response.ok) {
       // const data = await response.json();
       // console.log('Removed bookmark:', data);
+      setBookmarkedItems(prevBookmarkedItems => 
+        prevBookmarkedItems.filter(bookmarkId => bookmarkId !== item._id)
+      );
     } else {
       console.log('Failed to remove bookmark');
     }
   };
+  // console.log(recipes);
 
   return (
     <div>
@@ -87,6 +129,7 @@ function Bookmark() {
       ) : (
         <h1>Please log in.</h1>
       )}
+      {/* <button onClick={() => fetchBookmark()} >send</button> */}
 
       {
         recipes.length === 0 ?
@@ -98,7 +141,7 @@ function Bookmark() {
                     <h3 className="h2 mb-2">No bookmarks saved.</h3>
                     <h4> </h4>
                     <Link to={`/recipe`}
-                    className="btn bsb-btn-5xl btn-dark rounded-pill px-5 fs-6 m-0" role="button"
+                      className="btn bsb-btn-5xl btn-dark rounded-pill px-5 fs-6 m-0" role="button"
                     >
                       Add to bookmarks <i className="bi bi-bookmark-plus"></i>
                     </Link>
@@ -118,13 +161,14 @@ function Bookmark() {
                     <span className="tag">CATE: {recipe.Category}</span>
                     <span className="tag">Posted By: {recipe.PostedBy.name}</span>
                     <span className="tag">Username: {recipe.PostedBy.username}</span>
+                    <span className="tag">id: {recipe._id}</span>
 
                     <svg onClick={() => toggleBookmark(recipe)} xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" className="bi bi-bookmark-fill" viewBox="0 0 16 16">
                       {
                         bookmarkedItems.includes(recipe._id) ?
-                          null
-                          :
-                          <path d="M2 2v13.5a.5.5 0 0 0 .74.439L8 13.069l5.26 2.87A.5.5 0 0 0 14 15.5V2a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2" />
+                        <path d="M2 2v13.5a.5.5 0 0 0 .74.439L8 13.069l5.26 2.87A.5.5 0 0 0 14 15.5V2a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2" />
+                        :
+                        null
                       }
                     </svg>
                   </div>

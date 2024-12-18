@@ -6,8 +6,8 @@ import './EditProfile.css'
 import DeleteAccount from './DeleteAccount/DeleteAccount';
 import UpdatePersonal from './Update Personal Info/UpdatePersonal';
 import PageNotFound from '../../PageNotFound/PageNotFound';
-import ChangePreferences from './ChangePreferences';
 import PrivacySettings from './PrivacySettings';
+import ChangePreferences from './Change Preferences/ChangePreferences';
 
 function EditProfile() {
   const { user,setUser } = useUser();

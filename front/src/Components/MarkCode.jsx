@@ -44,18 +44,18 @@ function MarkCode({ recipe, bookmarkedItems, setBookmarkedItems }) {
           username: user.username,
           _id: user.id
         },
-        Category: item.Category,
-        Cuisine: item.Cuisine,
+        // Category: item.Category,
+        // Cuisine: item.Cuisine,
         Post_id: item._id,
-        Image_URL: item.Image_URL,
-        Recipes: item.Recipes,
-        Ingredients: item.Ingredients,
-        Instructions: item.Instructions,
-        PostedBy: {
-          name: item.PostedBy.name,
-          username: item.PostedBy.username,
-          _id: item.PostedBy._id
-        }
+        // Image_URL: item.Image_URL,
+        // Recipes: item.Recipes,
+        // Ingredients: item.Ingredients,
+        // Instructions: item.Instructions,
+        // PostedBy: {
+        //   name: item.PostedBy.name,
+        //   username: item.PostedBy.username,
+        //   _id: item.PostedBy._id
+        // }
       };
 
       const response = await fetch(`${url}/bookmark/bookmark_remove`, {
@@ -85,18 +85,18 @@ function MarkCode({ recipe, bookmarkedItems, setBookmarkedItems }) {
             username: user.username,
             _id: user.id
           },
-          Category: item.Category,
-          Cuisine: item.Cuisine,
+          // Category: item.Category,
+          // Cuisine: item.Cuisine,
           Post_id: item._id,
-          Image_URL: item.Image_URL,
-          Recipes: item.Recipes,
-          Ingredients: item.Ingredients,
-          Instructions: item.Instructions,
-          PostedBy: {
-            name: item.PostedBy.name,
-            username: item.PostedBy.username,
-            _id: item.PostedBy._id
-          }
+          // Image_URL: item.Image_URL,
+          // Recipes: item.Recipes,
+          // Ingredients: item.Ingredients,
+          // Instructions: item.Instructions,
+          // PostedBy: {
+          //   name: item.PostedBy.name,
+          //   username: item.PostedBy.username,
+          //   _id: item.PostedBy._id
+          // }
         };
         // console.log(saving_post);
 
@@ -118,7 +118,7 @@ function MarkCode({ recipe, bookmarkedItems, setBookmarkedItems }) {
         }
       } catch (error) {
         console.error('Error while adding:', error);
-        console.log('befor toast true');
+        console.log('before toast true');
         setToastError(true)
       }
 

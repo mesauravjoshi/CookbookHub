@@ -14,14 +14,14 @@ const BookmarkBy = new mongoose.Schema({
 
 const bookmarkSchema = new mongoose.Schema({
     BookmarkBy: { type: BookmarkBy, required: true },
-    Category : { type: String, required: true },
-    Cuisine :{ type: String, required: true },
+    // Category : { type: String, required: true },
+    // Cuisine :{ type: String, required: true },
     Post_id: { type: String, required: true },
-    Image_URL: { type: String, required: true },
-    Recipes: { type: String, required: true },
-    Ingredients: { type: String, required: true },
-    Instructions: { type: String, required: true },
-    PostedBy: { type: userSchema, required: true }
+    // Image_URL: { type: String, required: true },
+    // Recipes: { type: String, required: true },
+    // Ingredients: { type: String, required: true },
+    // Instructions: { type: String, required: true },
+    // PostedBy: { type: userSchema, required: true }
 });
 // model for Bookmark
 const Bookmark = mongoose.model('Bookmark', bookmarkSchema);

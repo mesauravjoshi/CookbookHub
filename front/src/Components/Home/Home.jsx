@@ -14,7 +14,8 @@ function Home() {
   const [recipes, setRecipes] = useState([]);
   const [bookmarkedItems, setBookmarkedItems] = useState([]);
   const [page, setPage] = useState(1);
-  const [laoding, setLoading] = useState(false)
+  const [laoding, setLoading] = useState(false);
+  // console.log(bookmarkedItems);
 
   useEffect(() => {
     if (user && user.username) {
