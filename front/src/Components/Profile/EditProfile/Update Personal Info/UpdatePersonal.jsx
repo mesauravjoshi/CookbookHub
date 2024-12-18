@@ -5,12 +5,13 @@ import './UpdatePersonal.css'
 import { url } from '../../../ApiUrl/Url';
 import toast, { Toaster } from 'react-hot-toast';
 
-function UpdatePersonal({joshi, user, setUser}) {
+function UpdatePersonal({ user, setUser }) {
     const [name, setName] = useState('')
+    const [username, setUsername] = useState('')
     const navigate = useNavigate();
     const token = localStorage.getItem('token');  // Get token from localStorage
     const userData = JSON.parse(atob(token.split('.')[1]));
-    
+
     const notifyNameChange = () => {
         toast.success('Your Name Successfully changed!', {
             duration: 5000,
@@ -24,8 +25,8 @@ function UpdatePersonal({joshi, user, setUser}) {
         });
     };
 
-    const notify = () => {
-        toast.error('Service not available!', {
+    const notifyUsernameChange = () => {
+        toast.error('User already exists!', {
             duration: 2000,
             position: "top-right",
             style: {
@@ -43,7 +44,7 @@ function UpdatePersonal({joshi, user, setUser}) {
     }, [token]);
 
     const handleSaveName = async (e) => {
-        
+
         e.preventDefault();
         // console.log('Updated Name:', name);
         try {
@@ -71,16 +72,15 @@ function UpdatePersonal({joshi, user, setUser}) {
             localStorage.setItem('token', data.token);
             localStorage.setItem('name', data.updatedName);
             setUser(prevObj => ({
-                ...prevObj,      
+                ...prevObj,
                 name: data.updatedName
-              }))
+            }))
 
             setTimeout(() => {
                 notifyNameChange();
             }, 500);
         } catch (error) {
             console.error('Error updating name:', error);
-            // alert("Failed to update name");
         }
     };
 
@@ -88,9 +88,53 @@ function UpdatePersonal({joshi, user, setUser}) {
         setName(e.target.value)
     }
 
-    const handleSaveUsername = (e) => {
+    const handleUsernameChange = (e) => {
+        setUsername(e.target.value)
+    }
+
+    const handleSaveUsername = async (e) => {
         e.preventDefault();
-        notify()
+        // notify()
+        try {
+            const response = await fetch(`${url}/update_UserInfo/username`, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ username: username }) // Send name wrapped in an object
+            });
+
+            // if (!response.ok) {
+            //     throw new Error('Failed to update username');
+            // }
+
+            const data = await response.json();
+            if (data.message && data.token && data.updatedUsername) {
+                // console.log('yes', data.updatedUsername);
+                // remove previous data from local storage 
+                localStorage.removeItem('token')
+
+                // updating new data to local storage 
+                localStorage.setItem('token', data.token);
+                setUser(prevObj => ({
+                    ...prevObj,
+                    username: data.updatedUsername
+                }))
+
+                setTimeout(() => {
+                    notifyNameChange();
+                }, 500);
+            } else {
+                notifyUsernameChange();
+                console.log('Updated data:', data);
+            }
+
+        } catch (error) {
+            console.error('Error updating username:', error);
+            // alert("Failed to update name");
+        }
+        setUsername('')
     }
 
     return (
@@ -115,12 +159,12 @@ function UpdatePersonal({joshi, user, setUser}) {
                 <span className='confirn-username'>
                     Username should be unique
                 </span>
-                <Form.Control size="lg" type="text" name='Username' placeholder='Username' required 
-                disabled={true} 
+                <Form.Control size="lg" value={username} onChange={handleUsernameChange} type="text" name='Username' placeholder='Username' required
+                // disabled={true} 
                 />
                 <div className="update-name-button">
-                    <button type='submit' className="btn btn-outline-success" 
-                    disabled={true}
+                    <button type='submit' className="btn btn-outline-success"
+                    // disabled={true}
                     >Update Username</button>
                 </div>
             </Form>

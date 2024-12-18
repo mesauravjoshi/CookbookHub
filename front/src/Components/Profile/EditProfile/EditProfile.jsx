@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useParams, useNavigate } from 'react-router-dom';
-import { url } from '../../ApiUrl/Url';
 import { useUser } from '../../UserContext';
 import './EditProfile.css'
 import DeleteAccount from './DeleteAccount/DeleteAccount';
@@ -12,7 +10,7 @@ import ChangePreferences from './Change Preferences/ChangePreferences';
 function EditProfile() {
   const { user,setUser } = useUser();
   const [isSelected, setIsSelected] = useState(0);
-
+  // console.log(user);
   const accountSettingList = [
     'Update Personal Information:',
     'Change Preferences:',
