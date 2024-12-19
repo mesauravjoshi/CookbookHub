@@ -33,6 +33,7 @@
 }
 
 .tagline button {
+  border: none;
   background: #f1423a;
   border-radius: 12px;
   padding: 0.7em 0.8em;

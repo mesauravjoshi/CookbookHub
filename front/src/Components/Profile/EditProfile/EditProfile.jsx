@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useUser } from '../../UserContext';
+import Nav from '../../Nav/Nav';
 import './EditProfile.css'
 import DeleteAccount from './DeleteAccount/DeleteAccount';
 import UpdatePersonal from './Update Personal Info/UpdatePersonal';
@@ -9,6 +10,7 @@ import ChangePreferences from './Change Preferences/ChangePreferences';
 
 function EditProfile() {
   const { user,setUser } = useUser();
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [isSelected, setIsSelected] = useState(0);
   // console.log(user);
   const accountSettingList = [
@@ -36,6 +38,7 @@ function EditProfile() {
 
   return (
     <>
+    <Nav isLoggedIn={isLoggedIn} user={user} />
     {
       user ?
       <> 

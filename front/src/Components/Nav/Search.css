@@ -98,6 +98,7 @@
 }
 
 .search-box-input button {
+    border: none;
     /* padding: 0.6em 16px; */
     color: var(--nav_color);
     right: 1px;

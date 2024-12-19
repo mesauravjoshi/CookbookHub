@@ -127,8 +127,8 @@ function Upload() {
       username: userData.username,
       _id: userData.id,
     }));
-    console.log(selectedImage);
-    console.log(...formData.entries());
+    // console.log(selectedImage);
+    // console.log(...formData.entries());
 
     setLoading(true);
     try {
@@ -141,13 +141,8 @@ function Upload() {
       });
   
       if (response.ok) {
-        // setRecipesName('');
-        // setIngredients('');
-        // setInstructions('');
-        // setCategory('');
-        // setCuisine('');
-        // setMultiSel([]);
-        // setSelectedImage(null); // Clear selected image
+        const result = await response.json();
+        // console.log(result);
         notify();
       } else {
         const errorResponse = await response.json();
@@ -160,6 +155,13 @@ function Upload() {
     } finally {
       setLoading(false);
     }
+    setRecipesName('');
+    setIngredients('');
+    setInstructions('');
+    setCategory('');
+    setCuisine('');
+    setMultiSel([]);
+    setSelectedImage(null); // Clear selected image
   };
   
 

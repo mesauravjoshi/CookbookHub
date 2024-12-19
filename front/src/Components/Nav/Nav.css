@@ -151,6 +151,10 @@ h3 {
         /* box-shadow: 0 0 55px 12px #ee14094f, -11px 20px 83px 17px #f6d7a3 */
     }
 
+    .set-nav-list{
+        border: 1px solid white;
+    }
+
     .menu-mobile-logout {
         border: 2ox solid;
         display: flex;
@@ -187,3 +191,4 @@ h3 {
 .bi-sun{
     color: black;
 }
+

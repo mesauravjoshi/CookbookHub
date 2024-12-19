@@ -3,6 +3,7 @@ const router = express.Router();
 const Recipe = require('../models/Recipe');
 const { jwtAuthMiddleware } = require('../jwt');
 const multer = require('multer');
+const { uploadFile } = require('../storage/upload'); // Import Cloudinary upload helper
 
 // Get all recipes with pagination
 router.get('/data',jwtAuthMiddleware, async (req, res) => {
@@ -24,32 +25,50 @@ router.get('/data',jwtAuthMiddleware, async (req, res) => {
     }
 });
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => cb(null, 'uploads/'),
-  filename: (req, file, cb) => cb(null, `${Date.now()}-${file.originalname}`)
+// Initialize multer (use memory storage to handle images as buffers)
+const uploader = multer({
+  storage: multer.memoryStorage(),
 });
 
-const upload = multer({ storage });
+// Endpoint to upload recipe data
+router.post('/recipie_data', jwtAuthMiddleware, uploader.single('Image_URL'), async (req, res) => {
+  const { Category, Cuisine, Recipes, Ingredients, Instructions, PostedBy, Tags } = req.body;
+  
+  const imageBuffer = req.file.buffer; // Get the file buffer from multer
+  
+  if (!Category || !Cuisine || !imageBuffer || !Recipes || !Ingredients || !Instructions || !PostedBy) {
+    return res.status(400).json({ message: 'All fields are required' });
+  }
+  
+  try {
+    // Upload image to Cloudinary
+    const uploadResult = await uploadFile(imageBuffer); // Pass the image buffer to upload helper function
+    // console.log(uploadResult);
+    const Image_URL = uploadResult.secure_url; // Cloudinary will return the image URL
 
-// Upload recipies 
-router.post('/recipie_data', jwtAuthMiddleware, upload.single('Image_URL'), async (req, res) => {
-    const { Category ,Cuisine, Recipes, Ingredients, Instructions, PostedBy, Tags } = req.body; // Ensure you destructure UploadedBy
-    const Image_URL = req.file ? req.file.path : null; // File is accessible via req.file
-    console.log(JSON.parse(PostedBy));
-    
-    if (!Category || !Cuisine || !Image_URL || !Recipes || !Ingredients || !Instructions || !PostedBy) {
-        return res.status(400).json({ message: 'All fields are required' });
-    }
-    // Create a new recipe document
-    const recipe = new Recipe({ Category ,Cuisine ,Image_URL, Recipes, Ingredients, Instructions, PostedBy: JSON.parse(PostedBy), Tags }); // Save UploadedBy as PostedBy
-    try {
-        const savedRecipe = await recipe.save();
-        // console.log('New recipe created:', savedRecipe);
-        res.status(201).json(savedRecipe); // Respond with the created recipe
-    } catch (error) {
-        console.error('Error saving recipe:', error);
-        res.status(500).json({ message: 'Error saving recipe' });
-    }
+    // Parse the PostedBy object since it's sent as a JSON string
+    const postedBy = JSON.parse(PostedBy);
+
+    // Create a new recipe object and save it to MongoDB
+    const recipe = new Recipe({
+      Category,
+      Cuisine,
+      Image_URL,
+      Recipes,
+      Ingredients,
+      Instructions,
+      PostedBy: postedBy,  // Store PostedBy as an object
+      Tags: Tags ? JSON.parse(Tags) : [],  // Tags are optional and can be empty
+    });
+
+    // Save the recipe to MongoDB
+    const savedRecipe = await recipe.save();
+
+    res.status(201).json(savedRecipe); // Respond with the saved recipe
+  } catch (error) {
+    console.error('Error saving recipe:', error);
+    res.status(500).json({ message: 'Error saving recipe' });
+  }
 });
 
 router.get('/user_data/:username', jwtAuthMiddleware, async (req, res) => {

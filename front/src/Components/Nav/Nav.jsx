@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import DropDown from './DropDown';
 import SearchBox from './SearchBox';
+import toast, { Toaster } from 'react-hot-toast';
 import './Nav.css'
 
 function Nav({ isLoggedIn, user }) {
@@ -11,6 +12,19 @@ function Nav({ isLoggedIn, user }) {
     const [hideDropDown, setHideDropDown] = useState(true)
     const [isModeDark, setIsModeDark] = useState(false)
     const [isSearchOpen, setIsSearchOpen] = useState(false); // Add state to track if search is open
+
+    const notify = () => {
+        toast.error('Sign Up or Login to show your profile!', {
+            duration: 5000,
+            position: "top-right",
+            style: {
+                border: '1px solid #713200',
+                padding: '10px',
+                color: '#713200',
+                fontSize: '0.9rem',
+            },
+        });
+    };
 
     const handleSearchClick = () => {
         setIsSearchOpen(!isSearchOpen); // Toggle search box visibility
@@ -59,10 +73,10 @@ function Nav({ isLoggedIn, user }) {
             setDarkMode(); // Set dark mode if it was light before
         }
     }
-    
+
     useEffect(() => {
         const storedMode = localStorage.getItem('theme');
-        
+
         if (storedMode === 'light') {
             setLightMode();
             setIsModeDark(false);
@@ -143,6 +157,14 @@ function Nav({ isLoggedIn, user }) {
                                 </svg>
                                 Search
                             </Link>
+                            <div onClick={notify} className='My-profile'>
+                                <Link className="nav-link" to={'/signup'} >
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" className="bi bi-person" viewBox="0 0 16 16">
+                                        <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z" />
+                                    </svg>
+                                    My profile
+                                </Link>
+                            </div>
                         </div>
                         <div className={showMenu ? 'nav-but-right menu-mobile-logout' : 'nav-but-right'}>
                             <Link to='/login'>
