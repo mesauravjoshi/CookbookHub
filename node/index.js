@@ -25,6 +25,7 @@ const bookmarkRoutes = require('./routes/bookmark');
 const search = require('./routes/search');
 const deleteAccount = require('./routes/deleteAccount');
 const updateUserInfo = require('./routes/updateUserInfo');
+const admin = require('./routes/admin/admin');
 
 app.use('/auth', authRoutes);
 app.use('/recipes', recipeRoutes);
@@ -33,6 +34,7 @@ app.use('/bookmark', bookmarkRoutes);
 app.use('/search', search);
 app.use('/delete_account', deleteAccount);
 app.use('/update_UserInfo', updateUserInfo);
+app.use('/admin', admin);
 
 // ***********************************************************************
 

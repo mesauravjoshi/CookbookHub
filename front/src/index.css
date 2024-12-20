@@ -4,6 +4,8 @@
     --nav_background: #1c232c;
     --nav_color: #e7dddd;
     --form_color: #daa520;
+    --edit_profile_non_sel: #31343b;
+    --edit_profile__sel: #3e4249;
 }
 
 [data-theme='light']{
@@ -12,6 +14,8 @@
     --nav_background: #f6d7a3;
     --nav_color: #5f4e4e;
     --form_color: #f1423a;
+    --edit_profile_non_sel: #fff1dac9;
+    --edit_profile__sel: #eb9f1f21;
 }
 h2{
     color: var(--body_color);

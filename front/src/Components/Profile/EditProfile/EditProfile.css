@@ -7,12 +7,13 @@
 .left-slide {
     border-right: 1px solid gray;
     width: 16rem;
+    color: var(--body_color);
     /* height: 34rem; */
 }
 
 .selected{
     cursor: pointer;
-    background-color: #3e4249;
+    background-color: var(--edit_profile__sel);
     margin: 1em 0.8em 1.5em 0.8em;
     font-size: 14px;
     font-weight: 600;
@@ -24,7 +25,7 @@
 
 .notSelected{
     cursor: pointer;
-    background-color: #31343b;
+    background-color: var(--edit_profile_non_sel);
     margin: 1em 0.8em 1.5em 0.8em;
     font-size: 14px;
     font-weight: 600;
