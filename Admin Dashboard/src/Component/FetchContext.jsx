@@ -59,8 +59,7 @@ export const FetchDataProvider = ({ children }) => {
 
         fetchUserData();
         fetchRecipeData();
-    }, [])
-
+    }, [setTotalUsers])
 
     return (
         <FetchContext.Provider value={{ totalUsers ,setTotalUsers, totalRecipe, setTotalRecipe }}>

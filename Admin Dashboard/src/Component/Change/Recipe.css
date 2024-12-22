@@ -1,0 +1,9 @@
+.css-1ks3uzw-MuiTable-root {
+    background-color: #ff6d00;
+}
+
+/* Add more specificity */
+.MuiTableCell-root.table-cell {
+    color: white;
+    font-size: 1.02em;
+}

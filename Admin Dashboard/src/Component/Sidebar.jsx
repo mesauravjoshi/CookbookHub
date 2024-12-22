@@ -20,8 +20,6 @@ function Sidebar({openSidebarToggle, OpenSidebar}) {
                 <Link to={'/home'}>
                 <BsGrid1X2Fill className='icon'/> Dashboard
                 </Link>
-                {/* <a href="">
-                </a> */}
             </li>
             <li className='sidebar-list-item'>
                 <Link to={'/Users'}>
@@ -29,8 +27,8 @@ function Sidebar({openSidebarToggle, OpenSidebar}) {
                 </Link>
             </li>
             <li className='sidebar-list-item'>
-                <Link to={'/products'}>
-                    <BsFillArchiveFill className='icon'/> Products
+                <Link to={'/recipes'}>
+                    <BsFillArchiveFill className='icon'/> Recipes
                 </Link>
             </li>
             <li className='sidebar-list-item'>

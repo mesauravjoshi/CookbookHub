@@ -5,12 +5,9 @@ import Sidebar from '../Sidebar'
 import Table from '../../Table/Table'
 import { useFetchData } from '../FetchContext';
 
-
 function Users() {
   const [openSidebarToggle, setOpenSidebarToggle] = useState(false);
-  const { totalUsers ,setTotalUsers, totalRecipe, setTotalRecipe } = useFetchData();
-  // const { totalUsers} = useFetchData();
-  console.log(totalUsers);
+  const { totalUsers } = useFetchData();
   
   const OpenSidebar = () => {
       setOpenSidebarToggle(!openSidebarToggle)
@@ -21,7 +18,7 @@ function Users() {
     <Header OpenSidebar={OpenSidebar} />
     <Sidebar openSidebarToggle={openSidebarToggle} OpenSidebar={OpenSidebar} />
     <div className='main-container'>
-        <h1>Uses</h1>
+        <h1>Users</h1>
         <Table totalUsers={totalUsers} />
     </div>
     </>
