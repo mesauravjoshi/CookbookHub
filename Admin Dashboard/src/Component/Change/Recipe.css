@@ -11,3 +11,21 @@
 .trash-icon{
     cursor: pointer;
 }
+
+.recipe-detail-container {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #f4f4f4;
+    border-radius: 5px;
+  }
+  
+  .recipe-detail-container p {
+    margin-bottom: 10px;
+    font-size: 16px;
+  }
+  
+  .recipe-detail-container a {
+    color: #007bff;
+    text-decoration: none;
+  }
+  

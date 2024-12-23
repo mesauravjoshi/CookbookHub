@@ -16,14 +16,15 @@ import Paper from '@mui/material/Paper';
 
 function Recipes() {
   const [openSidebarToggle, setOpenSidebarToggle] = useState(false);
-  const { totalRecipe } = useFetchData();
-  const { detalRecipe, serDetalRecipe } = useState('');
+  const {totalRecipe} = useFetchData();
+  const [detalRecipe, setDetalRecipe] = useState({});
+  const [recipeBookmark, setRecipeBookmark] = useState({});
 
   const OpenSidebar = () => {
     setOpenSidebarToggle(!openSidebarToggle)
   }
+
   const handleDeleteRecipe = async (recipe_id) => {
-    console.log(recipe_id);
     try {
       const response = await fetch(`${url}/admin/delete_recipe/${recipe_id}`, {
         method: 'DELETE',
@@ -41,6 +42,32 @@ function Recipes() {
       console.error('Error fetching data:', error);
     }
   }
+
+  const scrollToElement = async (id, recipe_id) => {
+    // e.preventDefault();
+    const element = document.getElementById(id);
+    element.scrollIntoView({ behavior: 'smooth' });
+    try {
+      const response = await fetch(`${url}/admin/detail-recipe/${recipe_id}`, {
+        method: 'GET',
+        headers: {
+          // 'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const result = await response.json();
+      // console.log('Reicpe', result);
+      console.log(result.recipe_bookmark);
+      setDetalRecipe(result.recipe);
+      setRecipeBookmark(result.recipe_bookmark);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+
   return (
     <>
       <Header OpenSidebar={OpenSidebar} />
@@ -59,6 +86,7 @@ function Recipes() {
                 <TableCell align="left" className="table-cell" >PostedBy</TableCell>
                 <TableCell align="left" className="table-cell" >Recipe Image URL</TableCell>
                 <TableCell align="right" className="table-cell" >Delete</TableCell>
+                <TableCell align="right" className="table-cell" >View</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -89,13 +117,88 @@ function Recipes() {
                         </svg>
                       </div>
                     </TableCell>
+                    <TableCell align="left" className="table-cell"
+                      onClick={() => scrollToElement('detail-recipe', row._id)}
+                    >
+                      <div className="view-basic-info" style={{ cursor: 'pointer' }}>View</div>
+                    </TableCell>
                   </TableRow>
                 ))}
             </TableBody>
           </Table>
         </TableContainer>
         <br />
-        <h1>Detail Recipe</h1>
+        <div id='detail-recipe'>
+          {
+            detalRecipe.length === 1 && (
+              <>
+                <h1>Detail Recipe</h1>
+                <TableContainer component={Paper}>
+                  <Table sx={{ minWidth: 650 }} aria-label="detail recipe table">
+                    <TableBody>
+                      <TableRow>
+                        <TableCell className="table-cell" component="th" scope="row"><strong>Name:</strong></TableCell>
+                        <TableCell className="table-cell">{detalRecipe[0].Recipes}</TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell className="table-cell" component="th" scope="row"><strong>Recipe ID:</strong></TableCell>
+                        <TableCell className="table-cell">{detalRecipe[0]._id}</TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell className="table-cell" component="th" scope="row"><strong>Ingredients:</strong></TableCell>
+                        <TableCell className="table-cell">{detalRecipe[0].Ingredients}</TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell className="table-cell" component="th" scope="row"><strong>Instructions:</strong></TableCell>
+                        <TableCell className="table-cell">{detalRecipe[0].Instructions}</TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell className="table-cell" component="th" scope="row"><strong>Posted By:</strong></TableCell>
+                        <TableCell className="table-cell">Username: {detalRecipe[0].PostedBy.username} <br />User ID: {detalRecipe[0].PostedBy._id}
+                        </TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell className="table-cell" component="th" scope="row"><strong>Recipe Image URL:</strong></TableCell>
+                        <TableCell className="table-cell">
+                          <a href={detalRecipe[0].Image_URL} target="_blank" rel="noopener noreferrer">IMAGE URL</a>
+                        </TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell className="table-cell" component="th" scope="row"><strong>Bookmarked By: </strong></TableCell>
+                        <TableCell className="table-cell">
+                          {recipeBookmark.length} Users
+                          <br />
+                          {
+                            recipeBookmark.map((item, index) => {
+                              return (
+                                <div key={index}>
+                                  <TableContainer component={Paper}>
+                                    <Table sx={{ minWidth: 650 }} aria-label="detail recipe table">
+                                      <TableBody>
+                                        <TableRow>
+                                          <TableCell className="table-cell" component="th" scope="row">
+                                            <strong>Name:</strong> : {item.BookmarkBy.username} &nbsp; &nbsp; &nbsp;
+                                            <strong>User ID:</strong> : {item.BookmarkBy._id}
+                                          </TableCell>
+                                        </TableRow>
+                                      </TableBody>
+                                    </Table>
+                                  </TableContainer>
+                                </div>
+                              )
+                            })
+                          }
+                        </TableCell>
+                      </TableRow>
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              </>
+            )
+          }
+        </div>
+
+
 
       </div>
     </>
