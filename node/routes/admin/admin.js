@@ -53,7 +53,7 @@ router.get('/recipes', async (req, res) => {
 
 router.get('/Detailed-User-data/:user_id', async (req, res) => {
     const { user_id } = req.params; 
-    console.log(user_id);
+    // console.log(user_id);
     
     try {
         const user_info = await User.find({ '_id': user_id }); // Fetch recipes for the specific user
@@ -92,7 +92,6 @@ router.get('/detail-recipe/:recipe_id', async (req, res) => {
         const recipe = await Recipe.find({ '_id': recipe_id }); // Fetch recipes for the specific user
 
         const recipe_bookmark = await Bookmark.find({ 'Post_id': recipe_id }); // Fetch recipes for the specific user
-        console.log(recipe_bookmark);
 
         res.json({recipe , recipe_bookmark}); // Return the recipes as JSON
     } catch (error) {

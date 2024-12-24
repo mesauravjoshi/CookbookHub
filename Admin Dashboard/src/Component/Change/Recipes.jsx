@@ -19,6 +19,7 @@ function Recipes() {
   const {totalRecipe} = useFetchData();
   const [detalRecipe, setDetalRecipe] = useState({});
   const [recipeBookmark, setRecipeBookmark] = useState({});
+console.log(detalRecipe);
 
   const OpenSidebar = () => {
     setOpenSidebarToggle(!openSidebarToggle)
@@ -59,13 +60,17 @@ function Recipes() {
         throw new Error('Network response was not ok');
       }
       const result = await response.json();
-      // console.log('Reicpe', result);
-      console.log(result.recipe_bookmark);
+      // console.log(result.recipe_bookmark);
       setDetalRecipe(result.recipe);
       setRecipeBookmark(result.recipe_bookmark);
     } catch (error) {
       console.error('Error fetching data:', error);
     }
+  };
+
+  // Function to split ingredients and instructions by newline (\n)
+  const formatText = (text) => {
+    return text.replace(/\n/g, '<br/>');
   };
 
   return (
@@ -85,6 +90,7 @@ function Recipes() {
                 <TableCell align="left" className="table-cell" >Instructions</TableCell>
                 <TableCell align="left" className="table-cell" >PostedBy</TableCell>
                 <TableCell align="left" className="table-cell" >Recipe Image URL</TableCell>
+                <TableCell align="left" className="table-cell" >Created Date</TableCell>
                 <TableCell align="right" className="table-cell" >Delete</TableCell>
                 <TableCell align="right" className="table-cell" >View</TableCell>
               </TableRow>
@@ -109,6 +115,29 @@ function Recipes() {
                     <TableCell align="left" className="table-cell">
                       <Link to={row.Image_URL}> IMAGE URL</Link>
                     </TableCell>
+                    <TableCell align="left" className="table-cell">
+                      Date:&nbsp;
+                      {new Date(row.Created_At).toLocaleString('en-GB', {
+                        day: 'numeric',
+                      }).replace(/(\d)(st|nd|rd|th)/, '$1<sup>$2</sup>')}
+                      &nbsp;
+                      {new Date(row.Created_At).toLocaleString('en-GB', {
+                        month: 'short',
+                      }).replace(/(\d)(st|nd|rd|th)/, '$1<sup>$2</sup>')}
+                      &nbsp;
+                      {new Date(row.Created_At).toLocaleString('en-GB', {
+                        year: 'numeric',
+                      }).replace(/(\d)(st|nd|rd|th)/, '$1<sup>$2</sup>')}
+                      <br />
+                      Time:&nbsp;
+                       {new Date(row.Created_At).toLocaleString('en-GB', {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        second: '2-digit',
+                        hour12: true, // Optional: if you want AM/PM format
+                      }).replace(/(\d)(st|nd|rd|th)/, '$1<sup>$2</sup>')}
+                    </TableCell>
+
                     <TableCell align="right" className="table-cell">
                       <div onClick={() => handleDeleteRecipe(row._id)} className='trash-icon'>
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="bi bi-trash" viewBox="0 0 16 16">
@@ -146,11 +175,17 @@ function Recipes() {
                       </TableRow>
                       <TableRow>
                         <TableCell className="table-cell" component="th" scope="row"><strong>Ingredients:</strong></TableCell>
-                        <TableCell className="table-cell">{detalRecipe[0].Ingredients}</TableCell>
+                        <TableCell className="table-cell">
+                          {/* {detalRecipe[0].Ingredients} */}
+                          <p dangerouslySetInnerHTML={{ __html: formatText(detalRecipe[0].Ingredients) }} />
+                          </TableCell>
                       </TableRow>
                       <TableRow>
                         <TableCell className="table-cell" component="th" scope="row"><strong>Instructions:</strong></TableCell>
-                        <TableCell className="table-cell">{detalRecipe[0].Instructions}</TableCell>
+                        <TableCell className="table-cell">
+                          {/* {detalRecipe[0].Instructions} */}
+                          <p dangerouslySetInnerHTML={{ __html: formatText(detalRecipe[0].Instructions) }} />
+                        </TableCell>
                       </TableRow>
                       <TableRow>
                         <TableCell className="table-cell" component="th" scope="row"><strong>Posted By:</strong></TableCell>
