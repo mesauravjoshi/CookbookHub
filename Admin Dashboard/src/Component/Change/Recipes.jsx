@@ -19,7 +19,7 @@ function Recipes() {
   const {totalRecipe} = useFetchData();
   const [detalRecipe, setDetalRecipe] = useState({});
   const [recipeBookmark, setRecipeBookmark] = useState({});
-console.log(detalRecipe);
+  console.log(detalRecipe);
 
   const OpenSidebar = () => {
     setOpenSidebarToggle(!openSidebarToggle)
