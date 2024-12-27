@@ -33,4 +33,29 @@ router.post('/signup',async (req,res) => {
     res.json({ doc: doc, token: token });
 })
 
+router.post('/login', async (req, res) => {
+    const {username_admin, password} = req.body;
+    
+    // Find user by username
+    const admin = await Admin.findOne({ username_admin });
+    // Check if user exists
+    if (!admin) {
+        return res.status(400).json({ message: 'Incorrect username' });
+    }
+    // Compare passwords
+    const isPasswordMatch = await admin.comparePassword(password)
+    if (!isPasswordMatch) {
+        return res.status(400).json({ message: 'Incorrect password' });
+    }
+
+    const payload = {
+        id: admin.id,
+        username_admin: admin.username_admin
+    }
+    
+    const token = generateToken(payload)
+    // Successful login
+    res.json({ message: 'Login successful', admin, token });
+})
+
 module.exports = router;

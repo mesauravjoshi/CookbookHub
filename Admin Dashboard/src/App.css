@@ -142,6 +142,11 @@ body {
   justify-content: space-around;
   padding: 8px 15px;
   border-radius: 5px;
+  color: #dadae5;
+}
+
+.main-cards h3 {
+  font-size: 1.3em;
 }
 
 .card:first-child {
@@ -167,7 +172,8 @@ body {
 }
 
 .card-inner > .card_icon {
-  font-size: 25px;
+  color: #dadae5;
+  font-size: 35px;
 }
 
 .charts {

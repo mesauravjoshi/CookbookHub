@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from 'react'
 import { url } from '../ApiUrl/Url';
+import { Link } from 'react-router-dom';
 import Header from '../Header'
 import Sidebar from '../Sidebar'
 import Table from '../../Table/Table'
 import { useFetchData } from '../FetchContext';
+import { useAuth } from '../Auth/AuthContext'; // Import the custom hook
+import NotLogin from '../Auth/NotLogin';
 
 function Users() {
   const [openSidebarToggle, setOpenSidebarToggle] = useState(false);
   const { totalUsers } = useFetchData();
+  const { isLoggedIn, logout } = useAuth(); // Get isLoggedIn and logout function
 
   const OpenSidebar = () => {
     setOpenSidebarToggle(!openSidebarToggle)
@@ -18,8 +22,14 @@ function Users() {
       <Header OpenSidebar={OpenSidebar} />
       <Sidebar openSidebarToggle={openSidebarToggle} OpenSidebar={OpenSidebar} />
       <div className='main-container'>
-        <h1>Users</h1>
-        <Table totalUsers={totalUsers} />
+        {
+          isLoggedIn?
+          <Table totalUsers={totalUsers} />
+          :
+          <>
+          <NotLogin/>
+          </>
+        }
       </div>
     </>
   )

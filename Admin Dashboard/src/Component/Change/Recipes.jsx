@@ -13,13 +13,16 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import { useAuth } from '../Auth/AuthContext'; // Import the custom hook
+import NotLogin from '../Auth/NotLogin';
 
 function Recipes() {
   const [openSidebarToggle, setOpenSidebarToggle] = useState(false);
   const {totalRecipe} = useFetchData();
   const [detalRecipe, setDetalRecipe] = useState({});
   const [recipeBookmark, setRecipeBookmark] = useState({});
-  console.log(detalRecipe);
+  const { isLoggedIn, logout } = useAuth(); // Get isLoggedIn and logout function
+  // console.log(detalRecipe);
 
   const OpenSidebar = () => {
     setOpenSidebarToggle(!openSidebarToggle)
@@ -77,7 +80,9 @@ function Recipes() {
     <>
       <Header OpenSidebar={OpenSidebar} />
       <Sidebar openSidebarToggle={openSidebarToggle} OpenSidebar={OpenSidebar} />
-      <div className='main-container'>
+      {
+        isLoggedIn ?
+          <div className='main-container'>
         <h1>Recipes</h1>
         {/* table  */}
         <TableContainer component={Paper}>
@@ -233,9 +238,12 @@ function Recipes() {
           }
         </div>
 
-
-
-      </div>
+          </div>
+        :
+        <div className='main-container'>
+          <NotLogin/>
+        </div>
+      }
     </>
   )
 }
