@@ -60,7 +60,7 @@ export const FetchDataProvider = ({ children }) => {
 
         const fetchBookmarkData = async () => {
             try {
-                const recipesResponse = await fetch(`${url}/admin/bookmarks`, {
+                const recipesResponse = await fetch(`${url}/admin_bookmark/bookmarks`, {
                     method: 'GET',
                     headers: {
                         // 'Authorization': `Bearer ${token}`,

@@ -18,6 +18,9 @@ import Paper from '@mui/material/Paper';
 function Bookmarks() {
     const [openSidebarToggle, setOpenSidebarToggle] = useState(false);
     const [detalBookmarkecRecipe, setDetalBookmarkecRecipe] = useState(false);
+    const [recipeNameToView, setRecipeNameToView] = useState('');
+    const [recipeIDToView,   setRecipeIDToView] = useState('');
+
     const {totalRBookmarkRecipe } = useFetchData();
     const {isLoggedIn } = useAuth(); // Get isLoggedIn and logout function
     // console.log(totalRBookmarkRecipe);
@@ -26,12 +29,12 @@ function Bookmarks() {
         setOpenSidebarToggle(!openSidebarToggle)
     }
 
-    const scrollToElement = async (id, recipe_id) => {
+    const scrollToElement = async (id, recipe_id,recipeName) => {
         // e.preventDefault();
         const element = document.getElementById(id);
         element.scrollIntoView({ behavior: 'smooth' });
         try {
-          const response = await fetch(`${url}/admin/detail_bookmarkRecipe/${recipe_id}`, {
+          const response = await fetch(`${url}/admin_bookmark/detail_bookmarkRecipe/${recipe_id}`, {
             method: 'GET',
             headers: {
               // 'Authorization': `Bearer ${token}`,
@@ -42,8 +45,9 @@ function Bookmarks() {
             throw new Error('Network response was not ok');
           }
           const result = await response.json();
-          console.log(result.recipe);
-        //   setDetalBookmarkecRecipe(result.recipe);
+          setDetalBookmarkecRecipe(result.recipe);
+          setRecipeNameToView(recipeName);
+          setRecipeIDToView(recipe_id);
         } catch (error) {
           console.error('Error fetching data:', error);
         }
@@ -77,7 +81,7 @@ function Bookmarks() {
                     <TableCell align="left" className="table-cell">{row.Recipes}</TableCell>
                     <TableCell align="left" className="table-cell">{row._id}</TableCell>
                     <TableCell component="th" scope="row" className="table-cell"> 
-                      <div onClick={() => scrollToElement('detail-recipe', row._id)} className="view-basic-info" style={{ cursor: 'pointer' }}>View</div>
+                      <div onClick={() => scrollToElement('detail-recipe', row._id,row.Recipes)} className="view-basic-info" style={{ cursor: 'pointer' }}>View</div>
                     </TableCell>
                   </TableRow>
                 ))}
@@ -85,9 +89,57 @@ function Bookmarks() {
             </Table>
             </TableContainer>
             <br />  
-
+            
             <div id='detail-recipe'>
+              {
+                detalBookmarkecRecipe.length >= 1 &&
+                <>
                 <h1>View Full Bookmarked detail of Recipe</h1>
+                {
+                <TableContainer component={Paper}>
+                  <Table sx={{ minWidth: 650 }} aria-label="detail recipe table">
+                    <TableBody>
+                      <TableRow>
+                        <TableCell className="table-cell" component="th" scope="row"><strong>Recipe Name:</strong></TableCell>
+                        <TableCell className="table-cell">{recipeNameToView}</TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell className="table-cell" component="th" scope="row"><strong>Recipe ID:</strong></TableCell>
+                        <TableCell className="table-cell">{recipeIDToView}</TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell className="table-cell" component="th" scope="row"><strong>Bookmarked By: </strong></TableCell>
+                        <TableCell className="table-cell">
+                          {detalBookmarkecRecipe.length} Users Bookmarked this recipe
+                          <br />
+                          {
+                            detalBookmarkecRecipe.map((item, index) => {
+                              return (
+                                <div key={index}>
+                                  <TableContainer component={Paper}>
+                                    <Table sx={{ minWidth: 650 }} aria-label="detail recipe table">
+                                      <TableBody>
+                                        <TableRow>
+                                          <TableCell className="table-cell" component="th" scope="row">
+                                            <strong>Name:</strong> : {item.BookmarkBy.username} &nbsp; &nbsp; &nbsp;
+                                            <strong>User ID:</strong> : {item.BookmarkBy._id}
+                                          </TableCell>
+                                        </TableRow>
+                                      </TableBody>
+                                    </Table>
+                                  </TableContainer>
+                                </div>
+                              )
+                            })
+                          }
+                        </TableCell>
+                      </TableRow>
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+                }
+                </>
+              }
             </div>
             </>
             :

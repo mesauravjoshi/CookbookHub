@@ -13,7 +13,6 @@ function Dashboard() {
     const { totalUsers, totalRecipe, totalRBookmarkRecipe } = useFetchData();
     const token = localStorage.getItem('admin token');
     const decodeToken = JSON.parse(atob(token.split('.')[1]));
-    console.log(decodeToken.username_admin);
     
     const OpenSidebar = () => {
         setOpenSidebarToggle(!openSidebarToggle)
