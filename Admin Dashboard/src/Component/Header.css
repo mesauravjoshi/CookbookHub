@@ -1,6 +1,8 @@
 .login-but {
   text-align: center; /* Align the button content */
-  display: inline-block; /* Make the container behave like a button */
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
   
 .login-but a {

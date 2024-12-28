@@ -11,7 +11,7 @@ import NotLogin from '../Auth/NotLogin';
 function Users() {
   const [openSidebarToggle, setOpenSidebarToggle] = useState(false);
   const { totalUsers } = useFetchData();
-  const { isLoggedIn, logout } = useAuth(); // Get isLoggedIn and logout function
+  const { isLoggedIn } = useAuth(); // Get isLoggedIn and logout function
 
   const OpenSidebar = () => {
     setOpenSidebarToggle(!openSidebarToggle)

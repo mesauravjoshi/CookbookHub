@@ -1,13 +1,13 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
 import './Header.css';
-import 
- {BsFillBellFill, BsFillEnvelopeFill, BsPersonCircle, BsSearch, BsJustify}
- from 'react-icons/bs'
+import {BsFillBellFill, BsFillEnvelopeFill, BsPersonCircle, BsSearch, BsJustify} from 'react-icons/bs'
 import {useAuth } from './Auth/AuthContext'
 
 function Header({OpenSidebar}) {
   const { isLoggedIn, logout } = useAuth(); // Get isLoggedIn and logout function
+  const token = localStorage.getItem('admin token');
+  const decodeToken = JSON.parse(atob(token.split('.')[1]));
 
   return (
     <header className='header'>
@@ -22,6 +22,7 @@ function Header({OpenSidebar}) {
             <BsFillEnvelopeFill className='icon'/> */}
             {isLoggedIn ? (
             <div className='login-but'>
+              <h5> {decodeToken.username_admin} </h5>
               <Link onClick={logout}>Logout <BsPersonCircle className='icon'/> </Link>
             </div>
           ) : (

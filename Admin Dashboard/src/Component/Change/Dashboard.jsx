@@ -1,6 +1,4 @@
-import React, { useState, useEffect } from 'react'
-import { url } from '../ApiUrl/Url';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react'
 import Header from '../Header'
 import Sidebar from '../Sidebar'
 import { useFetchData } from '../FetchContext';
@@ -10,10 +8,13 @@ import { useAuth } from '../Auth/AuthContext';
 import NotLogin from '../Auth/NotLogin';
 
 function Dashboard() {
-    const { isLoggedIn, logout } = useAuth(); // Get isLoggedIn and logout function
+    const { isLoggedIn} = useAuth(); // Get isLoggedIn and logout function
     const [openSidebarToggle, setOpenSidebarToggle] = useState(false);
-    const { totalUsers, totalRecipe } = useFetchData();
-
+    const { totalUsers, totalRecipe, totalRBookmarkRecipe } = useFetchData();
+    const token = localStorage.getItem('admin token');
+    const decodeToken = JSON.parse(atob(token.split('.')[1]));
+    console.log(decodeToken.username_admin);
+    
     const OpenSidebar = () => {
         setOpenSidebarToggle(!openSidebarToggle)
     }
@@ -25,7 +26,8 @@ function Dashboard() {
             {
                 isLoggedIn ?
                     <div className='main-container'>
-                        <div className='main-title'>
+                            <h3> {decodeToken.username_admin} </h3>
+                            <div className='main-title'>
                             <h3>DASHBOARD</h3>
                         </div>
 
@@ -46,11 +48,19 @@ function Dashboard() {
                             </div>
                             <div className='card'>
                                 <div className='card-inner'>
-                                    {/* <h3>ALERTS</h3> */}
-                                    <BsFillBellFill className='card_icon' />
+                                    <h3>BOOKMARKED RECIPES</h3>
+                                    <BsFillArchiveFill className='card_icon'/>
                                 </div>
-                                {/* <h1>42</h1> */}
+                                <h1>{totalRBookmarkRecipe.length}</h1>
                             </div>
+                            <div className='card'>
+                                <div className='card-inner'>
+                                    <h3>PRODUCTS</h3>
+                                    <BsFillBellFill className='card_icon'/>
+                                </div>
+                                <h1>300</h1>
+                            </div>
+           
                         </div>
                     </div>
                     :

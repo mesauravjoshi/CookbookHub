@@ -21,7 +21,7 @@ function Recipes() {
   const {totalRecipe} = useFetchData();
   const [detalRecipe, setDetalRecipe] = useState({});
   const [recipeBookmark, setRecipeBookmark] = useState({});
-  const { isLoggedIn, logout } = useAuth(); // Get isLoggedIn and logout function
+  const { isLoggedIn } = useAuth(); // Get isLoggedIn and logout function
   // console.log(detalRecipe);
 
   const OpenSidebar = () => {

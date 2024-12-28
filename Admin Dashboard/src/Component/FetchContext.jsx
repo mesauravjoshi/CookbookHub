@@ -10,6 +10,7 @@ export const useFetchData = () => {
 export const FetchDataProvider = ({ children }) => {
     const [totalUsers, setTotalUsers] = useState([]);
     const [totalRecipe, setTotalRecipe] = useState([]);
+    const [totalRBookmarkRecipe, setTotalRBookmarkRecipe] = useState([]);
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -57,12 +58,36 @@ export const FetchDataProvider = ({ children }) => {
             }
         };
 
+        const fetchBookmarkData = async () => {
+            try {
+                const recipesResponse = await fetch(`${url}/admin/bookmarks`, {
+                    method: 'GET',
+                    headers: {
+                        // 'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json',
+                    },
+                });
+                if (recipesResponse.status === 401) {
+                    return;
+                }
+                if (!recipesResponse.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const recipesData = await recipesResponse.json();
+                // console.log(recipesData);
+                setTotalRBookmarkRecipe(recipesData.recipes)
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+
         fetchUserData();
         fetchRecipeData();
+        fetchBookmarkData();
     }, [])
 
     return (
-        <FetchContext.Provider value={{ totalUsers ,setTotalUsers, totalRecipe, setTotalRecipe }}>
+        <FetchContext.Provider value={{ totalUsers ,setTotalUsers, totalRecipe, setTotalRecipe, totalRBookmarkRecipe }}>
             {children}
         </FetchContext.Provider>
     );
