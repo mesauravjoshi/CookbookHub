@@ -110,9 +110,9 @@ function Recipes() {
                     <TableCell align="left" className="table-cell">{row.Recipes}</TableCell>
                     <TableCell align="left" className="table-cell">{row._id}</TableCell>
                     <TableCell component="th" scope="row" className="table-cell">
-                      {row.Ingredients.slice(0, 30)}
+                      {}
                     </TableCell>
-                    <TableCell align="left" className="table-cell">{row.Instructions.slice(0, 30)}</TableCell>
+                    <TableCell align="left" className="table-cell">{}</TableCell>
                     <TableCell align="left" className="table-cell">
                       Username: {row.PostedBy.username} <br />
                       User ID: {row.PostedBy._id}

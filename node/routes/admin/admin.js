@@ -51,6 +51,34 @@ router.get('/recipes', async (req, res) => {
     }
 });
 
+router.get('/recipeAddedToday', async (req, res) => {
+    try {
+        // Get the current date and time
+        const currentDate = new Date();
+        
+        // Calculate the date and time for 24 hours ago
+        const last24Hours = new Date(currentDate.setHours(currentDate.getHours() - 24));
+        // console.log(last24Hours);
+        // console.log(last24Hours.toLocaleString('en-US', { hour12: true }));
+        
+        // Query the Recipe collection to find recipes posted in the last 24 hours
+        const totalRecipes = await Recipe.find({
+            Created_At: { $gte: last24Hours }  // Get records where Created_At is greater than or equal to the last 24 hours
+        });
+        
+        // If recipes are found, return them
+        if (totalRecipes.length > 0) {
+            return res.json({ recipes: totalRecipes.length });
+        }
+
+        // If no recipes are found, return an empty array or false
+        return res.json({ recipes: false });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: 'Server error' });
+    }
+});
+
 router.get('/Detailed-User-data/:user_id', async (req, res) => {
     const { user_id } = req.params; 
     // console.log(user_id);

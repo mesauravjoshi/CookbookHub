@@ -15,7 +15,7 @@ function Header({OpenSidebar}) {
             <BsJustify className='icon' onClick={OpenSidebar}/>
         </div>
         <div className='header-left'>
-            <BsSearch  className='icon'/>
+            {/* <BsSearch  className='icon'/> */}
         </div>
         <div className='header-right'>
             {/* <BsFillBellFill className='icon'/>

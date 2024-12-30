@@ -34,11 +34,11 @@ function Sidebar({openSidebarToggle, OpenSidebar}) {
                     <BsListCheck className='icon'/> Bookmarks
                 </Link>
             </li>
-            <li className='sidebar-list-item'>
+            {/* <li className='sidebar-list-item'>
                 <a href="">
                     <BsFillGrid3X3GapFill className='icon'/> Categories
                 </a>
-            </li>
+            </li> */}
             {/* <li className='sidebar-list-item'>
                 <a href="">
                     <BsMenuButtonWideFill className='icon'/> Reports
