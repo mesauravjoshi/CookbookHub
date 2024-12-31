@@ -7,8 +7,10 @@ import Nav from '../Nav/Nav';
 import './Upload.css';
 import toast, { Toaster } from 'react-hot-toast';
 import ImageUploader from './ImageUploader';
+import { useNavigate } from 'react-router-dom';
 
 function Upload() {
+  const navigate = useNavigate();
   const { user, setUser } = useUser(); // Get the user from context 
   const [recipesName, setRecipesName] = useState('');
   const [ingredients, setIngredients] = useState('');
@@ -24,9 +26,9 @@ function Upload() {
   // iamge 
   const [selectedImage, setSelectedImage] = useState(null);
   const [error, setError] = useState(null);
-  const [fIleSelected, setFIleSelected] = useState(false);
+  // const [fIleSelected, setFIleSelected] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(false);
+  // const [success, setSuccess] = useState(false);
 
   // Function to show toast
   const notify = () => {
@@ -142,6 +144,9 @@ function Upload() {
   
       if (response.ok) {
         const result = await response.json();
+        setTimeout(() => {
+          navigate(`/login`); // Redirect to login
+        }, 2000); // 10000 milliseconds = 10 seconds
         // console.log(result);
         notify();
       } else {
