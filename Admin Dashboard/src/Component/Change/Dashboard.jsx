@@ -10,9 +10,9 @@ import NotLogin from '../Auth/NotLogin';
 function Dashboard() {
     const { isLoggedIn } = useAuth(); // Get isLoggedIn and logout function
     const [openSidebarToggle, setOpenSidebarToggle] = useState(false);
+    const [user, setUser] = useState('');
     const { totalUsers, totalRecipe, totalRBookmarkRecipe, recipeAddedToday } = useFetchData();
     const token = localStorage.getItem('admin token');
-    const decodeToken = JSON.parse(atob(token.split('.')[1]));
 
     const OpenSidebar = () => {
         setOpenSidebarToggle(!openSidebarToggle)
@@ -25,7 +25,9 @@ function Dashboard() {
             {
                 isLoggedIn ?
                     <div className='main-container'>
-                        <h3> {decodeToken.username_admin} </h3>
+                        {/* {
+                        <h3> {user} </h3>
+                        } */}
                         <div className='main-title'>
                             <h3>DASHBOARD</h3>
                         </div>

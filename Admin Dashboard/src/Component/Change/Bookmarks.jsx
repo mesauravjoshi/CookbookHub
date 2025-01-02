@@ -30,6 +30,7 @@ function Bookmarks() {
     }
 
     const scrollToElement = async (id, recipe_id,recipeName) => {
+        const token = localStorage.getItem('admin token');
         // e.preventDefault();
         const element = document.getElementById(id);
         element.scrollIntoView({ behavior: 'smooth' });
@@ -37,7 +38,7 @@ function Bookmarks() {
           const response = await fetch(`${url}/admin_bookmark/detail_bookmarkRecipe/${recipe_id}`, {
             method: 'GET',
             headers: {
-              // 'Authorization': `Bearer ${token}`,
+              'Authorization': `Bearer ${token}`,
               'Content-Type': 'application/json',
             },
           });

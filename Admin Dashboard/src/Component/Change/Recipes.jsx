@@ -22,18 +22,18 @@ function Recipes() {
   const [detalRecipe, setDetalRecipe] = useState({});
   const [recipeBookmark, setRecipeBookmark] = useState({});
   const { isLoggedIn } = useAuth(); // Get isLoggedIn and logout function
-  // console.log(detalRecipe);
 
   const OpenSidebar = () => {
     setOpenSidebarToggle(!openSidebarToggle)
   }
 
   const handleDeleteRecipe = async (recipe_id) => {
+    const token = localStorage.getItem('admin token');
     try {
       const response = await fetch(`${url}/admin/delete_recipe/${recipe_id}`, {
         method: 'DELETE',
         headers: {
-          // 'Authorization': `Bearer ${token}`,
+          'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
       });
@@ -48,6 +48,7 @@ function Recipes() {
   }
 
   const scrollToElement = async (id, recipe_id) => {
+    const token = localStorage.getItem('admin token');
     // e.preventDefault();
     const element = document.getElementById(id);
     element.scrollIntoView({ behavior: 'smooth' });
@@ -55,7 +56,7 @@ function Recipes() {
       const response = await fetch(`${url}/admin/detail-recipe/${recipe_id}`, {
         method: 'GET',
         headers: {
-          // 'Authorization': `Bearer ${token}`,
+          'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
       });
@@ -110,9 +111,15 @@ function Recipes() {
                     <TableCell align="left" className="table-cell">{row.Recipes}</TableCell>
                     <TableCell align="left" className="table-cell">{row._id}</TableCell>
                     <TableCell component="th" scope="row" className="table-cell">
-                      {}
+                      { 
+                        row.Ingredients && row.Ingredients.slice(0, 30)
+                      }
                     </TableCell>
-                    <TableCell align="left" className="table-cell">{}</TableCell>
+                    <TableCell component="th" scope="row" className="table-cell">
+                      { 
+                        row.Instructions	 && row.Ingredients.slice(0, 30)
+                      }
+                    </TableCell>
                     <TableCell align="left" className="table-cell">
                       Username: {row.PostedBy.username} <br />
                       User ID: {row.PostedBy._id}
@@ -181,7 +188,7 @@ function Recipes() {
                       <TableRow>
                         <TableCell className="table-cell" component="th" scope="row"><strong>Ingredients:</strong></TableCell>
                         <TableCell className="table-cell">
-                          {/* {detalRecipe[0].Ingredients} */}
+                          {detalRecipe[0].Ingredients}
                           <p dangerouslySetInnerHTML={{ __html: formatText(detalRecipe[0].Ingredients) }} />
                           </TableCell>
                       </TableRow>

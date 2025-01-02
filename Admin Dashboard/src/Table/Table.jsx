@@ -17,6 +17,7 @@ const [userBookmarkedRecipes, setUserBookmarkedRecipes] = useState({});
 const [isViewClicked, setIsViewClicked] = useState(false);
 
 const scrollToElement = async (id, user_id) => {
+  const token = localStorage.getItem('admin token');
   // e.preventDefault();
   const element = document.getElementById(id);
   element.scrollIntoView({ behavior: 'smooth' });
@@ -24,7 +25,7 @@ const scrollToElement = async (id, user_id) => {
     const response = await fetch(`${url}/admin/Detailed-User-data/${user_id}`, {
       method: 'GET',
       headers: {
-        // 'Authorization': `Bearer ${token}`,
+        'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json',
       },
     });

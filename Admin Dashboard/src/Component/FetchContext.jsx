@@ -14,12 +14,14 @@ export const FetchDataProvider = ({ children }) => {
     const [recipeAddedToday, setRecipeAddedToday] = useState([]);
 
     useEffect(() => {
+        const token = localStorage.getItem('admin token');
+
         const fetchUserData = async () => {
             try {
                 const userResponse = await fetch(`${url}/admin/users`, {
                     method: 'GET',
                     headers: {
-                        // 'Authorization': `Bearer ${token}`,
+                        'Authorization': `Bearer ${token}`,
                         'Content-Type': 'application/json',
                     },
                 });
@@ -31,7 +33,6 @@ export const FetchDataProvider = ({ children }) => {
                 }
                 const usersData = await userResponse.json();
                 setTotalUsers(usersData.users)
-                // console.log(usersData.users);
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
@@ -42,7 +43,7 @@ export const FetchDataProvider = ({ children }) => {
                 const recipesResponse = await fetch(`${url}/admin/recipes`, {
                     method: 'GET',
                     headers: {
-                        // 'Authorization': `Bearer ${token}`,
+                        'Authorization': `Bearer ${token}`,
                         'Content-Type': 'application/json',
                     },
                 });
@@ -64,7 +65,7 @@ export const FetchDataProvider = ({ children }) => {
                 const recipesResponse = await fetch(`${url}/admin_bookmark/bookmarks`, {
                     method: 'GET',
                     headers: {
-                        // 'Authorization': `Bearer ${token}`,
+                        'Authorization': `Bearer ${token}`,
                         'Content-Type': 'application/json',
                     },
                 });
@@ -87,7 +88,7 @@ export const FetchDataProvider = ({ children }) => {
                 const recipesResponse = await fetch(`${url}/admin/recipeAddedToday`, {
                     method: 'GET',
                     headers: {
-                        // 'Authorization': `Bearer ${token}`,
+                        'Authorization': `Bearer ${token}`,
                         'Content-Type': 'application/json',
                     },
                 });

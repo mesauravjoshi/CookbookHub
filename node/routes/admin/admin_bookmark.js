@@ -3,8 +3,9 @@ const router = express.Router();
 const User = require('../../models/User'); 
 const Recipe = require('../../models/Recipe'); 
 const Bookmark = require('../../models/Bookmarks'); 
+const {jwtAuthMiddleware } = require('../../jwt');
 
-router.get('/bookmarks', async (req, res) => {
+router.get('/bookmarks',jwtAuthMiddleware, async (req, res) => {
     try {
       // Fetch all bookmarks
       const totalBookmarkRecipes = await Bookmark.find(); // Exclude the password field
@@ -32,7 +33,7 @@ router.get('/bookmarks', async (req, res) => {
     }
 });
   
-router.get('/detail_bookmarkRecipe/:recipe_id', async (req, res) => {
+router.get('/detail_bookmarkRecipe/:recipe_id',jwtAuthMiddleware, async (req, res) => {
     const { recipe_id } = req.params; 
     try {
         const recipe = await Bookmark.find({ 'Post_id': recipe_id }); // Fetch recipes for the specific user

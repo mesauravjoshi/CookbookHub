@@ -3,10 +3,10 @@ const router = express.Router();
 const User = require('../../models/User'); 
 const Recipe = require('../../models/Recipe'); 
 const Bookmark = require('../../models/Bookmarks'); 
-// const { generateToken, jwtAuthMiddleware } = require('../jwt');
+const {jwtAuthMiddleware } = require('../../jwt');
 
 // Check if username exists
-router.get('/users', async (req, res) => {
+router.get('/users',jwtAuthMiddleware,  async (req, res) => {
     try {
         // Step 1: Get all users excluding passwords
         const totalUsers = await User.find().select('-password');
@@ -36,7 +36,7 @@ router.get('/users', async (req, res) => {
     }
 });
 
-router.get('/recipes', async (req, res) => {
+router.get('/recipes',jwtAuthMiddleware, async (req, res) => {
     try {
         // Use select() to exclude password field
         const totalRecipes = await Recipe.find(); // Exclude the password field
@@ -51,7 +51,7 @@ router.get('/recipes', async (req, res) => {
     }
 });
 
-router.get('/recipeAddedToday', async (req, res) => {
+router.get('/recipeAddedToday',jwtAuthMiddleware, async (req, res) => {
     try {
         // Get the current date and time
         const currentDate = new Date();
@@ -79,7 +79,7 @@ router.get('/recipeAddedToday', async (req, res) => {
     }
 });
 
-router.get('/Detailed-User-data/:user_id', async (req, res) => {
+router.get('/Detailed-User-data/:user_id',jwtAuthMiddleware, async (req, res) => {
     const { user_id } = req.params; 
     // console.log(user_id);
     
@@ -97,7 +97,7 @@ router.get('/Detailed-User-data/:user_id', async (req, res) => {
 });
 
 // DELETE request: Delete the recipe by ID
-router.delete('/delete_recipe/:recipe_id', async (req, res) => {
+router.delete('/delete_recipe/:recipe_id',jwtAuthMiddleware, async (req, res) => {
     const { recipe_id } = req.params;  // Get the recipe ID from the request parameters
 
     try {
@@ -114,7 +114,7 @@ router.delete('/delete_recipe/:recipe_id', async (req, res) => {
     }
 });
 
-router.get('/detail-recipe/:recipe_id', async (req, res) => {
+router.get('/detail-recipe/:recipe_id',jwtAuthMiddleware, async (req, res) => {
     const { recipe_id } = req.params; 
     try {
         const recipe = await Recipe.find({ '_id': recipe_id }); // Fetch recipes for the specific user
