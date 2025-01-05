@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const User = require('../../models/User'); 
 const Recipe = require('../../models/Recipe'); 
 const Bookmark = require('../../models/Bookmarks'); 
 const {jwtAuthMiddleware } = require('../../jwt');
