@@ -22,7 +22,6 @@ function App() {
           <Route path="/bookmarks" element={<Bookmark/>} />
           <Route path="/signup" element={<Signup/>} />
           <Route path="/login" element={<Login/>} />
-          
         </Routes>
       </div>
     </Router>
