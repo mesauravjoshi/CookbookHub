@@ -6,7 +6,7 @@ import Users from './Component/Change/Users'
 import Bookmark from './Component/Change/Bookmarks'
 import Signup from './Component/Auth/Signup'
 import Login from './Component/Auth/Login'
-import { AuthProvider } from './Component/Auth/AuthContext'; // Import the AuthProvider
+import { AuthProvider } from './Component/Auth/AuthContext'; 
 
 function App() {
 
