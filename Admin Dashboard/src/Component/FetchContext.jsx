@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import {url} from './ApiUrl/Url';
+import { url } from './ApiUrl/Url';
+import axios from 'axios';
 
 const FetchContext = createContext();
 
@@ -16,27 +17,47 @@ export const FetchDataProvider = ({ children }) => {
     useEffect(() => {
         const token = localStorage.getItem('admin token');
 
+        // const fetchUserData = async () => {
+        //     try {
+        //         const userResponse = await fetch(`${url}/admin/users`, {
+        //             method: 'GET',
+        //             headers: {
+        //                 'Authorization': `Bearer ${token}`,
+        //                 'Content-Type': 'application/json',
+        //             },
+        //         });
+        //         if (userResponse.status === 401) {
+        //             return;
+        //         }
+        //         if (!userResponse.ok) {
+        //             throw new Error('Network response was not ok');
+        //         }
+        //         const usersData = await userResponse.json();
+        //         setTotalUsers(usersData.users)
+        //     } catch (error) {
+        //         console.error('Error fetching data:', error);
+        //     }
+        // };
+
         const fetchUserData = async () => {
             try {
-                const userResponse = await fetch(`${url}/admin/users`, {
-                    method: 'GET',
+                const userResponse = await axios.get(`${url}/admin/users`, {
                     headers: {
                         'Authorization': `Bearer ${token}`,
                         'Content-Type': 'application/json',
                     },
                 });
+
                 if (userResponse.status === 401) {
                     return;
                 }
-                if (!userResponse.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                const usersData = await userResponse.json();
-                setTotalUsers(usersData.users)
+
+                setTotalUsers(userResponse.data.users);
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
         };
+
 
         const fetchRecipeData = async () => {
             try {
@@ -112,7 +133,7 @@ export const FetchDataProvider = ({ children }) => {
     }, [])
 
     return (
-        <FetchContext.Provider value={{ totalUsers, totalRecipe, totalRBookmarkRecipe,recipeAddedToday }}>
+        <FetchContext.Provider value={{ totalUsers, totalRecipe, totalRBookmarkRecipe, recipeAddedToday }}>
             {children}
         </FetchContext.Provider>
     );
