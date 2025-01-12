@@ -58,10 +58,31 @@ export const FetchDataProvider = ({ children }) => {
             }
         };
 
+        // const fetchRecipeData = async () => {
+        //     try {
+        //         const recipesResponse = await fetch(`${url}/admin/recipes`, {
+        //             method: 'GET',
+        //             headers: {
+        //                 'Authorization': `Bearer ${token}`,
+        //                 'Content-Type': 'application/json',
+        //             },
+        //         });
+        //         if (recipesResponse.status === 401) {
+        //             return;
+        //         }
+        //         if (!recipesResponse.ok) {
+        //             throw new Error('Network response was not ok');
+        //         }
+        //         const recipesData = await recipesResponse.json();
+        //         setTotalRecipe(recipesData.recipes)
+        //     } catch (error) {
+        //         console.error('Error fetching data:', error);
+        //     }
+        // };
 
         const fetchRecipeData = async () => {
             try {
-                const recipesResponse = await fetch(`${url}/admin/recipes`, {
+                const recipesResponse = await axios.get(`${url}/admin/recipes`, {
                     method: 'GET',
                     headers: {
                         'Authorization': `Bearer ${token}`,
