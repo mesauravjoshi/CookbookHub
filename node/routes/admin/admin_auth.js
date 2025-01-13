@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const Admin = require('../../models/Admin')
+const Admin = require('../../models/Admin');
+const User = require('../../models/User'); 
 const { generateToken, jwtAuthMiddleware } = require('../../jwt');
 
 router.post('/signup',async (req,res) => {
@@ -57,5 +58,21 @@ router.post('/login', async (req, res) => {
     // Successful login
     res.json({ message: 'Login successful', admin, token });
 })
+
+router.delete('/delete_user/:user_id',jwtAuthMiddleware, async (req, res) => {
+    const { user_id } = req.params;  // Get the recipe ID from the request parameters
+    
+    try {
+        const user = await User.findByIdAndDelete(user_id);  // Find and delete the recipe by ID
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        res.status(200).json({ message: 'User successfully deleted' });  // Return success message
+    } catch (error) {
+        console.error('Error deleting user:', error);
+        res.status(500).json({ message: 'Error deleting user' });
+    }
+});
 
 module.exports = router;

@@ -24,7 +24,8 @@ function Users() {
       <div className='main-container'>
         {
           isLoggedIn?
-          <Table totalUsers={totalUsers} />
+          <Table />
+          // <Table totalUsers={totalUsers} />
           :
           <>
           <NotLogin/>

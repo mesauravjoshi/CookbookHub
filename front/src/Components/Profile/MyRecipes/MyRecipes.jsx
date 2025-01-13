@@ -58,9 +58,9 @@ function MyRecipes() {
     // new 
     if (user && user.username) {
       const fetchData = async () => {
+        const token = localStorage.getItem('token');  // Get the token from localStorage
         try {
           setLoading(true)
-          const token = localStorage.getItem('token');  // Get the token from localStorage
           if (!token) {
             throw new Error('No authentication token found');
           } else {
@@ -115,6 +115,7 @@ function MyRecipes() {
 
           if (bookmarksResponse.ok) {
             const bookmarksData = await bookmarksResponse.json();
+            // console.log(bookmarksData);
             const bookmarkIds = bookmarksData.map(item => item.Post_id); // Assuming Post_id is the identifier
             // console.log(bookmarksData);
             setBookmarkedItems(bookmarkIds);

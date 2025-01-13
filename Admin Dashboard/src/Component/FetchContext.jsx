@@ -83,64 +83,53 @@ export const FetchDataProvider = ({ children }) => {
         const fetchRecipeData = async () => {
             try {
                 const recipesResponse = await axios.get(`${url}/admin/recipes`, {
-                    method: 'GET',
                     headers: {
                         'Authorization': `Bearer ${token}`,
                         'Content-Type': 'application/json',
                     },
                 });
-                if (recipesResponse.status === 401) {
-                    return;
-                }
-                if (!recipesResponse.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                const recipesData = await recipesResponse.json();
+
+                const recipesData = recipesResponse.data;
+                // console.log(recipesData.recipes);
                 setTotalRecipe(recipesData.recipes)
             } catch (error) {
+                // Handle errors from axios, including 401 or other non-2xx status codes
+                if (error.response && error.response.status === 401) {
+                    return;
+                }
                 console.error('Error fetching data:', error);
             }
         };
 
         const fetchBookmarkData = async () => {
             try {
-                const recipesResponse = await fetch(`${url}/admin_bookmark/bookmarks`, {
-                    method: 'GET',
+                const recipesResponse = await axios.get(`${url}/admin_bookmark/bookmarks`, {
                     headers: {
                         'Authorization': `Bearer ${token}`,
                         'Content-Type': 'application/json',
                     },
                 });
-                if (recipesResponse.status === 401) {
-                    return;
-                }
-                if (!recipesResponse.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                const recipesData = await recipesResponse.json();
+
+                const recipesData = recipesResponse.data;
                 // console.log(recipesData);
                 setTotalRBookmarkRecipe(recipesData.recipes)
             } catch (error) {
+                if (error.response && error.response.status === 401) {
+                    return;
+                }
                 console.error('Error fetching data:', error);
             }
         };
 
         const fetchRecipeAddedToday = async () => {
             try {
-                const recipesResponse = await fetch(`${url}/admin/recipeAddedToday`, {
-                    method: 'GET',
+                const recipesResponse = await axios.get(`${url}/admin/recipeAddedToday`, {
                     headers: {
                         'Authorization': `Bearer ${token}`,
                         'Content-Type': 'application/json',
                     },
                 });
-                if (recipesResponse.status === 401) {
-                    return;
-                }
-                if (!recipesResponse.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                const recipesData = await recipesResponse.json();
+                const recipesData = await recipesResponse.data;
                 setRecipeAddedToday(recipesData.recipes)
             } catch (error) {
                 console.error('Error fetching data:', error);
@@ -154,7 +143,7 @@ export const FetchDataProvider = ({ children }) => {
     }, [])
 
     return (
-        <FetchContext.Provider value={{ totalUsers, totalRecipe, totalRBookmarkRecipe, recipeAddedToday }}>
+        <FetchContext.Provider value={{ totalUsers, setTotalUsers, totalRecipe, totalRBookmarkRecipe, recipeAddedToday }}>
             {children}
         </FetchContext.Provider>
     );

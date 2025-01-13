@@ -97,7 +97,7 @@ function Bookmark() {
       //   _id: item.PostedBy._id
       // }
     };
-    console.log(removing_post);
+    // console.log(removing_post);
 
     const response = await fetch(`${url}/bookmark/bookmark_remove`, {
       method: 'POST',

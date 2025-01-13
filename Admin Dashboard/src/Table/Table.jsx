@@ -8,13 +8,16 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { Link } from 'react-router-dom';
 import {url} from '../Component/ApiUrl/Url'
+import { useFetchData } from '../Component/FetchContext';
+import axios from 'axios';
 
-export default function BasicTable({totalUsers}) {
+export default function BasicTable({}) {
 
 const [userBasicInfo, setUserBasicInfo] = useState({});
 const [userActivitySummary, setUserActivitySummary] = useState({});
 const [userBookmarkedRecipes, setUserBookmarkedRecipes] = useState({});
 const [isViewClicked, setIsViewClicked] = useState(false);
+const { totalUsers,setTotalUsers } = useFetchData();
 
 const scrollToElement = async (id, user_id) => {
   const token = localStorage.getItem('admin token');
@@ -40,6 +43,45 @@ const scrollToElement = async (id, user_id) => {
     setIsViewClicked(true);
   } catch (error) {
     console.error('Error fetching data:', error);
+  }
+};
+
+const handleDeleteUser = async (user_id, username) => {
+  const userConfirmed = confirm(`Are you sure you want to delete user ${username}?`);
+  
+  if (userConfirmed) {
+    const token = localStorage.getItem('admin token');
+    
+    try {
+      const response = await axios.delete(`${url}/admin_auth/delete_user/${user_id}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+      // If the deletion is successful, handle the result here
+      // console.log('User deleted', response.data);
+
+    } catch (error) {
+      console.error('Error deleting user:', error);
+    }
+
+    try {
+        const userResponse = await axios.get(`${url}/admin/users`, {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        });
+
+        if (userResponse.status === 401) {
+            return;
+        }
+
+        setTotalUsers(userResponse.data.users);
+    } catch (error) {
+        console.error('Error fetching data:', error);
+    }
   }
 };
 
@@ -70,7 +112,14 @@ const scrollToElement = async (id, user_id) => {
               <TableCell align="right">{row.username}</TableCell>
               <TableCell align="right">{row.recipes}</TableCell>
               <TableCell align="right"> <p onClick={() => scrollToElement('Detailed-User-data', row._id)} style={{ cursor: 'pointer' }} >View</p></TableCell>
-              <TableCell align="right"> <Link> Delete user </Link></TableCell>
+              <TableCell align="right"> 
+              <div onClick={() => handleDeleteUser(row._id,row.username)} className='trash-icon'>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="bi bi-trash" viewBox="0 0 16 16">
+                          <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
+                          <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
+                        </svg>
+                      </div>
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
