@@ -15,10 +15,11 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { useAuth } from '../Auth/AuthContext'; // Import the custom hook
 import NotLogin from '../Auth/NotLogin';
+import axios from 'axios';
 
 function Recipes() {
   const [openSidebarToggle, setOpenSidebarToggle] = useState(false);
-  const {totalRecipe} = useFetchData();
+  const {totalRecipe, setTotalRecipe} = useFetchData();
   const [detalRecipe, setDetalRecipe] = useState({});
   const [recipeBookmark, setRecipeBookmark] = useState({});
   const { isLoggedIn } = useAuth(); // Get isLoggedIn and logout function
@@ -30,21 +31,39 @@ function Recipes() {
   const handleDeleteRecipe = async (recipe_id) => {
     const token = localStorage.getItem('admin token');
     try {
-      const response = await fetch(`${url}/admin/delete_recipe/${recipe_id}`, {
-        method: 'DELETE',
+      const response = await axios.delete(`${url}/admin/delete_recipe/${recipe_id}`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
       });
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      const result = await response.json();
+      const result = response.data;
       // console.log('Post deleted', result);
     } catch (error) {
+      if (error.response && error.response.status === 401) {
+        return;
+      }
       console.error('Error fetching data:', error);
     }
+
+    try {
+      const recipesResponse = await axios.get(`${url}/admin/recipes`, {
+          headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json',
+          },
+      });
+
+      const recipesData = recipesResponse.data;
+      // console.log(recipesData.recipes);
+      setTotalRecipe(recipesData.recipes)
+  } catch (error) {
+      // Handle errors from axios, including 401 or other non-2xx status codes
+      if (error.response && error.response.status === 401) {
+          return;
+      }
+      console.error('Error fetching data:', error);
+  }
   }
 
   const scrollToElement = async (id, recipe_id) => {
@@ -53,17 +72,13 @@ function Recipes() {
     const element = document.getElementById(id);
     element.scrollIntoView({ behavior: 'smooth' });
     try {
-      const response = await fetch(`${url}/admin/detail-recipe/${recipe_id}`, {
-        method: 'GET',
+      const response = await axios.get(`${url}/admin/detail-recipe/${recipe_id}`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
       });
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      const result = await response.json();
+      const result = response.data;
       // console.log(result.recipe_bookmark);
       setDetalRecipe(result.recipe);
       setRecipeBookmark(result.recipe_bookmark);

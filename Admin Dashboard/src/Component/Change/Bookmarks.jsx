@@ -15,6 +15,8 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 
+import axios from 'axios';
+
 function Bookmarks() {
     const [openSidebarToggle, setOpenSidebarToggle] = useState(false);
     const [detalBookmarkecRecipe, setDetalBookmarkecRecipe] = useState(false);
@@ -35,17 +37,13 @@ function Bookmarks() {
         const element = document.getElementById(id);
         element.scrollIntoView({ behavior: 'smooth' });
         try {
-          const response = await fetch(`${url}/admin_bookmark/detail_bookmarkRecipe/${recipe_id}`, {
-            method: 'GET',
+          const response = await axios.get(`${url}/admin_bookmark/detail_bookmarkRecipe/${recipe_id}`, {
             headers: {
               'Authorization': `Bearer ${token}`,
               'Content-Type': 'application/json',
             },
           });
-          if (!response.ok) {
-            throw new Error('Network response was not ok');
-          }
-          const result = await response.json();
+          const result = response.data;
           setDetalBookmarkecRecipe(result.recipe);
           setRecipeNameToView(recipeName);
           setRecipeIDToView(recipe_id);
