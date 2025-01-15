@@ -61,16 +61,14 @@ function Dashboard() {
                                 </div>
                                 <h1> {recipeAddedToday} </h1>
                             </div>
-
-                        </div>
-                        <div className='main-cards'>
                             <div className='card'>
                                 <div className='card-inner'>
-                                    <h3>REPORT</h3>
-                                    <BsPeopleFill className='card_icon' />
+                                    <h3>RECIPE ADDED TODAY </h3>
+                                    <BsFillBellFill className='card_icon' />
                                 </div>
-                                <h1>{totalUsers.length}</h1>
+                                <h1> {recipeAddedToday} </h1>
                             </div>
+
                         </div>
                     </div>
                     :

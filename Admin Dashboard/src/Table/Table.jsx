@@ -91,12 +91,12 @@ const handleDeleteUser = async (user_id, username) => {
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell>User ID </TableCell>
-            <TableCell align="right">Name</TableCell>
-            <TableCell align="right">Username</TableCell>
-            <TableCell align="right">No. of recipe</TableCell>
-            <TableCell align="right">View Details</TableCell>
-            <TableCell align="right">Delete</TableCell>
+            <TableCell className="table-cell">User ID </TableCell>
+            <TableCell className="table-cell" align="right">Name</TableCell>
+            <TableCell className="table-cell" align="right">Username</TableCell>
+            <TableCell className="table-cell" align="right">No. of recipe</TableCell>
+            <TableCell className="table-cell" align="right">View Details</TableCell>
+            <TableCell className="table-cell" align="right">Delete</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -105,14 +105,14 @@ const handleDeleteUser = async (user_id, username) => {
               key={row._id}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
-              <TableCell component="th" scope="row">
+              <TableCell className="table-cell" component="th" scope="row">
                 {row._id}
               </TableCell>
-              <TableCell align="right">{row.name}</TableCell>
-              <TableCell align="right">{row.username}</TableCell>
-              <TableCell align="right">{row.recipes}</TableCell>
-              <TableCell align="right"> <p onClick={() => scrollToElement('Detailed-User-data', row._id)} style={{ cursor: 'pointer' }} >View</p></TableCell>
-              <TableCell align="right"> 
+              <TableCell className="table-cell" align="right">{row.name}</TableCell>
+              <TableCell className="table-cell" align="right">{row.username}</TableCell>
+              <TableCell className="table-cell" align="right">{row.recipes}</TableCell>
+              <TableCell className="table-cell" align="right"> <p onClick={() => scrollToElement('Detailed-User-data', row._id)} style={{ cursor: 'pointer' }} >View</p></TableCell>
+              <TableCell className="table-cell" align="right"> 
               <div onClick={() => handleDeleteUser(row._id,row.username)} className='trash-icon'>
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="bi bi-trash" viewBox="0 0 16 16">
                           <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />

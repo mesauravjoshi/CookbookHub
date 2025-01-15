@@ -165,6 +165,10 @@ body {
   background-color: #d50000;
 }
 
+.card:nth-child(5) {
+  background-color: #32092f;
+}
+
 .card-inner {
   display: flex;
   align-items: center;
