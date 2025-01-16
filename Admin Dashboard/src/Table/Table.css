@@ -1,0 +1,20 @@
+.edit-header{
+    width: 100%;
+    display: flex;
+    margin-bottom: 0.7em;
+    justify-content: space-between;
+}
+
+.edit-header button{
+    display: flex;
+    align-items: center;
+    padding: 8px 15px;
+    background-color: transparent;
+    color: #a3b4a4;
+    border: 1px solid #2e7d32;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: none;
+    transition: all 0.3s ease-in-out;
+}

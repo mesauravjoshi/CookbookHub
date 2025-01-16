@@ -6,12 +6,12 @@ import Users from './Component/Change/Users'
 import Bookmark from './Component/Change/Bookmarks'
 import Signup from './Component/Auth/Signup'
 import Login from './Component/Auth/Login'
-import { AuthProvider } from './Component/Auth/AuthContext'; 
+// import { AuthProvider } from './Component/Auth/AuthContext'; 
 
 function App() {
 
   return (
-    <AuthProvider>
+    // <AuthProvider>
     <Router>
       <div className='grid-container'>
         <Routes>
@@ -25,7 +25,7 @@ function App() {
         </Routes>
       </div>
     </Router>
-    </AuthProvider>
+    // </AuthProvider>
   )
 }
 

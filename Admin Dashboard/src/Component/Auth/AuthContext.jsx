@@ -3,6 +3,11 @@ import { createContext, useContext, useState, useEffect } from 'react';
 // Create the context
 const AuthContext = createContext();
 
+// Create a custom hook to use the auth context
+export const useAuth = () => {
+  return useContext(AuthContext);
+};
+
 // Create a provider component
 export const AuthProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -32,7 +37,3 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
-// Create a custom hook to use the auth context
-export const useAuth = () => {
-  return useContext(AuthContext);
-};

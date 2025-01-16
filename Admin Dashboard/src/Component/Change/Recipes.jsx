@@ -79,7 +79,7 @@ function Recipes() {
         },
       });
       const result = response.data;
-      // console.log(result.recipe_bookmark);
+      console.log(result.recipe);
       setDetalRecipe(result.recipe);
       setRecipeBookmark(result.recipe_bookmark);
     } catch (error) {
@@ -193,13 +193,43 @@ function Recipes() {
                   <Table sx={{ minWidth: 650 }} aria-label="detail recipe table">
                     <TableBody>
                       <TableRow>
+                        <TableCell className="table-cell" component="th" scope="row"><strong>Recipe ID:</strong></TableCell>
+                        <TableCell className="table-cell">{detalRecipe[0]._id}</TableCell>
+                      </TableRow>
+                      <TableRow>
                         <TableCell className="table-cell" component="th" scope="row"><strong>Name:</strong></TableCell>
                         <TableCell className="table-cell">{detalRecipe[0].Recipes}</TableCell>
                       </TableRow>
                       <TableRow>
-                        <TableCell className="table-cell" component="th" scope="row"><strong>Recipe ID:</strong></TableCell>
-                        <TableCell className="table-cell">{detalRecipe[0]._id}</TableCell>
+                        <TableCell className="table-cell" component="th" scope="row"><strong>Recipe Image URL:</strong></TableCell>
+                        <TableCell className="table-cell">
+                          <a style={{color: '#251d34'}} href={detalRecipe[0].Image_URL} target="_blank" rel="noopener noreferrer">{detalRecipe[0].Image_URL}</a>
+                          {/* {detalRecipe[0].Image_URL} */}
+                        </TableCell>
                       </TableRow>
+                      <TableRow>
+                        <TableCell className="table-cell" component="th" scope="row"><strong>Category:</strong></TableCell>
+                        <TableCell 
+                        className="table-cell">
+                        {detalRecipe[0].Category}
+                        </TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell className="table-cell" component="th" scope="row"><strong>Cuisine:</strong></TableCell>
+                        <TableCell className="table-cell">
+                        {detalRecipe[0].Cuisine}
+                        </TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell className="table-cell" component="th" scope="row"><strong>Tags:</strong></TableCell>
+                        <TableCell className="table-cell">
+                        {detalRecipe[0].Tags[0]} <br />
+                        {detalRecipe[0].Tags[1]} <br />
+                        {detalRecipe[0].Tags[2]} <br />
+                        {detalRecipe[0].Tags[3]} <br />
+                        </TableCell>
+                      </TableRow>
+
                       <TableRow>
                         <TableCell className="table-cell" component="th" scope="row"><strong>Ingredients:</strong></TableCell>
                         <TableCell className="table-cell">
@@ -215,14 +245,33 @@ function Recipes() {
                         </TableCell>
                       </TableRow>
                       <TableRow>
-                        <TableCell className="table-cell" component="th" scope="row"><strong>Posted By:</strong></TableCell>
-                        <TableCell className="table-cell">Username: {detalRecipe[0].PostedBy.username} <br />User ID: {detalRecipe[0].PostedBy._id}
+                        <TableCell className="table-cell" component="th" scope="row"><strong>Created Date	:</strong></TableCell>
+                        <TableCell className="table-cell">
+                          {/* sd */}
+                          {new Date(detalRecipe[0].Created_At).toLocaleString('en-GB', {
+                        day: 'numeric',
+                      }).replace(/(\d)(st|nd|rd|th)/, '$1<sup>$2</sup>')}
+                      &nbsp;
+                      {new Date(detalRecipe[0].Created_At).toLocaleString('en-GB', {
+                        month: 'short',
+                      }).replace(/(\d)(st|nd|rd|th)/, '$1<sup>$2</sup>')}
+                      &nbsp;
+                      {new Date(detalRecipe[0].Created_At).toLocaleString('en-GB', {
+                        year: 'numeric',
+                      }).replace(/(\d)(st|nd|rd|th)/, '$1<sup>$2</sup>')}
+                      <br />
+                      Time:&nbsp;
+                       {new Date(detalRecipe[0].Created_At).toLocaleString('en-GB', {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        second: '2-digit',
+                        hour12: true, // Optional: if you want AM/PM format
+                      }).replace(/(\d)(st|nd|rd|th)/, '$1<sup>$2</sup>')}
                         </TableCell>
                       </TableRow>
                       <TableRow>
-                        <TableCell className="table-cell" component="th" scope="row"><strong>Recipe Image URL:</strong></TableCell>
-                        <TableCell className="table-cell">
-                          <a href={detalRecipe[0].Image_URL} target="_blank" rel="noopener noreferrer">IMAGE URL</a>
+                        <TableCell className="table-cell" component="th" scope="row"><strong>Posted By:</strong></TableCell>
+                        <TableCell className="table-cell">Username: {detalRecipe[0].PostedBy.username} <br />User ID: {detalRecipe[0].PostedBy._id}
                         </TableCell>
                       </TableRow>
                       <TableRow>
