@@ -23,6 +23,34 @@ function Recipes() {
   const [detalRecipe, setDetalRecipe] = useState({});
   const [recipeBookmark, setRecipeBookmark] = useState({});
   const { isLoggedIn } = useAuth(); // Get isLoggedIn and logout function
+  const [isEdit, setIsEdit] = useState(false);
+
+  const [detailRecipe, setDetailRecipe] = useState({});
+  const [recipeName, setRecipeName] = useState('');
+  const [category, setCategory] = useState('');
+  const [cuisine, setCuisine] = useState('');
+  const [ingredients, setIngredients] = useState('');
+  const [instructions, setInstructions] = useState('');
+  	
+  const handleEditClick = () => {
+    setIsEdit(true);
+  };
+
+  useEffect(() => {
+      if (detailRecipe && detailRecipe.Recipes && detailRecipe.Category ) {
+        setRecipeName(detailRecipe.Recipes); // Initialize state with user data
+        setCategory(detailRecipe.Category);
+        // setUsername(userBasicInfo.username)
+      }
+      // if (isEdit && inputRef.current) {
+      //   inputRef.current.focus(); // Focus when isEdit is true
+      // }
+    }, [detailRecipe]);
+
+  const handleNameChange = (e) => {
+    if (e.target.name == 'recipeName') setRecipeName(e.target.value); // Update state with user input
+    // else setUsername(e.target.value); // Update state with user input
+  };
 
   const OpenSidebar = () => {
     setOpenSidebarToggle(!openSidebarToggle)
@@ -79,7 +107,8 @@ function Recipes() {
         },
       });
       const result = response.data;
-      console.log(result.recipe);
+      // console.log(result.recipe[0]);
+      setDetailRecipe(result.recipe[0])
       setDetalRecipe(result.recipe);
       setRecipeBookmark(result.recipe_bookmark);
     } catch (error) {
@@ -189,6 +218,19 @@ function Recipes() {
             detalRecipe.length === 1 && (
               <>
                 <h1>Detail Recipe</h1>
+                <div className='edit-header'>
+              <button
+                style={{ cursor: 'pointer' }}
+                onClick={handleEditClick}
+                >
+              Edit
+              </button>
+              {isEdit && (
+                <button style={{ cursor: 'pointer' }} 
+                // onClick={handleSaveClick} 
+                > Save</button>
+              )}
+            </div>
                 <TableContainer component={Paper}>
                   <Table sx={{ minWidth: 650 }} aria-label="detail recipe table">
                     <TableBody>
@@ -198,7 +240,19 @@ function Recipes() {
                       </TableRow>
                       <TableRow>
                         <TableCell className="table-cell" component="th" scope="row"><strong>Name:</strong></TableCell>
-                        <TableCell className="table-cell">{detalRecipe[0].Recipes}</TableCell>
+                        <TableCell className="table-cell">
+                          <input
+                            style={{ color: 'white', width: '100%' , height: '3em', backgroundColor: '#2e7d32' }}
+                            type="text"
+                            name='name'
+                            value={recipeName}
+                            onChange={handleNameChange}
+                            // disabled={!isEdit} // Disable input if not in edit mode
+                            // autoFocus 
+                            // ref={inputRef} 
+                          />
+                          {/* {detalRecipe[0].Recipes} */}
+                          </TableCell>
                       </TableRow>
                       <TableRow>
                         <TableCell className="table-cell" component="th" scope="row"><strong>Recipe Image URL:</strong></TableCell>
@@ -211,7 +265,16 @@ function Recipes() {
                         <TableCell className="table-cell" component="th" scope="row"><strong>Category:</strong></TableCell>
                         <TableCell 
                         className="table-cell">
-                        {detalRecipe[0].Category}
+                        <input
+                            style={{ color: 'white', width: '100%' , height: '3em', backgroundColor: '#2e7d32' }}
+                            type="text"
+                            name='category'
+                            value={category}
+                            onChange={handleNameChange}
+                            // disabled={!isEdit} // Disable input if not in edit mode
+                            // autoFocus 
+                            // ref={inputRef} 
+                          />
                         </TableCell>
                       </TableRow>
                       <TableRow>
