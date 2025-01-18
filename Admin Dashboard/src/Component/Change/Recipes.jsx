@@ -25,7 +25,7 @@ function Recipes() {
   const { isLoggedIn } = useAuth(); // Get isLoggedIn and logout function
   const [isEdit, setIsEdit] = useState(false);
 
-  const [detailRecipe, setDetailRecipe] = useState({});
+  const [editRecipe, setEditRecipe] = useState({});
   const [recipeName, setRecipeName] = useState('');
   const [category, setCategory] = useState('');
   const [cuisine, setCuisine] = useState('');
@@ -36,19 +36,27 @@ function Recipes() {
     setIsEdit(true);
   };
 
+  const handleSaveClick = () => {
+    // setUserBasicInfo({ ...userBasicInfo, name, username });
+    setIsEdit(false);
+  };
+
   useEffect(() => {
-      if (detailRecipe && detailRecipe.Recipes && detailRecipe.Category ) {
-        setRecipeName(detailRecipe.Recipes); // Initialize state with user data
-        setCategory(detailRecipe.Category);
+      if (editRecipe && editRecipe.Recipes && editRecipe.Category  && editRecipe.Cuisine ) {
+        setRecipeName(editRecipe.Recipes); // Initialize state with user data
+        setCategory(editRecipe.Category);
+        setCuisine(editRecipe.Cuisine);
         // setUsername(userBasicInfo.username)
       }
       // if (isEdit && inputRef.current) {
       //   inputRef.current.focus(); // Focus when isEdit is true
       // }
-    }, [detailRecipe]);
+    }, [editRecipe]);
 
   const handleNameChange = (e) => {
-    if (e.target.name == 'recipeName') setRecipeName(e.target.value); // Update state with user input
+    if (e.target.name == 'recipeName') setRecipeName(e.target.value); 
+    if (e.target.name == 'category') setCategory(e.target.value); 
+    if (e.target.name == 'cuisine') setCuisine(e.target.value); 
     // else setUsername(e.target.value); // Update state with user input
   };
 
@@ -108,7 +116,7 @@ function Recipes() {
       });
       const result = response.data;
       // console.log(result.recipe[0]);
-      setDetailRecipe(result.recipe[0])
+      setEditRecipe(result.recipe[0])
       setDetalRecipe(result.recipe);
       setRecipeBookmark(result.recipe_bookmark);
     } catch (error) {
@@ -227,7 +235,7 @@ function Recipes() {
               </button>
               {isEdit && (
                 <button style={{ cursor: 'pointer' }} 
-                // onClick={handleSaveClick} 
+                onClick={handleSaveClick} 
                 > Save</button>
               )}
             </div>
@@ -240,14 +248,14 @@ function Recipes() {
                       </TableRow>
                       <TableRow>
                         <TableCell className="table-cell" component="th" scope="row"><strong>Name:</strong></TableCell>
-                        <TableCell className="table-cell">
+                        <TableCell style={{ padding: '2px 12px' }} className="table-cell">
                           <input
                             style={{ color: 'white', width: '100%' , height: '3em', backgroundColor: '#2e7d32' }}
                             type="text"
-                            name='name'
+                            name='recipeName'
                             value={recipeName}
                             onChange={handleNameChange}
-                            // disabled={!isEdit} // Disable input if not in edit mode
+                            disabled={!isEdit} // Disable input if not in edit mode
                             // autoFocus 
                             // ref={inputRef} 
                           />
@@ -271,7 +279,7 @@ function Recipes() {
                             name='category'
                             value={category}
                             onChange={handleNameChange}
-                            // disabled={!isEdit} // Disable input if not in edit mode
+                            disabled={!isEdit} // Disable input if not in edit mode
                             // autoFocus 
                             // ref={inputRef} 
                           />
@@ -280,10 +288,19 @@ function Recipes() {
                       <TableRow>
                         <TableCell className="table-cell" component="th" scope="row"><strong>Cuisine:</strong></TableCell>
                         <TableCell className="table-cell">
-                        {detalRecipe[0].Cuisine}
+                        <input
+                        style={{ color: 'white', width: '100%' , height: '3em',    backgroundColor: '#2e7d32' }}
+                          type="text"
+                          name='cuisine'
+                          value={cuisine}
+                          onChange={handleNameChange}
+                          disabled={!isEdit} // Disable input if not in edit mode
+                          // autoFocus 
+                          // ref={inputRef} 
+                        />
                         </TableCell>
                       </TableRow>
-                      <TableRow>
+                      {/* <TableRow>
                         <TableCell className="table-cell" component="th" scope="row"><strong>Tags:</strong></TableCell>
                         <TableCell className="table-cell">
                         {detalRecipe[0].Tags[0]} <br />
@@ -291,20 +308,31 @@ function Recipes() {
                         {detalRecipe[0].Tags[2]} <br />
                         {detalRecipe[0].Tags[3]} <br />
                         </TableCell>
-                      </TableRow>
+                      </TableRow> */}
 
                       <TableRow>
                         <TableCell className="table-cell" component="th" scope="row"><strong>Ingredients:</strong></TableCell>
                         <TableCell className="table-cell">
+                          <textarea style={{ color: 'white', width: '100%' , height: '7em',    backgroundColor: '#2e7d32' }}
+                          name="ingredients" 
+                          disabled={!isEdit} 
+                          >
                           {detalRecipe[0].Ingredients}
-                          <p dangerouslySetInnerHTML={{ __html: formatText(detalRecipe[0].Ingredients) }} />
+                          </textarea>
+                          {/* <p dangerouslySetInnerHTML={{ __html: formatText(detalRecipe[0].Ingredients) }} /> */}
                           </TableCell>
                       </TableRow>
                       <TableRow>
                         <TableCell className="table-cell" component="th" scope="row"><strong>Instructions:</strong></TableCell>
                         <TableCell className="table-cell">
                           {/* {detalRecipe[0].Instructions} */}
-                          <p dangerouslySetInnerHTML={{ __html: formatText(detalRecipe[0].Instructions) }} />
+                          <textarea style={{ color: 'white', width: '100%' , height: '7em',    backgroundColor: '#2e7d32' }}
+                          name="instructions"
+                          disabled={!isEdit} 
+                          >
+                          {detalRecipe[0].Instructions}
+                          </textarea>
+                          {/* <p dangerouslySetInnerHTML={{ __html: formatText(detalRecipe[0].Instructions) }} /> */}
                         </TableCell>
                       </TableRow>
                       <TableRow>
