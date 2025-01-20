@@ -34,7 +34,6 @@ export default function BasicTable() {
     }
   }, [userBasicInfo,isEdit]);
 
-
   const scrollToElement = async (id, user_id) => {
     const token = localStorage.getItem('admin token');
     const element = document.getElementById(id);

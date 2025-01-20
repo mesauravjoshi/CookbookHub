@@ -29,6 +29,7 @@ const updateUserInfo = require('./routes/updateUserInfo');
 const admin = require('./routes/admin/admin');
 const admin_auth = require('./routes/admin/admin_auth');
 const admin_bookmark = require('./routes/admin/admin_bookmark');
+const admin_update_user = require('./routes/admin/admin_update_user');
 
 app.use('/auth', authRoutes);
 app.use('/recipes', recipeRoutes);
@@ -41,6 +42,7 @@ app.use('/update_UserInfo', updateUserInfo);
 app.use('/admin', admin);
 app.use('/admin_auth', admin_auth);
 app.use('/admin_bookmark', admin_bookmark);
+app.use('/admin_update_user', admin_update_user);
 
 // ***********************************************************************
 

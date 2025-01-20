@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import Header from '../Header'
 import Sidebar from '../Sidebar'
 import { useFetchData } from '../FetchContext';
@@ -25,38 +25,75 @@ function Recipes() {
   const { isLoggedIn } = useAuth(); // Get isLoggedIn and logout function
   const [isEdit, setIsEdit] = useState(false);
 
-  const [editRecipe, setEditRecipe] = useState({});
   const [recipeName, setRecipeName] = useState('');
   const [category, setCategory] = useState('');
   const [cuisine, setCuisine] = useState('');
   const [ingredients, setIngredients] = useState('');
   const [instructions, setInstructions] = useState('');
-  	
+  const [isViewClicked, setIsViewClicked] = useState(false);
+    
+  const inputRef = useRef(null);
+  
   const handleEditClick = () => {
     setIsEdit(true);
   };
 
-  const handleSaveClick = () => {
-    // setUserBasicInfo({ ...userBasicInfo, name, username });
-    setIsEdit(false);
+  const handleSaveClick = async (recipe_id) => {
+    setDetalRecipe(prevState => ({
+      ...prevState,
+      Recipes: recipeName,
+      Category: category,
+      Cuisine: cuisine,
+      Ingredients: ingredients,
+      Instructions: instructions,
+  }));
+  setIsEdit(false);
+  console.log(recipe_id);
+
+  const token = localStorage.getItem('admin token');
+  try {
+    const response = await axios.put(`${url}/admin_update_user/username/${recipe_id}`, {
+        recipe_id: recipe_id,  // Send recipe_id directly here in the body
+        recipeName: recipeName,
+        category: category,
+        cuisine: cuisine,
+        ingredients: ingredients,
+        instructions: instructions
+    }, {
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+        },
+    });
+    const result = response.data;
+    console.log('Recipe updated:', result);
+} catch (error) {
+    if (error.response && error.response.status === 401) {
+        return;
+    }
+    console.error('Error fetching data:', error);
+}
   };
 
   useEffect(() => {
-      if (editRecipe && editRecipe.Recipes && editRecipe.Category  && editRecipe.Cuisine ) {
-        setRecipeName(editRecipe.Recipes); // Initialize state with user data
-        setCategory(editRecipe.Category);
-        setCuisine(editRecipe.Cuisine);
-        // setUsername(userBasicInfo.username)
+      if (detalRecipe && detalRecipe.Recipes && detalRecipe.Category  && detalRecipe.Cuisine && detalRecipe.Ingredients && detalRecipe.Instructions ) {
+        setRecipeName(detalRecipe.Recipes); 
+        setCategory(detalRecipe.Category);
+        setCuisine(detalRecipe.Cuisine);
+        setIngredients(detalRecipe.Ingredients)
+        setInstructions(detalRecipe.Instructions)
       }
-      // if (isEdit && inputRef.current) {
-      //   inputRef.current.focus(); // Focus when isEdit is true
-      // }
-    }, [editRecipe]);
+      if (isEdit && inputRef.current) {
+        inputRef.current.focus(); // Focus when isEdit is true
+      }
+    }, [detalRecipe,isEdit]);
 
   const handleNameChange = (e) => {
     if (e.target.name == 'recipeName') setRecipeName(e.target.value); 
     if (e.target.name == 'category') setCategory(e.target.value); 
     if (e.target.name == 'cuisine') setCuisine(e.target.value); 
+    if (e.target.name == 'ingredients') setIngredients(e.target.value); 
+    if (e.target.name == 'instructions') setInstructions(e.target.value); 
     // else setUsername(e.target.value); // Update state with user input
   };
 
@@ -116,9 +153,9 @@ function Recipes() {
       });
       const result = response.data;
       // console.log(result.recipe[0]);
-      setEditRecipe(result.recipe[0])
-      setDetalRecipe(result.recipe);
+      setDetalRecipe(result.recipe[0]);
       setRecipeBookmark(result.recipe_bookmark);
+      setIsViewClicked(true);
     } catch (error) {
       console.error('Error fetching data:', error);
     }
@@ -223,7 +260,7 @@ function Recipes() {
         <br />
         <div id='detail-recipe'>
           {
-            detalRecipe.length === 1 && (
+            isViewClicked && (
               <>
                 <h1>Detail Recipe</h1>
                 <div className='edit-header'>
@@ -235,7 +272,7 @@ function Recipes() {
               </button>
               {isEdit && (
                 <button style={{ cursor: 'pointer' }} 
-                onClick={handleSaveClick} 
+                onClick={() => handleSaveClick(detalRecipe._id)} 
                 > Save</button>
               )}
             </div>
@@ -244,7 +281,7 @@ function Recipes() {
                     <TableBody>
                       <TableRow>
                         <TableCell className="table-cell" component="th" scope="row"><strong>Recipe ID:</strong></TableCell>
-                        <TableCell className="table-cell">{detalRecipe[0]._id}</TableCell>
+                        <TableCell className="table-cell">{detalRecipe._id}</TableCell>
                       </TableRow>
                       <TableRow>
                         <TableCell className="table-cell" component="th" scope="row"><strong>Name:</strong></TableCell>
@@ -256,17 +293,16 @@ function Recipes() {
                             value={recipeName}
                             onChange={handleNameChange}
                             disabled={!isEdit} // Disable input if not in edit mode
-                            // autoFocus 
-                            // ref={inputRef} 
+                            ref={inputRef} 
                           />
-                          {/* {detalRecipe[0].Recipes} */}
+                          {/* {detalRecipe.Recipes} */}
                           </TableCell>
                       </TableRow>
                       <TableRow>
                         <TableCell className="table-cell" component="th" scope="row"><strong>Recipe Image URL:</strong></TableCell>
                         <TableCell className="table-cell">
-                          <a style={{color: '#251d34'}} href={detalRecipe[0].Image_URL} target="_blank" rel="noopener noreferrer">{detalRecipe[0].Image_URL}</a>
-                          {/* {detalRecipe[0].Image_URL} */}
+                          <a style={{color: '#251d34'}} href={detalRecipe.Image_URL} target="_blank" rel="noopener noreferrer">{detalRecipe.Image_URL}</a>
+                          {/* {detalRecipe.Image_URL} */}
                         </TableCell>
                       </TableRow>
                       <TableRow>
@@ -303,66 +339,72 @@ function Recipes() {
                       {/* <TableRow>
                         <TableCell className="table-cell" component="th" scope="row"><strong>Tags:</strong></TableCell>
                         <TableCell className="table-cell">
-                        {detalRecipe[0].Tags[0]} <br />
-                        {detalRecipe[0].Tags[1]} <br />
-                        {detalRecipe[0].Tags[2]} <br />
-                        {detalRecipe[0].Tags[3]} <br />
+                        {detalRecipe.Tags[0]} <br />
+                        {detalRecipe.Tags[1]} <br />
+                        {detalRecipe.Tags[2]} <br />
+                        {detalRecipe.Tags[3]} <br />
                         </TableCell>
                       </TableRow> */}
 
                       <TableRow>
                         <TableCell className="table-cell" component="th" scope="row"><strong>Ingredients:</strong></TableCell>
                         <TableCell className="table-cell">
-                          <textarea style={{ color: 'white', width: '100%' , height: '7em',    backgroundColor: '#2e7d32' }}
+                          <textarea style={{ color: 'white', width: '100%' , height: '7em',  backgroundColor: '#2e7d32' }}
                           name="ingredients" 
+                          value={ingredients}
+                          onChange={handleNameChange}
                           disabled={!isEdit} 
                           >
-                          {detalRecipe[0].Ingredients}
+                          {/* {detalRecipe.Ingredients} */}
                           </textarea>
-                          {/* <p dangerouslySetInnerHTML={{ __html: formatText(detalRecipe[0].Ingredients) }} /> */}
+                          {/* <p dangerouslySetInnerHTML={{ __html: formatText(detalRecipe.Ingredients) }} /> */}
                           </TableCell>
                       </TableRow>
                       <TableRow>
                         <TableCell className="table-cell" component="th" scope="row"><strong>Instructions:</strong></TableCell>
                         <TableCell className="table-cell">
-                          {/* {detalRecipe[0].Instructions} */}
+                          {/* {detalRecipe.Instructions} */}
                           <textarea style={{ color: 'white', width: '100%' , height: '7em',    backgroundColor: '#2e7d32' }}
                           name="instructions"
+                          value={instructions}
+                          onChange={handleNameChange}
                           disabled={!isEdit} 
                           >
-                          {detalRecipe[0].Instructions}
+                          {/* {detalRecipe.Instructions} */}
                           </textarea>
-                          {/* <p dangerouslySetInnerHTML={{ __html: formatText(detalRecipe[0].Instructions) }} /> */}
+                          {/* <p dangerouslySetInnerHTML={{ __html: formatText(detalRecipe.Instructions) }} /> */}
                         </TableCell>
                       </TableRow>
                       <TableRow>
                         <TableCell className="table-cell" component="th" scope="row"><strong>Created Date	:</strong></TableCell>
-                        <TableCell className="table-cell">
-                          {/* sd */}
-                          {new Date(detalRecipe[0].Created_At).toLocaleString('en-GB', {
+                        {/* <TableCell className="table-cell">
+                          {new Date(detalRecipe.Created_At).toLocaleString('en-GB', {
                         day: 'numeric',
                       }).replace(/(\d)(st|nd|rd|th)/, '$1<sup>$2</sup>')}
                       &nbsp;
-                      {new Date(detalRecipe[0].Created_At).toLocaleString('en-GB', {
+                      {new Date(detalRecipe.Created_At).toLocaleString('en-GB', {
                         month: 'short',
                       }).replace(/(\d)(st|nd|rd|th)/, '$1<sup>$2</sup>')}
                       &nbsp;
-                      {new Date(detalRecipe[0].Created_At).toLocaleString('en-GB', {
+                      {new Date(detalRecipe.Created_At).toLocaleString('en-GB', {
                         year: 'numeric',
                       }).replace(/(\d)(st|nd|rd|th)/, '$1<sup>$2</sup>')}
                       <br />
                       Time:&nbsp;
-                       {new Date(detalRecipe[0].Created_At).toLocaleString('en-GB', {
+                       {new Date(detalRecipe.Created_At).toLocaleString('en-GB', {
                         hour: '2-digit',
                         minute: '2-digit',
                         second: '2-digit',
                         hour12: true, // Optional: if you want AM/PM format
                       }).replace(/(\d)(st|nd|rd|th)/, '$1<sup>$2</sup>')}
+                        </TableCell> */}
+                        <TableCell className="table-cell">
+                          <input type="datetime-local" id="birthdaytime" name="birthdaytime"/>
                         </TableCell>
                       </TableRow>
                       <TableRow>
                         <TableCell className="table-cell" component="th" scope="row"><strong>Posted By:</strong></TableCell>
-                        <TableCell className="table-cell">Username: {detalRecipe[0].PostedBy.username} <br />User ID: {detalRecipe[0].PostedBy._id}
+                        <TableCell className="table-cell">Username: {detalRecipe.PostedBy.username} <br />User ID: {detalRecipe.PostedBy._id}
                         </TableCell>
                       </TableRow>
                       <TableRow>

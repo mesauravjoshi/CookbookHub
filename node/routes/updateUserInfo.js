@@ -43,6 +43,7 @@ router.put('/username', jwtAuthMiddleware, async (req, res) => {
     const { username } = req.body; // Access the name from the request body
     const userId = req.user.id;
     console.log(username);
+    console.log(userId);
 
     const existingUser = await User.findOne({ username });
     if (existingUser) {
