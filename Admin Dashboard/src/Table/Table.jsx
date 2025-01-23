@@ -95,10 +95,31 @@ export default function BasicTable() {
     setIsEdit(true);
   };
 
-  const handleSaveClick = () => {
+  const handleSaveClick = async (user_id) => {
     // Save logic here (you might want to send the updated value to the server)
     setUserBasicInfo({ ...userBasicInfo, name, username });
     setIsEdit(false);
+    // console.log(user_id);
+
+    const token = localStorage.getItem('admin token');
+    try {
+      const response = await axios.put(`${url}/admin_update_user/username/${user_id}`, {
+          name: name, 
+          username: username,
+      }, {
+          headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json',
+          },
+      });
+      const result = response.data;
+      // console.log('User Data updated:', result);
+    } catch (error) {
+        if (error.response && error.response.status === 401) {
+            return;
+        }
+        console.error('Error fetching data:', error);
+    }
   };
 
   const handleNameChange = (e) => {
@@ -165,7 +186,7 @@ export default function BasicTable() {
               Edit
               </button>
               {isEdit && (
-                <button style={{ cursor: 'pointer' }} onClick={handleSaveClick} > Save</button>
+                <button style={{ cursor: 'pointer' }} onClick={() => handleSaveClick(userBasicInfo._id)} > Save</button>
               )}
             </div>
             

@@ -25,13 +25,22 @@ function Recipes() {
   const { isLoggedIn } = useAuth(); // Get isLoggedIn and logout function
   const [isEdit, setIsEdit] = useState(false);
 
-  const [recipeName, setRecipeName] = useState('');
-  const [category, setCategory] = useState('');
-  const [cuisine, setCuisine] = useState('');
-  const [ingredients, setIngredients] = useState('');
-  const [instructions, setInstructions] = useState('');
+  // const [recipeName, setRecipeName] = useState('');
+  // const [category, setCategory] = useState('');
+  // const [cuisine, setCuisine] = useState('');
+  // const [ingredients, setIngredients] = useState('');
+  // const [instructions, setInstructions] = useState('');
+  const [recipeDetails, setRecipeDetails] = useState({
+    recipeName: '',
+    category: '',
+    cuisine: '',
+    ingredients: '',
+    instructions: ''
+  });
   const [isViewClicked, setIsViewClicked] = useState(false);
     
+  const [initialRecipe, setInitialRecipe] = useState({});
+
   const inputRef = useRef(null);
   
   const handleEditClick = () => {
@@ -39,63 +48,86 @@ function Recipes() {
   };
 
   const handleSaveClick = async (recipe_id) => {
-    setDetalRecipe(prevState => ({
-      ...prevState,
-      Recipes: recipeName,
-      Category: category,
-      Cuisine: cuisine,
-      Ingredients: ingredients,
-      Instructions: instructions,
-  }));
-  setIsEdit(false);
-  console.log(recipe_id);
+    // Check if any value has changed
+    const hasChanged = recipeName !== initialRecipe.recipeName || 
+                       category !== initialRecipe.category || 
+                       cuisine !== initialRecipe.cuisine || 
+                       ingredients !== initialRecipe.ingredients || 
+                       instructions !== initialRecipe.instructions;
 
-  const token = localStorage.getItem('admin token');
-  try {
-    const response = await axios.put(`${url}/admin_update_user/username/${recipe_id}`, {
-        recipe_id: recipe_id,  // Send recipe_id directly here in the body
-        recipeName: recipeName,
-        category: category,
-        cuisine: cuisine,
-        ingredients: ingredients,
-        instructions: instructions
-    }, {
-        headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json',
-        },
-    });
-    const result = response.data;
-    console.log('Recipe updated:', result);
-} catch (error) {
-    if (error.response && error.response.status === 401) {
-        return;
+     if (!hasChanged) {
+        console.log('No changes detected. Skipping save request.');
+        return;  // Skip the API request if no changes have been made
     }
-    console.error('Error fetching data:', error);
-}
+
+     setDetalRecipe(prevState => ({
+        ...prevState,
+        Recipes: recipeName,
+        Category: category,
+        Cuisine: cuisine,
+        Ingredients: ingredients,
+        Instructions: instructions,
+    }));
+    setIsEdit(false);
+
+     const token = localStorage.getItem('admin token');
+    try {
+        const response = await axios.put(`${url}/admin_update_user/recipe/${recipe_id}`, {
+            recipe_id: recipe_id,
+            recipeName: recipeName,
+            category: category,
+            cuisine: cuisine,
+            ingredients: ingredients,
+            instructions: instructions
+        }, {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        });
+        const result = response.data;
+        // console.log('Recipe updated:', result);
+    } catch (error) {
+        if (error.response && error.response.status === 401) {
+            return;
+        }
+        console.error('Error fetching data:', error);
+    }
   };
 
+
   useEffect(() => {
-      if (detalRecipe && detalRecipe.Recipes && detalRecipe.Category  && detalRecipe.Cuisine && detalRecipe.Ingredients && detalRecipe.Instructions ) {
+    if (detalRecipe && detalRecipe.Recipes && detalRecipe.Category  && detalRecipe.Cuisine && detalRecipe.Ingredients && detalRecipe.Instructions ) {
         setRecipeName(detalRecipe.Recipes); 
         setCategory(detalRecipe.Category);
         setCuisine(detalRecipe.Cuisine);
-        setIngredients(detalRecipe.Ingredients)
-        setInstructions(detalRecipe.Instructions)
-      }
-      if (isEdit && inputRef.current) {
+        setIngredients(detalRecipe.Ingredients);
+        setInstructions(detalRecipe.Instructions);
+
+        // Store the initial recipe data
+        setInitialRecipe({
+            recipeName: detalRecipe.Recipes,
+            category: detalRecipe.Category,
+            cuisine: detalRecipe.Cuisine,
+            ingredients: detalRecipe.Ingredients,
+            instructions: detalRecipe.Instructions,
+        });
+    }
+
+    if (isEdit && inputRef.current) {
         inputRef.current.focus(); // Focus when isEdit is true
-      }
-    }, [detalRecipe,isEdit]);
+    }
+  }, [detalRecipe, isEdit]);
+
 
   const handleNameChange = (e) => {
-    if (e.target.name == 'recipeName') setRecipeName(e.target.value); 
-    if (e.target.name == 'category') setCategory(e.target.value); 
-    if (e.target.name == 'cuisine') setCuisine(e.target.value); 
-    if (e.target.name == 'ingredients') setIngredients(e.target.value); 
-    if (e.target.name == 'instructions') setInstructions(e.target.value); 
-    // else setUsername(e.target.value); // Update state with user input
-  };
+    const { name, value } = e.target;
+    setRecipeDetails(prevState => ({
+        ...prevState,
+        [name]: value // Dynamically set the property based on the input's name attribute
+    }));
+};
+
 
   const OpenSidebar = () => {
     setOpenSidebarToggle(!openSidebarToggle)
@@ -290,7 +322,7 @@ function Recipes() {
                             style={{ color: 'white', width: '100%' , height: '3em', backgroundColor: '#2e7d32' }}
                             type="text"
                             name='recipeName'
-                            value={recipeName}
+                            value={recipeDetails.recipeName}
                             onChange={handleNameChange}
                             disabled={!isEdit} // Disable input if not in edit mode
                             ref={inputRef} 
@@ -313,7 +345,7 @@ function Recipes() {
                             style={{ color: 'white', width: '100%' , height: '3em', backgroundColor: '#2e7d32' }}
                             type="text"
                             name='category'
-                            value={category}
+                            value={recipeDetails.category}
                             onChange={handleNameChange}
                             disabled={!isEdit} // Disable input if not in edit mode
                             // autoFocus 
@@ -328,7 +360,7 @@ function Recipes() {
                         style={{ color: 'white', width: '100%' , height: '3em',    backgroundColor: '#2e7d32' }}
                           type="text"
                           name='cuisine'
-                          value={cuisine}
+                          value={recipeDetails.cuisine}
                           onChange={handleNameChange}
                           disabled={!isEdit} // Disable input if not in edit mode
                           // autoFocus 
@@ -351,7 +383,7 @@ function Recipes() {
                         <TableCell className="table-cell">
                           <textarea style={{ color: 'white', width: '100%' , height: '7em',  backgroundColor: '#2e7d32' }}
                           name="ingredients" 
-                          value={ingredients}
+                          value={recipeDetails.ingredients}
                           onChange={handleNameChange}
                           disabled={!isEdit} 
                           >
@@ -366,7 +398,7 @@ function Recipes() {
                           {/* {detalRecipe.Instructions} */}
                           <textarea style={{ color: 'white', width: '100%' , height: '7em',    backgroundColor: '#2e7d32' }}
                           name="instructions"
-                          value={instructions}
+                          value={recipeDetails.instructions}
                           onChange={handleNameChange}
                           disabled={!isEdit} 
                           >
