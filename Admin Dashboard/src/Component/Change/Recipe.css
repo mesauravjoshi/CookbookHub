@@ -56,3 +56,8 @@
     text-decoration: none;
     transition: all 0.3s ease-in-out;
 }
+
+.left-save-cancel{
+  display: flex;
+  gap: 1em;
+}
