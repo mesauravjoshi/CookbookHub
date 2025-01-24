@@ -6,20 +6,22 @@ const Bookmark = require('../../models/Bookmarks');
 const {jwtAuthMiddleware } = require('../../jwt');
 
 router.put('/recipe/:recipe_id', jwtAuthMiddleware, async (req, res) => {
-    const { recipe_id } = req.params;  // Get recipe_id from URL params
-    const { recipeName, category, cuisine, ingredients, instructions } = req.body;  // Get other details from request body
-    // console.log(recipe_id);  // Now it should log the recipe_id sent from the client
+    const { recipe_id } = req.params; 
+    // const { recipeName, category, cuisine, ingredients, instructions } = req.body;
+    const { initialRecipe } = req.body;  
+    
+    // console.log(initialRecipe);  
 
     try {
         // Assuming you have a Recipe model to update
         const updatedRecipe = await Recipe.findByIdAndUpdate(
             recipe_id,
             { 
-                Recipes: recipeName,
-                Category: category,
-                Cuisine: cuisine,
-                Ingredients: ingredients,
-                Instructions: instructions
+                Recipes: initialRecipe.Recipes ,
+                Category: initialRecipe.Category ,
+                Cuisine: initialRecipe.Cuisine ,
+                Ingredients: initialRecipe.Ingredients ,
+                Instructions: initialRecipe.Instructions 
             },
             { new: true } // Returns the updated document
         );
@@ -40,7 +42,7 @@ router.put('/username/:user_id', jwtAuthMiddleware, async (req, res) => {
     const { name, username } = req.body;  // Get other details from request body
 
     try {
-        // Assuming you have a Recipe model to update
+        // ------------- from Uaer schema
         const updateUserData = await User.findByIdAndUpdate(
             user_id,
             { 
@@ -54,7 +56,33 @@ router.put('/username/:user_id', jwtAuthMiddleware, async (req, res) => {
             return res.status(404).json({ message: 'Recipe not found' });
         }
 
-        res.json({ message: 'Recipe updated successfully', updateUserData });
+        // ------------- from Recipe schema
+        const updateUserFromRec = await Recipe.findOne({ "PostedBy._id": user_id }); // Find recipe with matching PostedBy._id
+        if (!updateUserFromRec) {
+            return res.status(404).json({ message: 'User ID not found for this user.' });
+        }
+        // Update the name and username of the PostedBy object
+        updateUserFromRec.PostedBy.name = name;
+        updateUserFromRec.PostedBy.username = username;
+        // Save the updated recipe back to the database
+        await updateUserFromRec.save();
+
+        // ------------- from Uaer Bookmark
+        const updateUserFromBook = await Bookmark.findOne({ "BookmarkBy._id": user_id }); // Find recipe with matching PostedBy._id
+        if (!updateUserFromBook) {
+            return res.status(404).json({ message: 'User ID not found for this user.' });
+        }
+        // Update the name and username of the PostedBy object
+        updateUserFromBook.BookmarkBy.username = username;
+        // Save the updated recipe back to the database
+        await updateUserFromBook.save();
+
+        // Send back a success response
+        return res.status(200).json({ message: 'Username and name updated successfully', 
+            updateUserFromRec,updateUserData,updateUserFromBook
+         });
+
+        // res.json({ message: 'Recipe updated successfully', updateUserData });
     } catch (error) {
         console.error('Error updating recipe:', error);
         res.status(500).json({ message: 'Error updating recipe' });

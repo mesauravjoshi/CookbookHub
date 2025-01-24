@@ -25,18 +25,6 @@ function Recipes() {
   const { isLoggedIn } = useAuth(); // Get isLoggedIn and logout function
   const [isEdit, setIsEdit] = useState(false);
 
-  // const [recipeName, setRecipeName] = useState('');
-  // const [category, setCategory] = useState('');
-  // const [cuisine, setCuisine] = useState('');
-  // const [ingredients, setIngredients] = useState('');
-  // const [instructions, setInstructions] = useState('');
-  const [recipeDetails, setRecipeDetails] = useState({
-    recipeName: '',
-    category: '',
-    cuisine: '',
-    ingredients: '',
-    instructions: ''
-  });
   const [isViewClicked, setIsViewClicked] = useState(false);
     
   const [initialRecipe, setInitialRecipe] = useState({});
@@ -48,37 +36,12 @@ function Recipes() {
   };
 
   const handleSaveClick = async (recipe_id) => {
-    // Check if any value has changed
-    const hasChanged = recipeName !== initialRecipe.recipeName || 
-                       category !== initialRecipe.category || 
-                       cuisine !== initialRecipe.cuisine || 
-                       ingredients !== initialRecipe.ingredients || 
-                       instructions !== initialRecipe.instructions;
 
-     if (!hasChanged) {
-        console.log('No changes detected. Skipping save request.');
-        return;  // Skip the API request if no changes have been made
-    }
-
-     setDetalRecipe(prevState => ({
-        ...prevState,
-        Recipes: recipeName,
-        Category: category,
-        Cuisine: cuisine,
-        Ingredients: ingredients,
-        Instructions: instructions,
-    }));
-    setIsEdit(false);
-
-     const token = localStorage.getItem('admin token');
+    const token = localStorage.getItem('admin token'); 
     try {
         const response = await axios.put(`${url}/admin_update_user/recipe/${recipe_id}`, {
-            recipe_id: recipe_id,
-            recipeName: recipeName,
-            category: category,
-            cuisine: cuisine,
-            ingredients: ingredients,
-            instructions: instructions
+            // recipe_id: recipe_id,
+            initialRecipe: initialRecipe,
         }, {
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -93,41 +56,36 @@ function Recipes() {
         }
         console.error('Error fetching data:', error);
     }
+
+    setIsEdit(false);
   };
 
-
   useEffect(() => {
-    if (detalRecipe && detalRecipe.Recipes && detalRecipe.Category  && detalRecipe.Cuisine && detalRecipe.Ingredients && detalRecipe.Instructions ) {
-        setRecipeName(detalRecipe.Recipes); 
-        setCategory(detalRecipe.Category);
-        setCuisine(detalRecipe.Cuisine);
-        setIngredients(detalRecipe.Ingredients);
-        setInstructions(detalRecipe.Instructions);
+    // if (detalRecipe && detalRecipe.Recipes && detalRecipe.Category  && detalRecipe.Cuisine && detalRecipe.Ingredients && detalRecipe.Instructions ) {
 
-        // Store the initial recipe data
-        setInitialRecipe({
-            recipeName: detalRecipe.Recipes,
-            category: detalRecipe.Category,
-            cuisine: detalRecipe.Cuisine,
-            ingredients: detalRecipe.Ingredients,
-            instructions: detalRecipe.Instructions,
-        });
-    }
+      // Store the initial recipe data
+      // setInitialRecipe({
+      //     Recipes: detalRecipe.Recipes,
+      //     Category: detalRecipe.Category,
+      //     Cuisine: detalRecipe.Cuisine,
+      //     Ingredients: detalRecipe.Ingredients,
+      //     Instructions: detalRecipe.Instructions,
+      // });
+    // }
 
     if (isEdit && inputRef.current) {
         inputRef.current.focus(); // Focus when isEdit is true
     }
   }, [detalRecipe, isEdit]);
 
-
   const handleNameChange = (e) => {
     const { name, value } = e.target;
-    setRecipeDetails(prevState => ({
+    setInitialRecipe(prevState => ({
         ...prevState,
         [name]: value // Dynamically set the property based on the input's name attribute
     }));
-};
-
+    
+  };
 
   const OpenSidebar = () => {
     setOpenSidebarToggle(!openSidebarToggle)
@@ -187,17 +145,22 @@ function Recipes() {
       // console.log(result.recipe[0]);
       setDetalRecipe(result.recipe[0]);
       setRecipeBookmark(result.recipe_bookmark);
+      setInitialRecipe(prev => ({
+        ...prev,
+        Recipes: result.recipe[0].Recipes,
+          Category: result.recipe[0].Category,
+          Cuisine: result.recipe[0].Cuisine,
+          Ingredients: result.recipe[0].Ingredients,
+          Instructions: result.recipe[0].Instructions,
+      }))
+
       setIsViewClicked(true);
     } catch (error) {
       console.error('Error fetching data:', error);
     }
   };
 
-  // Function to split ingredients and instructions by newline (\n)
-  const formatText = (text) => {
-    return text.replace(/\n/g, '<br/>');
-  };
-
+  
   return (
     <>
       <Header OpenSidebar={OpenSidebar} />
@@ -321,8 +284,8 @@ function Recipes() {
                           <input
                             style={{ color: 'white', width: '100%' , height: '3em', backgroundColor: '#2e7d32' }}
                             type="text"
-                            name='recipeName'
-                            value={recipeDetails.recipeName}
+                            name='Recipes'
+                            value={initialRecipe.Recipes}
                             onChange={handleNameChange}
                             disabled={!isEdit} // Disable input if not in edit mode
                             ref={inputRef} 
@@ -344,8 +307,8 @@ function Recipes() {
                         <input
                             style={{ color: 'white', width: '100%' , height: '3em', backgroundColor: '#2e7d32' }}
                             type="text"
-                            name='category'
-                            value={recipeDetails.category}
+                            name='Category'
+                            value={initialRecipe.Category}
                             onChange={handleNameChange}
                             disabled={!isEdit} // Disable input if not in edit mode
                             // autoFocus 
@@ -359,8 +322,8 @@ function Recipes() {
                         <input
                         style={{ color: 'white', width: '100%' , height: '3em',    backgroundColor: '#2e7d32' }}
                           type="text"
-                          name='cuisine'
-                          value={recipeDetails.cuisine}
+                          name='Cuisine'
+                          value={initialRecipe.Cuisine}
                           onChange={handleNameChange}
                           disabled={!isEdit} // Disable input if not in edit mode
                           // autoFocus 
@@ -382,8 +345,8 @@ function Recipes() {
                         <TableCell className="table-cell" component="th" scope="row"><strong>Ingredients:</strong></TableCell>
                         <TableCell className="table-cell">
                           <textarea style={{ color: 'white', width: '100%' , height: '7em',  backgroundColor: '#2e7d32' }}
-                          name="ingredients" 
-                          value={recipeDetails.ingredients}
+                          name="Ingredients" 
+                          value={initialRecipe.Ingredients}
                           onChange={handleNameChange}
                           disabled={!isEdit} 
                           >
@@ -397,8 +360,8 @@ function Recipes() {
                         <TableCell className="table-cell">
                           {/* {detalRecipe.Instructions} */}
                           <textarea style={{ color: 'white', width: '100%' , height: '7em',    backgroundColor: '#2e7d32' }}
-                          name="instructions"
-                          value={recipeDetails.instructions}
+                          name="Instructions"
+                          value={initialRecipe.Instructions}
                           onChange={handleNameChange}
                           disabled={!isEdit} 
                           >

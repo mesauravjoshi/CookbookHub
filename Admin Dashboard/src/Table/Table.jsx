@@ -113,7 +113,7 @@ export default function BasicTable() {
           },
       });
       const result = response.data;
-      // console.log('User Data updated:', result);
+      console.log('User Data updated:', result.message);
     } catch (error) {
         if (error.response && error.response.status === 401) {
             return;

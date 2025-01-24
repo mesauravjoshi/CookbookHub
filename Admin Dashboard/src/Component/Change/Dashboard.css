@@ -1,0 +1,11 @@
+.task {
+    margin: 6em;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    align-items: center;
+}
+
+.task input{
+    font-size: 1.7em;
+}
