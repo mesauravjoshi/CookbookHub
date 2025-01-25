@@ -55,6 +55,9 @@ function Recipes() {
     if (compareRecipe.Instructions !== initialRecipe.Instructions) {
       changes.Instructions = initialRecipe.Instructions;
     }
+    if (compareRecipe.Created_At !== initialRecipe.Created_At) {
+      changes.Created_At = initialRecipe.Created_At;
+    }
 
     if (Object.keys(changes).length > 0) {
       const token = localStorage.getItem('admin token');
@@ -171,6 +174,7 @@ function Recipes() {
       });
       const result = response.data;
       // console.log(result.recipe[0]);
+      const formattedDate = new Date(result.recipe[0].Created_At).toISOString().slice(0, 16); // Format date as "YYYY-MM-DDTHH:MM"
       setDetalRecipe(result.recipe[0]);
       setRecipeBookmark(result.recipe_bookmark);
       setInitialRecipe(prev => ({
@@ -180,6 +184,7 @@ function Recipes() {
         Cuisine: result.recipe[0].Cuisine,
         Ingredients: result.recipe[0].Ingredients,
         Instructions: result.recipe[0].Instructions,
+        Created_At: formattedDate, // Set formatted date to the state
       }))
 
       setCompareRecipe(prev => ({
@@ -189,6 +194,7 @@ function Recipes() {
         Cuisine: result.recipe[0].Cuisine,
         Ingredients: result.recipe[0].Ingredients,
         Instructions: result.recipe[0].Instructions,
+        Created_At: formattedDate, // Set formatted date to the state
       }))
 
       setIsViewClicked(true);
@@ -197,6 +203,7 @@ function Recipes() {
     }
   };
   // console.log(compareRecipe);
+  // console.log(initialRecipe);
 
   return (
     <>
@@ -434,7 +441,11 @@ function Recipes() {
                       }).replace(/(\d)(st|nd|rd|th)/, '$1<sup>$2</sup>')}
                         </TableCell> */}
                             <TableCell className="table-cell">
-                              <input type="datetime-local" id="birthdaytime" name="birthdaytime" />
+                              <input type="datetime-local" id="birthdaytime"
+                              name="Created_At"
+                              value={initialRecipe.Created_At}
+                              onChange={handleNameChange}
+                              disabled={!isEdit} />
                             </TableCell>
                           </TableRow>
                           <TableRow>

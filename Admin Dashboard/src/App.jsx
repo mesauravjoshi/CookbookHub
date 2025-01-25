@@ -6,6 +6,7 @@ import Users from './Component/Change/Users'
 import Bookmark from './Component/Change/Bookmarks'
 import Signup from './Component/Auth/Signup'
 import Login from './Component/Auth/Login'
+import Settings from './Component/Change/Settings'
 // import { AuthProvider } from './Component/Auth/AuthContext'; 
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
           <Route path="/users" element={<Users/>} />
           <Route path="/recipes" element={<Recipes/>} />
           <Route path="/bookmarks" element={<Bookmark/>} />
+          <Route path="/settings" element={<Settings/>} />
           <Route path="/signup" element={<Signup/>} />
           <Route path="/login" element={<Login/>} />
         </Routes>
