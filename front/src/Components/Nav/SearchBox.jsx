@@ -6,7 +6,7 @@ const suggest = [
     'American', 'Appetizer', 'Asian', 'Baked', 'Beverage', 'Breakfast', 'Bruschetta al Pomodoro', 'Caesar Salad', 'Chocolate', 'Chocolate Chip Cookies', 'Classic Coffee', 'Coffee', 'Comfort Drink', 'Comfort Food', 'Dessert', 'Dinner', 'Drink', 'Egg Salad Sandwich', 'Fluffy Pancakes', 'Fresh', 'Fried', 'Gluten-Free', 'Healthy', 'Hotteok', 'Indian', 'Italian', 'Korean', 'Lunch', 'Main Course', 'Mango Lassi', 'Oi Muchim (Spicy Korean Cucumber Salad)', 'Pancakes', 'Pasta', 'Pasta Aglio e Olio', 'Protein', 'Quick', 'Quinoa', 'Quinoa Stir Fry', 'Refreshing', 'Rice', 'Salad', 'Sandwich', 'Side Dish', 'Snack', 'Spicy', 'Stir Fry', 'Stir-Fry', 'Summer', 'Sweet', 'Tofu', 'Tofu Stir Fry ', 'Traditional', 'Vegetable Biryani', 'Vegetable Stir Fry', 'Vegetarian', 'Veggie Hummus Wrap'
 ];
 
-function SearchBox({ isSearchOpen, setIsSearchOpen }) {
+function SearchBox({setIsSearchOpen }) {
     const navigate = useNavigate();
     const [searchQuery, setSearchQuery] = useState("");
     // const [suggest, setSuggest] = useState([]);

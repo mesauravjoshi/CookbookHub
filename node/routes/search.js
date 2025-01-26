@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Recipe = require('../models/Recipe');
-const { jwtAuthMiddleware } = require('../jwt');
+const SearchSuggestion = require('../models/SearchSuggestion');
 
 // search
 router.get('/search', async (req, res) => {
@@ -37,5 +37,27 @@ router.get('/search', async (req, res) => {
     }
 });
 
+router.post('/searchSuggestion', async (req, res) => {
+    const { search } = req.body;
+    // console.log(search);
+    
+    try {
+      const existingSearch = await SearchSuggestion.findOne({});
+  
+      if (existingSearch) {
+        // Add the new search term to the existing array if it exists
+        existingSearch.search.push(search[0]);
+        await existingSearch.save();
+        console.log('inside if');
+      } 
+  
+      res.status(201).json({ message: 'Search added successfully' });
+    } catch (err) {
+      console.error(err);
+      res.status(500).send("Error while adding search term");
+    }
+
+  });
+  
 
 module.exports = router;

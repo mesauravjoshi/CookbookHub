@@ -178,6 +178,31 @@ function Upload() {
     }
   }, [setUser]);
 
+  const handleAddToSearch = async (e) => {
+    e.preventDefault();
+
+    // const searchInput = e.target[0].value; // Get the input value
+    const searchInput = {
+      one: 'one',
+      two: 'two',
+      three: 'three'
+    }
+    try {
+      const response = await fetch(`${url}/search/searchSuggestion`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ search: [searchInput] }),
+      });
+  
+      const data = await response.json();
+      console.log('Search added:', data);
+    } catch (error) {
+      console.error('Error adding search:', error);
+    }
+  }
+
   return (
     <>
       <Nav isLoggedIn={isLoggedIn} user={user} />
@@ -270,6 +295,13 @@ function Upload() {
         {!user &&
           <PageNotFound />
         }
+      </div>
+
+      <div className="add-search">
+        <form action="" onSubmit={handleAddToSearch}>
+          <input type="text" />
+          <button> Add to search </button>
+        </form>
       </div>
       <Toaster />
     </>
