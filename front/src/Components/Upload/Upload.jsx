@@ -29,6 +29,7 @@ function Upload() {
   // const [fIleSelected, setFIleSelected] = useState(false);
   const [loading, setLoading] = useState(false);
   // const [success, setSuccess] = useState(false);
+  const [arraySuggestion, setArraySuggestion] = useState([]);
 
   // Function to show toast
   const notify = () => {
@@ -145,7 +146,7 @@ function Upload() {
       if (response.ok) {
         const result = await response.json();
         setTimeout(() => {
-          navigate(`/login`); // Redirect to login
+          navigate(`/upload`); // Redirect to login
         }, 2000); // 10000 milliseconds = 10 seconds
         // console.log(result);
         notify();
@@ -160,6 +161,48 @@ function Upload() {
     } finally {
       setLoading(false);
     }
+
+    setArraySuggestion(prevArray => {
+      // Combine recipesName and multiSel, remove duplicates, and sort alphabetically
+      const newArray = [
+        ...prevArray, 
+        recipesName, 
+        ...multiSel
+      ];
+    
+      // Remove duplicates by converting the array to a Set, then back to an array
+      const uniqueArray = [...new Set(newArray)];
+    
+      // Sort the array alphabetically
+      uniqueArray.sort((a, b) => a.localeCompare(b));
+    
+      // Trim spaces from the beginning and end of each string in the array
+      const trimmedArray = uniqueArray.map(item => item.trim());
+    
+      // Capitalize the first letter of each item
+      const capitalizedArray = trimmedArray.map(item => 
+        item.charAt(0).toUpperCase() + item.slice(1).toLowerCase()
+      );
+    
+      return capitalizedArray;
+    });    
+    
+    // send data to  suggestion schema 
+    try {
+      const response = await fetch(`${url}/search/searchSuggestion`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ search: [arraySuggestion] }),
+      });
+  
+      const data = await response.json();
+      // console.log('Search added:', data);
+    } catch (error) {
+      console.error('Error adding search:', error);
+    }
+
     setRecipesName('');
     setIngredients('');
     setInstructions('');
@@ -169,7 +212,6 @@ function Upload() {
     setSelectedImage(null); // Clear selected image
   };
   
-
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
@@ -177,31 +219,6 @@ function Upload() {
       setUser(userData); // Set user from token if needed
     }
   }, [setUser]);
-
-  const handleAddToSearch = async (e) => {
-    e.preventDefault();
-
-    // const searchInput = e.target[0].value; // Get the input value
-    const searchInput = {
-      one: 'one',
-      two: 'two',
-      three: 'three'
-    }
-    try {
-      const response = await fetch(`${url}/search/searchSuggestion`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ search: [searchInput] }),
-      });
-  
-      const data = await response.json();
-      console.log('Search added:', data);
-    } catch (error) {
-      console.error('Error adding search:', error);
-    }
-  }
 
   return (
     <>
@@ -295,13 +312,6 @@ function Upload() {
         {!user &&
           <PageNotFound />
         }
-      </div>
-
-      <div className="add-search">
-        <form action="" onSubmit={handleAddToSearch}>
-          <input type="text" />
-          <button> Add to search </button>
-        </form>
       </div>
       <Toaster />
     </>

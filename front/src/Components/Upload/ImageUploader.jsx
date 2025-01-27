@@ -20,7 +20,7 @@ const ImageUploader = ({ error, setError, setSelectedImage, selectedImage }) => 
         return;
       }
 
-      if (file.size < 100 * 1024 || file.size > 2000 * 1024) {
+      if (file.size < 70 * 1024 || file.size > 2000 * 1024) {
         setError('Image size must be between 100KB and 2MB');
         return;
       }
