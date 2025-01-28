@@ -33,22 +33,20 @@ function Settings() {
     // Cleanup function to clear the interval on component unmount
     return () => clearInterval(intervalId);
   }, []);
+  
   return (
     <>
       <Header OpenSidebar={OpenSidebar} />
       <Sidebar openSidebarToggle={openSidebarToggle} OpenSidebar={OpenSidebar} />
-      <div>
+      {/* <div>
         <h1>Race time</h1> <br />
-        <div style={{display:'flex',gap:"2em"}} className='time'>
-            {/* <h2>12</h2>
-            <h2>12</h2>
-            <h2>{value}</h2> */}
-                 <h1>
-        {String(hours).padStart(2, '0')}:{String(minutes).padStart(2, '0')}:
-        {String(seconds).padStart(2, '0')}
-      </h1>
+        <div style={{ display: 'flex', gap: "2em" }} className='time'>
+          <h1>
+            {String(hours).padStart(2, '0')}:{String(minutes).padStart(2, '0')}:
+            {String(seconds).padStart(2, '0')}
+          </h1>
         </div>
-      </div>
+      </div> */}
     </>
   )
 }
