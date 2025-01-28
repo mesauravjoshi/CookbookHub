@@ -62,7 +62,7 @@ function UpdatePersonal({ user, setUser }) {
             }
 
             const data = await response.json();
-            // console.log('Updated data:', data);
+            console.log('Updated data:', data);
 
             // remove previous data from local storage 
             localStorage.removeItem('token')
