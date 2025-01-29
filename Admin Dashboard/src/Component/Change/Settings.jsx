@@ -1,51 +1,72 @@
 import React, { useState, useEffect, useRef } from 'react'
-import Header from '../Header'
-import Sidebar from '../Sidebar'
-import './Recipe.css'
+import './Setting.css'
 
 function Settings() {
-  const [openSidebarToggle, setOpenSidebarToggle] = useState(false);
-  const OpenSidebar = () => {
-    setOpenSidebarToggle(!openSidebarToggle)
-  }
 
-  const [seconds, setSeconds] = useState(0);
-  const [minutes, setMinutes] = useState(0);
-  const [hours, setHours] = useState(0);
+  // const [otp, setOtp] = useState(['', '', '', '']);
 
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      setSeconds(prevSeconds => {
-        if (prevSeconds === 59) {
-          setMinutes(prevMinutes => {
-            if (prevMinutes === 59) {
-              setHours(prevHours => prevHours + 1); // Increment hour if minutes reach 59
-            }
-            return (prevMinutes + 1) % 60; // Reset minutes to 0 after 59
-          });
-          return 0; // Reset seconds after 59
-        } else {
-          return prevSeconds + 1;
-        }
-      });
-    }, 1000);  // Update every 1 second
+  // const handleChange = (e, index) => {
+  //   const value = (e.target.value);
+    
 
-    // Cleanup function to clear the interval on component unmount
-    return () => clearInterval(intervalId);
-  }, []);
-  
+  //   if (value.length <= 1) {
+      
+  //     // const value = Number(e.target.value);
+  //     setOtp((prevOtp) => {
+  //       const newOtp = [...prevOtp];
+  //       newOtp[index] = value;
+  //       return newOtp;
+  //     });
+  //   }
+  //   if (value && index < 3) {
+  //     document.getElementById(`otp-${index + 1}`).focus();
+  //   }
+  //   if (value === "" && index > 0) {
+  //     document.getElementById(`otp-${index - 1}`).focus();
+  //   }
+
+  // }
+
+  // const handleSubmit = (e) => {
+  //   e.preventDefault()
+  // }
+
+  // const handlePaste = (e) => {
+  //   // e.preventDefault(); 
+  //   const data = e.clipboardData.getData("text"); 
+  //   console.log(data.length);
+
+  //   if( Number(data) || data.length === 4){
+  //     const pasteCode =data.split('');
+  //     console.log(pasteCode);
+  //     setOtp([...pasteCode])
+  //       document.getElementById(`otp-3`).focus();     
+  //   }
+  // }
+
   return (
     <>
-      <Header OpenSidebar={OpenSidebar} />
-      <Sidebar openSidebarToggle={openSidebarToggle} OpenSidebar={OpenSidebar} />
       {/* <div>
-        <h1>Race time</h1> <br />
-        <div style={{ display: 'flex', gap: "2em" }} className='time'>
-          <h1>
-            {String(hours).padStart(2, '0')}:{String(minutes).padStart(2, '0')}:
-            {String(seconds).padStart(2, '0')}
-          </h1>
-        </div>
+        <h1>OTP</h1>
+        <form action="" onSubmit={handleSubmit}>
+          <div className='otp'>
+            {
+              otp.map((item, index) => (
+                <input type="text"
+                // type="text" // Change to "text" so maxLength works properly
+                  id={`otp-${index}`}
+                  key={index}
+                  maxLength="1"
+                  value={item}
+                  onChange={(e) => handleChange(e, index)}
+                  onPaste={handlePaste}
+                  required={true}
+                />
+              ))
+            }
+          </div>
+          <button > Submit</button>
+        </form>
       </div> */}
     </>
   )

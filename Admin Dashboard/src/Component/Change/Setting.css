@@ -1,0 +1,23 @@
+
+.otp{
+    display: flex;
+    gap: 1em;
+
+    input{
+        width: 3em;
+        height: 3em;
+        font-size: 2em;
+        text-align: center;
+        background-color: transparent;
+        color: #f7c974;
+    }
+}
+
+/* Hide arrows in Chrome, Safari, and Edge */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+
