@@ -5,10 +5,10 @@ import { FetchDataProvider } from './Component/FetchContext.jsx'
 import { AuthProvider } from './Component/Auth/AuthContext.jsx'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-        <AuthProvider>
-    <FetchDataProvider>
-        <App />
-    </FetchDataProvider>
-        </AuthProvider>
-    
+    <AuthProvider>
+        <FetchDataProvider>
+            <App />
+        </FetchDataProvider>
+    </AuthProvider>
+
 )
